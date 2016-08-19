@@ -1,0 +1,55 @@
+html, body { 
+  min-width: 600px;
+  height: 100%; 
+  margin: 0px; 
+  padding: 0px; 
+  background: #eee;
+}
+
+.thisplay-navbar {
+  width: 100%;
+  height: 50px;
+  position: fixed;
+  z-index: 9999;
+  border-radius: 0px;
+  border-top-left-radius: 5px;
+}
+
+.thisplay-canvas-list {
+  border-top-right-radius: 5px;
+}
+
+.thisplay-container {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  padding-top: 50px;
+}
+
+.thisplay-edit-panel {
+  width:90%; 
+  max-width: 940px; 
+  padding-top: 20px; 
+  margin: 0 auto;
+}
+
+.thisplay-edit-panel label {
+  position: absolute;
+  left: 0;
+  top: 5px;
+}
+
+.thisplay-editor {
+  width: 100%;
+  height: 700px;
+}
+
+.thisplay-input-area {
+  width: 100%;
+  height: 100px;
+}
+
+.thisplay-designer {
+  position: fixed;
+  padding-top: 50px;
+}

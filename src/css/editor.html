@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Editor</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=11" />
+  <meta charset="UTF-8" />
+
+  <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap-theme.css" />
+
+  <link rel="stylesheet" href="../../bower_components/codemirror/lib/codemirror.css" />
+  <link rel="stylesheet" href="../../bower_components/codemirror/theme/bespin.css" />
+  <link rel="stylesheet" href="../../bower_components/codemirror/theme/blackboard.css" />
+  <link rel="stylesheet" href="../../bower_components/codemirror/theme/cobalt.css" />
+  <link rel="stylesheet" href="../../bower_components/codemirror/theme/dracula.css" />
+  <link rel="stylesheet" href="../../bower_components/codemirror/theme/eclipse.css" />
+  <link rel="stylesheet" href="../../bower_components/codemirror/theme/erlang-dark.css" />
+  <link rel="stylesheet" href="../../bower_components/codemirror/theme/the-matrix.css" />
+  <link rel="stylesheet" href="../../bower_components/codemirror/theme/zenburn.css" />
+
+  <link rel="stylesheet" href="components.css" />
+  <link rel="stylesheet" href="editor.css" />
+
+  <style>
+    html, body {
+      height: 100%;
+    }
+
+    .thisplay-editor {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body ng-app="myApp">
+  <div ng-controller="myCtrl" style="height: 100%;">
+    <div class="thisplay-editor">
+      <div class="header">
+        <span>Select a theme: </span>
+        <div class="btn-group" uib-dropdown>
+          <button id="btn-append-to-single-button" type="button" class="btn btn-default" uib-dropdown-toggle>
+            {{theme}} <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-single-button">
+            <li ng-repeat="a in themes" role="menuitem"><a ng-click="selectTheme(a)">{{a}}</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="body">
+        <div class="thisplay-codemirror" ui-codemirror="{onLoad : cmLoadded}" ui-codemirror-opts="cmOptions"></div>
+      </div>      
+    </div>
+  </div>
+
+
+
+  <script src="../../bower_components/angular/angular.js"></script>
+
+  <script src="../../bower_components/codemirror/lib/codemirror.js"></script>
+  <script src="../../bower_components/codemirror/mode/clike/clike.js"></script>
+  <script src="../../bower_components/codemirror/addon/edit/closebrackets.js"></script>
+  <script src="../../bower_components/codemirror/addon/selection/active-line.js"></script>
+  <script src="../../bower_components/angular-ui-codemirror/ui-codemirror.js"></script>
+
+  <script src="../../bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+  <script src="../../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+
+  <script>
+    var app = angular.module('myApp', ['ui.bootstrap', 'ui.codemirror']);
+
+    app.controller('myCtrl', function ($scope) {
+      var editor;
+
+      $scope.cmOptions = {
+        indentWithTabs: true,
+        mode: "text/x-c++src",
+        styleActiveLine: true,
+        autoCloseBrackets: true,
+        lineNumbers: true,
+        lineWrapping: true,
+        gutters: ["CodeMirror-linenumbers", "breakpoints"]
+      };
+
+      $scope.theme = 'default';
+
+      $scope.themes = ['default', 'bespin', 'blackboard', 'cobalt',
+      'dracula', 'eclipse', 'erlang-dark', 'the-matrix', 'zenburn'];
+
+      $scope.cmLoadded = function (cm) {
+        editor = cm;
+
+        editor.on("gutterClick", function(cm, n) {
+          var info = cm.lineInfo(n);
+
+          if (!info) {
+            return;
+          }
+
+          if (info.gutterMarkers) {
+            cm.setGutterMarker(n, "breakpoints", null);  
+          }
+          else {
+            var marker = document.createElement("div");
+            marker.style.color = "#933";
+            marker.innerHTML = "●";
+            cm.setGutterMarker(n, "breakpoints", marker);  
+          }
+        });
+      };
+
+      $scope.selectTheme = function (theme) {
+        $scope.theme = theme;
+        editor.setOption("theme", theme);
+      };
+    });
+
+</script>
+</body>
+</html>
