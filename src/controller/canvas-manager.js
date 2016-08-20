@@ -57,7 +57,7 @@
         });
     };
 
-    $scope.openModal = function () {
+    $scope.openSaveModal = function () {
       var modalInstance = $uibModal.open({
         templateUrl: 'save-modal.html',
         controller: 'saveModalCtrl',

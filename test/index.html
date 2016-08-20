@@ -58,7 +58,7 @@
         <a class="navbar-brand" ng-click="canvasListOpen = !canvasListOpen">
           <span class="glyphicon glyphicon-menu-hamburger"></span>
         </a>
-        <a class="navbar-text title" ng-click="openModal()">
+        <a class="navbar-text title" ng-click="openSaveModal()">
           {{getTitle() || "제목 없는 캔버스"}}
         </a>
       </div>
@@ -158,8 +158,10 @@
     </div>
 
     <pageslide ps-open="designerOpen" ps-size="400px" ps-zindex="100" ps-key-listener="true" ps-click-outside="false" ps-auto-close="true">
-      <div class="thisplay-designer">
-        {{testLineNum}}
+      <div class="thisplay-designer-view">
+        <div class="thisplay-designer">
+          {{testLineNum}}
+        </div>
       </div>
     </pageslide>
 
