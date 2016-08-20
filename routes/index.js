@@ -6,12 +6,6 @@ router.get('/', function (req, res, next) {
   res.render('index');
 });
 
-
-router.get('/test', function (req, res, nexT) {
-  res.render('test');
-});
-
-
 var examples = [{
   id: 1,
   title: "Bubble Sort",
