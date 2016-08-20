@@ -50,7 +50,8 @@ module.exports = function (grunt) {
     },
     uglify: {
       options: {
-        banner: '/* <%= grunt.template.today("yyyy-mm-dd") %> / ',
+        banner: '/* <%= grunt.template.today("yyyy-mm-dd") %> */ ',
+        mangle: false,
         preserveComments: false
       },
       build: {
