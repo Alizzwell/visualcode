@@ -131,10 +131,10 @@
             <label>Source Code:</label>
             <span>Select a theme: </span>
             <div class="btn-group" uib-dropdown>
-              <button id="btn-append-to-single-button" type="button" class="btn btn-default" uib-dropdown-toggle>
+              <button id="btnSelectTheme" type="button" class="btn btn-default" uib-dropdown-toggle>
                 {{theme}} <span class="caret"></span>
               </button>
-              <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-single-button">
+              <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btnSelectTheme">
                 <li ng-repeat="a in themes" role="menuitem"><a ng-click="selectTheme(a)">{{a}}</a></li>
               </ul>
             </div>
