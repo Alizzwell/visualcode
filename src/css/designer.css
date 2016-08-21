@@ -91,3 +91,23 @@
 .structure-list .item lavel {
   margin-left: 5px;
 }
+
+.thisplay-designer .drawapi-list {
+  margin-top: 10px;
+}
+
+.thisplay-designer .drawapi-list .list-group-item {
+  font-size: 20px;
+  height: 48px;
+}
+
+.thisplay-designer .drawapi-list .glyphicon {
+  position: absolute;
+  right: 10px;
+  top: 13px;
+  color: #555;
+}
+
+.thisplay-designer .drawapi-list .glyphicon:hover {
+  color: #922; 
+}

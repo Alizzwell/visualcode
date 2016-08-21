@@ -35,19 +35,18 @@
           return;
         }
 
-        $scope.testLineNum = n + 1;
+        $scope.selectedLine = n + 1;
         $scope.designerOpen = true;
         $scope.$apply();
 
-        if (info.gutterMarkers) {
-          cm.setGutterMarker(n, "breakpoints", null);  
-        }
-        else {
+        if (!info.gutterMarkers) {
           var marker = document.createElement("div");
           marker.style.color = "#933";
           marker.innerHTML = "●";
           cm.setGutterMarker(n, "breakpoints", marker);  
+          // cm.setGutterMarker(n, "breakpoints", null);  
         }
+
       });
     };
 

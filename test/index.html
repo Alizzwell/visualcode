@@ -48,6 +48,7 @@
   <script src="../src/service/workspace.js"></script>
   <script src="../src/controller/canvas-manager.js"></script>
   <script src="../src/controller/editor.js"></script>
+  <script src="../src/controller/designer.js"></script>
 
 </head>
 
@@ -158,9 +159,53 @@
     </div>
 
     <pageslide ps-open="designerOpen" ps-size="400px" ps-zindex="100" ps-key-listener="true" ps-click-outside="false" ps-auto-close="true">
-      <div class="thisplay-designer-view">
-        <div class="thisplay-designer">
-          {{testLineNum}}
+      <div class="thisplay-designer-view" ng-controller="designerCtrl">
+        <div class="thisplay-designer" ng-init="loadDrawApiList()">
+          <div class="btn-group" uib-dropdown>
+            <button id="btnAddStructure" type="button" class="btn btn-primary" uib-dropdown-toggle>
+              Add Structure <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btnAddStructure">
+              <li role="menuitem" ng-repeat="(type, api) in drawApiList">
+                <div class="item" ng-click="addDrawItem(type)">
+                  <img class="picture" alt="type" ng-src="../../public/images/{{type}}.png" />
+                  <span>{{api.lavel}}</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <hr />
+          <div class="structure-list">
+            <div class="item" ng-repeat="item in myDrawItems">
+              <img class="picture" alt="{{item.type}}" ng-src="../../public/images/{{item.type}}.png" ng-class="{active: selectedItem === item}" ng-click="selectItem(item)" />
+              <span class="glyphicon glyphicon-remove-sign" aria-hidden="true" ng-click="removeItem(item, $index)"></span>
+              <lavel>{{item.id}}</lavel>
+            </div>
+          </div>
+          <hr />
+
+          <div ng-show="selectedItem">
+            <div class="btn-group" uib-dropdown>
+              <button id="btnAddDraw" type="button" class="btn btn-default" uib-dropdown-toggle>
+                Add Draw <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btnAddDraw">
+                <li role="menuitem" ng-repeat="api in drawApiList[selectedItem.type].apis">
+                  <a href="#" ng-click="openAddDrawApiModal(api)" uib-popover="{{api.description}}" popover-trigger="'mouseenter'" popover-placement="left">{{api.name}}</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="list-group drawapi-list">
+              <div ng-repeat="draw in selectedItem.apis[selectedLine]">
+                <a href="#" ng-click="openAddDrawApiModal(draw.api, draw)" class="list-group-item">
+                  {{drawApiToString(draw)}}
+                  <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="removeDrawApi(draw)"></span>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </pageslide>
@@ -186,5 +231,24 @@
     </div>
   </script>
 
+  <!-- Add DrawApi Modal template -->
+  <script type="text/ng-template" id="add-drawapi-modal.html">
+    <div class="thisplay-modal">
+      <div class="modal-header">
+        <h3 class="modal-title">{{api.name}}</h3>
+        {{api.description}}
+      </div>
+      <div class="modal-body">
+        <div class="form-group" ng-class="{'has-error': requires && requires.indexOf(param.name) != -1}" ng-repeat="param in api.params">
+          <label for="title" class="control-label">{{param.name}}{{param.optional ? "(optional)" : ""}}:</label>
+          <input type="text" class="form-control" ng-model="output[param.name]" placeholder="{{param.description}}" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" ng-click="add()">{{modify ? "Modify" : "Add"}}</button>
+        <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
+      </div>
+    </div>
+  </script>
 </body>
 </html>

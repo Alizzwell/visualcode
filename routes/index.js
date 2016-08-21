@@ -36,4 +36,13 @@ router.get('/api/examples/:id', function (req, res) {
   });
 });
 
+
+router.get('/api/drawapis', function (req, res) {
+  fs.readFile('data/draw-apis.json', 'utf8', function (err, data) {
+    if (err) throw err;
+    res.json(JSON.parse(data));  
+  });
+});
+
+
 module.exports = router;
