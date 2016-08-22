@@ -117,8 +117,8 @@
     $scope.selectBreakpoint = function (bp) {
       workSpace.selected.breakpoint = bp;
 
-      workSpace.data.breaks.forEach(function (bp) {
-        bp.marker.setAttribute("class", "breakpoint");
+      $scope.getEachMarkers(function (marker) {
+        marker.setAttribute("class", "breakpoint");
       });
       bp.marker.setAttribute("class", "breakpoint active");
     };
