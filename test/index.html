@@ -150,11 +150,11 @@
           <label>Input Data:</label>
         </div>
         <div class="thisplay-input-area">
-          <textarea class="thisplay-textarea" ng-model="data.input"></textarea>
+          <textarea class="thisplay-textarea" ng-model="data.input" ng-keydown="onInputChanged()"></textarea>
         </div>
 
         <div style="width: 80%; margin: auto; margin-top: 25px; margin-bottom: 25px;">
-          <button type="button" class="btn btn-primary btn-lg btn-block">Upload</button>
+          <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="upload()">Upload</button>
         </div>
       </div>
     </div>
@@ -179,34 +179,36 @@
           <hr />
           <div class="structure-list">
             <div class="item" ng-repeat="(id, type) in structures">
-              <img class="picture" alt="{{type}}" ng-src="../../public/images/{{type}}.png" ng-class="{active: selectedItemId === id}" ng-click="selectItem(id)" />
+              <img class="picture" alt="{{type}}" ng-src="../../public/images/{{type}}.png" ng-class="{active: selected.ItemId === id}" ng-click="selectItem(id)" />
               <span class="glyphicon glyphicon-remove-sign" aria-hidden="true" ng-click="removeItem(id)"></span>
               <lavel>{{id}}</lavel>
             </div>
           </div>
           <hr />
 
-          <div ng-show="selectedItemId">
+          <div ng-show="selected.ItemId && selected.breakpoint">
             <div class="btn-group" uib-dropdown>
               <button id="btnAddDraw" type="button" class="btn btn-default" uib-dropdown-toggle>
                 Add Draw <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btnAddDraw">
-                <li role="menuitem" ng-repeat="api in drawApiList[structures[selectedItemId]].apis">
+                <li role="menuitem" ng-repeat="api in drawApiList[structures[selected.ItemId]].apis">
                   <a href="#" ng-click="openAddDrawApiModal(api)" popover-trigger="'mouseenter'" popover-placement="left" uib-popover="{{api.description}}">{{api.name}}</a>
                 </li>
               </ul>
             </div>
 
             <div class="list-group drawapi-list">
-              <div ng-repeat="draw in selected.breakpoint.draws[selectedItemId]">
-                <a href="#" ng-click="openAddDrawApiModal(draw.api, draw)" class="list-group-item">
+              <div ng-repeat="draw in selected.breakpoint.draws[selected.ItemId]">
+                <a href="#" class="list-group-item">
                   {{drawApiToString(draw)}}
                   <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="removeDrawApi(draw)"></span>
                 </a>
               </div>
             </div>
           </div>
+          
+          <button type="button" class="btn btn-danger" style="position: absolute; bottom: 20px; right: 20px;" ng-click="removeBp()" ng-show="selected.breakpoint">Remove</button>
         </div>
       </div>
     </pageslide>

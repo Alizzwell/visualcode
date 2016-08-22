@@ -26,22 +26,29 @@
       
       $scope.structures[id] = type;
       $scope.selectItem(id);
+      workSpace.isChanged = true;
     };
 
     $scope.selectItem = function (id) {
-      $scope.selectedItemId = id;
+      workSpace.selected.ItemId = id;
     };
 
     $scope.removeItem = function (id) {
-      if ($scope.selectedItemId === id) {
-        delete $scope.selectedItemId;
+      if (workSpace.selected.ItemId === id) {
+        delete workSpace.selected.ItemId;
       }
       delete $scope.structures[id];
+      workSpace.data.breaks.forEach(function (bp, idx) {
+        if (bp.draws[id]) {
+          delete bp.draws[id];
+        }
+      });
+      workSpace.isChanged = true;
     };
 
     
     $scope.openAddDrawApiModal = function (api) {
-      var struct_id = $scope.selectedItemId;
+      var struct_id = workSpace.selected.ItemId;
       var breakpoint = workSpace.selected.breakpoint;
 
       var modalInstance = $uibModal.open({
@@ -62,7 +69,8 @@
           breakpoint.draws[struct_id].push({
             api: api,
             data: output
-          })
+          });
+          workSpace.isChanged = true;
         }, function dismissed() {
 
         });
@@ -81,8 +89,14 @@
     };
 
     $scope.removeDrawApi = function (draw) {
-      var draws = workSpace.selected.breakpoint.draws[$scope.selectedItemId];
+      var draws = workSpace.selected.breakpoint.draws[workSpace.selected.ItemId];
       draws.splice(draws.indexOf(draw), 1);  
+      workSpace.isChanged = true;
+    };
+
+    $scope.removeBp = function () {
+      $scope.removeBreakpoint(workSpace.selected.breakpoint);
+      delete workSpace.selected.breakpoint;
     };
     
   });

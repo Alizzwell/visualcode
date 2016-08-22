@@ -19,45 +19,52 @@
 
     function setInitData() {
       delete data.id;
-      data.title = "";
-      data.code = "";
-      data.input = "";
-      data.date = "";
-      angular.copy({}, data.structures);
-      data.breaks = [];
+      deepCopy(getInitData(), data);
     }
 
     function setData(_data) {
       // TODO: _data validation check
-      data.id = _data.id;
-      data.title = _data.title;
-      data.code = _data.code;
-      data.input = _data.input;
-      data.date = _data.date;
-      angular.copy(_data.structures, data.structures);
-      data.breaks = _data.breaks; 
+      deepCopy(_data, data);
+    }
+
+    function deepCopy(src, dest) {
+      dest.id = src.id;
+      dest.title = src.title;
+      dest.code = src.code;
+      dest.input = src.input;
+      dest.date = src.date;
+      angular.copy(JSON.parse(JSON.stringify(src.structures)), dest.structures);
+      angular.copy(JSON.parse(JSON.stringify(src.breaks)), dest.breaks);
     }
 
     function save() {
       // TODO: validation
 
-      if (!data.id) {
-        data.id = new Date().getTime();
-        data.date = new Date().getTime();
-        while (!savedCanvas.add(data)) {
-          data.id--;
+      var obj = getInitData();
+      deepCopy(data, obj);
+
+      obj.breaks.forEach(function (bp) {
+        delete bp.marker;
+      });
+
+      if (!obj.id) {
+        obj.id = new Date().getTime();
+        obj.date = new Date().getTime();
+        while (!savedCanvas.add(obj)) {
+          obj.id--;
         }
+        data.id = obj.id;
+        data.date = obj.date;
         return true;
       }
       else {
-        data.date = new Date().getTime();
-        return savedCanvas.update(data);
+        data.date = obj.date = new Date().getTime();
+        return savedCanvas.update(obj);
       }
     }
 
     return {
       data: data,
-      getInitData: getInitData,
       setInitData: setInitData,
       setData: setData,
       save: save,

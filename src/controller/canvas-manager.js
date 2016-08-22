@@ -3,12 +3,13 @@
   
   var app = angular.module('thisplayApp');
 
-  app.controller('canvasManagerCtrl', function ($scope, $http, $uibModal, workSpace, savedCanvas) {
-    $scope.lastSavedData = workSpace.getInitData();
+  app.controller('canvasManagerCtrl', function ($scope, $rootScope, $http, $uibModal, workSpace, savedCanvas) {
+    
+    workSpace.isChanged = false;
     
     $scope.newCanvas = function () {
       workSpace.setInitData();
-      $scope.lastSavedData = workSpace.getInitData();
+      workSpace.isChanged = false;
     };
 
     $scope.getTitle = function () {
@@ -22,20 +23,22 @@
     $scope.setSavedCanvas = function (item) {
       workSpace.setData(item);
       angular.copy({}, workSpace.selected);
-      $scope.lastSavedData = item;
+      $rootScope.$broadcast('editorCtrl.redrawBreakpoints');
+      workSpace.isChanged = false;
     };
 
     $scope.saveCanvas = function () {
+      $rootScope.$broadcast('editorCtrl.syncMarkersAndBreaks');
       workSpace.save();
-      angular.copy(workSpace.data, $scope.lastSavedData);
-    };
-
-    $scope.isChanged = function () {
-      return !angular.equals(workSpace.data, $scope.lastSavedData);
+      workSpace.isChanged = false;
     };
 
     $scope.removeSavedCanvas = function (item) {
       savedCanvas.remove(item.id);
+    };
+
+    $scope.isChanged = function () {
+      return workSpace.isChanged;
     };
 
     $scope.loadExamples = function () {
@@ -53,7 +56,8 @@
           delete res.data.id;
           workSpace.setData(res.data);
           angular.copy({}, workSpace.selected);
-          $scope.lastSavedData = workSpace.getInitData();
+          $rootScope.$broadcast('editorCtrl.redrawBreakpoints');
+          workSpace.isChanged = true;
         }, function err() {
 
         });
