@@ -27,3 +27,16 @@
 .thisplay-editor .CodeMirror .breakpoints { 
   width: 1.0em; 
 }
+
+.thisplay-editor .CodeMirror-gutter-elt .breakpoint { 
+  color: #933;
+}
+
+.thisplay-editor .CodeMirror-gutter-elt .breakpoint:hover { 
+  cursor: pointer;
+}
+
+.thisplay-editor .CodeMirror-gutter-elt .breakpoint.active {
+  color: rgba(241, 20, 241, 1);
+}
+

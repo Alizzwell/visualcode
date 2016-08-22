@@ -30,10 +30,9 @@ module.exports = function (grunt) {
   ];
 
   var jsFiles = [
-    'src/core.js',
-    'src/service/workspace.js',
-    'src/controller/canvas-manager.js',
-    'src/controller/editor.js'
+    'src/*.js',
+    'src/service/*.js',
+    'src/controller/*.js'
   ];
 
   grunt.initConfig({

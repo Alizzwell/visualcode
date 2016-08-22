@@ -3,38 +3,42 @@
   
   var app = angular.module('thisplayApp');
 
-  app.controller('canvasManagerCtrl', function ($scope, $http, $uibModal, workSpace) {
-    $scope.lastSavedData = {};
+  app.controller('canvasManagerCtrl', function ($scope, $rootScope, $http, $uibModal, workSpace, savedCanvas) {
+    
+    workSpace.isChanged = false;
     
     $scope.newCanvas = function () {
-      workSpace.setData({});
-      $scope.lastSavedData = {};
+      workSpace.setInitData();
+      workSpace.isChanged = false;
     };
 
     $scope.getTitle = function () {
-      return workSpace.getData().title;
+      return workSpace.data.title;
     };
 
     $scope.getSavedCanvas = function () {
-      return workSpace.savedCanvas;
+      return savedCanvas.data;
     };
 
     $scope.setSavedCanvas = function (item) {
       workSpace.setData(item);
-      $scope.lastSavedData = item;
+      angular.copy({}, workSpace.selected);
+      $rootScope.$broadcast('editorCtrl.redrawBreakpoints');
+      workSpace.isChanged = false;
     };
 
     $scope.saveCanvas = function () {
+      $rootScope.$broadcast('editorCtrl.syncMarkersAndBreaks');
       workSpace.save();
-      $scope.lastSavedData = workSpace.getData();
-    };
-
-    $scope.isChanged = function () {
-      return !angular.equals(workSpace.data, $scope.lastSavedData);
+      workSpace.isChanged = false;
     };
 
     $scope.removeSavedCanvas = function (item) {
-      workSpace.removeSavedCanvas(item.id);
+      savedCanvas.remove(item.id);
+    };
+
+    $scope.isChanged = function () {
+      return workSpace.isChanged;
     };
 
     $scope.loadExamples = function () {
@@ -51,13 +55,15 @@
         function success(res) {
           delete res.data.id;
           workSpace.setData(res.data);
-          $scope.lastSavedData = {};
+          angular.copy({}, workSpace.selected);
+          $rootScope.$broadcast('editorCtrl.redrawBreakpoints');
+          workSpace.isChanged = true;
         }, function err() {
 
         });
     };
 
-    $scope.openModal = function () {
+    $scope.openSaveModal = function () {
       var modalInstance = $uibModal.open({
         templateUrl: 'save-modal.html',
         controller: 'saveModalCtrl',
@@ -89,31 +95,5 @@
       $uibModalInstance.dismiss('cancel');
     };
   });
-
-  // TODO: delete
-  var examples = [{
-    id: 1,
-    title: "Bubble Sort",
-    code: "#include <stdio.h>\n\nint main() {\n\tprintf(\"Bubble Sort\");\n\treturn 0;\n}",
-    date: new Date().getTime(),
-    input: "",
-    designer: {}
-  },
-  {
-    id: 2,
-    title: "DFS Searching",
-    code: "#include <stdio.h>\n\nint main() {\n\tprintf(\"DFS Searching\");\n\treturn 0;\n}",
-    date: new Date().getTime(),
-    input: "",
-    designer: {}
-  },
-  {
-    id: 3,
-    title: "BFS Searching",
-    code: "#include <stdio.h>\n\nint main() {\n\tprintf(\"BFS Searching\");\n\treturn 0;\n}",
-    date: new Date().getTime(),
-    input: "",
-    designer: {}
-  }];
 
 })(angular);

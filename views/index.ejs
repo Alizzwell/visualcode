@@ -6,7 +6,6 @@
   <meta charset="UTF-8" />
 
   <link rel="stylesheet" href="/assets/build/thisplay.min.css" >
-  <link rel="stylesheet" href="/css/layout.css" >
   <script src="/assets/build/thisplay.min.js"></script>
 
 </head>
@@ -18,7 +17,7 @@
         <a class="navbar-brand" ng-click="canvasListOpen = !canvasListOpen">
           <span class="glyphicon glyphicon-menu-hamburger"></span>
         </a>
-        <a class="navbar-text title" ng-click="openModal()">
+        <a class="navbar-text title" ng-click="openSaveModal()">
           {{getTitle() || "제목 없는 캔버스"}}
         </a>
       </div>
@@ -89,10 +88,10 @@
             <label>Source Code:</label>
             <span>Select a theme: </span>
             <div class="btn-group" uib-dropdown>
-              <button id="btn-append-to-single-button" type="button" class="btn btn-default" uib-dropdown-toggle>
+              <button id="btnSelectTheme" type="button" class="btn btn-default" uib-dropdown-toggle>
                 {{theme}} <span class="caret"></span>
               </button>
-              <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btn-append-to-single-button">
+              <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu role="menu" aria-labelledby="btnSelectTheme">
                 <li ng-repeat="a in themes" role="menuitem"><a ng-click="selectTheme(a)">{{a}}</a></li>
               </ul>
             </div>
@@ -125,7 +124,7 @@
 
   <!-- Modal template -->
   <script type="text/ng-template" id="save-modal.html">
-    <div class="thisplay-save-modal">
+    <div class="thisplay-modal">
       <div class="modal-header">
         <h4 class="modal-title">Save This Canvas</h4>
       </div>

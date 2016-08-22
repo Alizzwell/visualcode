@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>SaveModal</title>
+  <title>Designer</title>
   <meta http-equiv="X-UA-Compatible" content="IE=11" />
   <meta charset="UTF-8" />
 
@@ -14,14 +14,305 @@
     html, body {
       width: 100%;
       height: 100%;
+      background-color: #eee;
+    }
+
+    .thisplay-designer {
+      width: 100%;
+      height: 100%;
+      border-top-left-radius: 30px;
+    }
+
+    .thisplay-modal {
+      z-index: 9999;
     }
   </style>
 </head>
-<body>
+<body ng-app="myApp">
+  <div ng-controller="myCtrl" style="width: 400px; height: 100%; padding-top: 50px; position: absolute; right: 0;">
+    <div class="thisplay-designer" ng-init="loadDrawApiList()">
+      <div class="btn-group" uib-dropdown>
+        <button id="btnAddStructure" type="button" class="btn btn-primary" uib-dropdown-toggle>
+          Add Structure <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btnAddStructure">
+          <li role="menuitem" ng-repeat="(type, api) in drawApiList">
+            <div class="item" ng-click="addDrawItem(type)">
+              <img class="picture" alt="type" ng-src="../../public/images/{{type}}.png" />
+              <span>{{api.lavel}}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
 
-  <div class="thisplay-designer">
-    
+      <hr />
+      <div class="structure-list">
+        <div class="item" ng-repeat="item in myDrawItems">
+          <img class="picture" alt="{{item.type}}" ng-src="../../public/images/{{item.type}}.png" ng-class="{active: selectedItem === item}" ng-click="selectItem(item)" />
+          <span class="glyphicon glyphicon-remove-sign" aria-hidden="true" ng-click="removeItem(item, $index)"></span>
+          <lavel>{{item.id}}</lavel>
+        </div>
+      </div>
+      <hr />
+
+      <div ng-show="selectedItem">
+        <div class="btn-group" uib-dropdown>
+          <button id="btnAddDraw" type="button" class="btn btn-default" uib-dropdown-toggle>
+            Add Draw <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btnAddDraw">
+            <li role="menuitem" ng-repeat="api in drawApiList[selectedItem.type].apis">
+              <a href="#" ng-click="openAddDrawApiModal(api)" uib-popover="{{api.description}}" popover-trigger="'mouseenter'" popover-placement="left">{{api.name}}</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="list-group drawapi-list">
+          <div ng-repeat="draw in selectedItem.apis">
+            <a href="#" ng-click="openAddDrawApiModal(draw.api, draw)" class="list-group-item">
+              {{drawApiToString(draw)}}
+              <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="removeDrawApi(draw)"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!-- Add DrawApi Modal template -->
+  <script type="text/ng-template" id="add-drawapi-modal.html">
+    <div class="thisplay-modal">
+      <div class="modal-header">
+        <h3 class="modal-title">{{api.name}}</h3>
+        {{api.description}}
+      </div>
+      <div class="modal-body">
+        <div class="form-group" ng-class="{'has-error': requires && requires.indexOf(param.name) != -1}" ng-repeat="param in api.params">
+          <label for="title" class="control-label">{{param.name}}{{param.optional ? "(optional)" : ""}}:</label>
+          <input type="text" class="form-control" ng-model="output[param.name]" placeholder="{{param.description}}" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" ng-click="add()">{{modify ? "Modify" : "Add"}}</button>
+        <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
+      </div>
+    </div>
+  </script>
+
+
+  <script src="../../bower_components/angular/angular.js"></script>
+  <script src="../../bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+  <script src="../../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <script>
+    var app = angular.module('myApp', ['ui.bootstrap']);
+
+  app.controller('myCtrl', function ($scope, $http, $uibModal) {
+    var drawApiList = {
+      "chart": {
+        "lavel": "Chart",
+        "apis": [{
+          "name": "setData",
+          "description": "Chart에 데이터를 입력한다.",
+          "params": [
+            {"name": "index", "description": "데이터를 입력할 위치"},
+            {"name": "value", "description": "입력할 데이터 값"}
+          ]
+        }, {
+          "name": "highlight",
+          "description": "특정 위치를 하이라이트한다.",
+          "params": [{"name": "index", "description": "하이라이트할 위치"}]
+        }, {
+          "name": "swap",
+          "description": "Chart의 두 위치를 swap한다.",
+          "params": [
+            {"name": "index1", "description": "swap할 위치 1"},
+            {"name": "index2", "description": "swap할 위치 2"}
+          ]
+        }]
+      },
+
+      "array": {
+        "lavel": "Array",
+        "apis": []
+      },
+
+      "graph": {
+        "lavel": "Graph",
+        "apis": [{
+          "name": "makeNode",
+          "description": "그래프에 새로운 노드를 생성한다.",
+          "params": [
+            {"name": "id", "description": "노드의 id"}, 
+            {"name": "lavel", "description": "노드에 입력할 라벨", "optional": true}
+          ]
+        }, {
+          "name": "makeEdge",
+          "description": "두 노드를 연결하는 간선을 그린다.",
+          "params": [
+            {"name": "src", "description": "첫번째 노드의 id"}, 
+            {"name": "dest", "description": "두번째 노드의 id"}, 
+            {"name": "directed", "description": "true일 경우 src에서 dest로 화살표 연결", "optional": true}
+          ]
+        }, {
+          "name": "setLavel",
+          "description": "특정 노드에 라벨을 입력한다.",
+          "params": [
+            {"name": "id", "description": "라벨을 입력할 노드의 id"},
+            {"name": "lavel", "description": "노드에 입력할 라벨"}
+          ]
+        }, {
+          "name": "highlightNode",
+          "description": "특정 노드에 하이라이트한다.",
+          "params": [{"name": "id", "description": "하이라이트할 노드의 id"}]
+        }, {
+          "name": "highlightEdge",
+          "description": "특정 간선에 하이라이트한다.",
+          "params": [
+            {"name": "src", "description": "하이라이트할 간선의 시작노드 id"}, 
+            {"name": "dest", "description": "하이라이트할 간선의 끝노드 id"}
+          ]
+        }]
+      },
+
+      "linkedlist": {
+        "lavel": "Linked List",
+        "apis": []  
+      },
+
+      "tree": {  
+        "lavel": "Tree",
+        "apis": []
+      }
+    };
+
+    $scope.loadDrawApiList = function () {
+      $scope.drawApiList = drawApiList;
+    };
+
+    $scope.myDrawItems = [];
+
+    $scope.addDrawItem = function (type) {
+      var myDrawItems = $scope.myDrawItems;
+
+      var newitem = {
+        id: type,
+        type: type,
+        apis: []
+      };
+
+      var surfix = 1;
+      while (myDrawItems.some(function (item) {
+        return item.id === newitem.id;
+      })) {
+        newitem.id = type + surfix++;
+      }
+
+      myDrawItems.push(newitem);
+      $scope.selectItem(newitem);
+    };
+
+    $scope.selectItem = function (item) {
+      $scope.selectedItem = item;
+    };
+
+    $scope.removeItem = function (item, idx) {
+      if ($scope.selectedItem === item) {
+        delete $scope.selectedItem;
+      }
+
+      $scope.myDrawItems.splice(idx, 1);
+    };
+
+    $scope.openAddDrawApiModal = function (api, draw) {
+      var modalInstance = $uibModal.open({
+        templateUrl: 'add-drawapi-modal.html',
+        controller: 'drawApiModalCtrl',
+        resolve: {
+          api: function () {
+            return api;
+          },
+          input: function () {
+            if (draw) {
+              return draw.params;
+            }
+          }
+        }
+      });
+
+      modalInstance.result.then(
+        function success(output) {
+          if (draw) {
+            draw.params = output;
+          }
+          else {
+            $scope.selectedItem.apis.push({
+              api: api,
+              params: output
+            });
+          }
+        }, function dismissed() {
+
+        });
+    };
+
+    $scope.drawApiToString = function (draw) {
+      var str = draw.api.name;
+      str += "(";
+      for (var key in draw.params) {
+        str += draw.params[key];
+        str += ", ";
+      }
+      str = str.substring(0, str.length - 2);
+      str += ")";
+      return str;
+    };
+
+    $scope.removeDrawApi = function (draw) {
+      $scope.selectedItem.apis.splice($scope.selectedItem.apis.indexOf(draw), 1);
+    };
+
+  });
+
+
+  app.controller('drawApiModalCtrl', function ($scope, $uibModalInstance, api, input) {
+    $scope.api = api;
+    $scope.output = {};
+    if (input) {
+      angular.copy(input, $scope.output);
+      $scope.modify = true;
+    }
+    
+
+    $scope.add = function () {
+      var requires = [];
+      var error = false;
+      
+      api.params.forEach(function (param) {
+        if (!$scope.output[param.name]) {
+          if (param.optional) {
+            delete $scope.output[param.name];
+          }
+          else {
+            error = true;
+            requires.push(param.name);
+          }
+        }
+      })
+
+      if (error) {
+        $scope.requires = requires;
+        return;
+      }
+
+      $uibModalInstance.close($scope.output);
+    };
+
+    $scope.cancel = function () {
+      $uibModalInstance.dismiss('cancel');
+    };
+  });
+
+</script>
 
 </body>
 </html>

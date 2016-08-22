@@ -3,72 +3,73 @@
   
   var app = angular.module('thisplayApp');
 
-  app.factory('workSpace', function ($cookies) {
-    var data = {};
-    var savedCanvas;
+  app.factory('workSpace', function (savedCanvas) {
+    var data = getInitData();
 
-    try {
-     savedCanvas = $cookies.getObject('thisplay.savedCanvas') || [];
-    } catch (e) {
-      $cookies.putObject('thisplay.savedCanvas', []);
-      savedCanvas = [];
+    function getInitData() {
+      return {
+        title: "",
+        code: "",
+        input: "",
+        date: "",
+        structures: {},
+        breaks: []
+      }
     }
 
-    function getData() {
-      var ret = {};
-      angular.copy(data, ret);
-      return ret;
+    function setInitData() {
+      delete data.id;
+      deepCopy(getInitData(), data);
     }
 
-    function setData(item) {
-      angular.copy(item, data);
+    function setData(_data) {
+      // TODO: _data validation check
+      deepCopy(_data, data);
+    }
+
+    function deepCopy(src, dest) {
+      dest.id = src.id;
+      dest.title = src.title;
+      dest.code = src.code;
+      dest.input = src.input;
+      dest.date = src.date;
+      angular.copy(JSON.parse(JSON.stringify(src.structures)), dest.structures);
+      angular.copy(JSON.parse(JSON.stringify(src.breaks)), dest.breaks);
     }
 
     function save() {
-      if (!data.id) {
-        data.id = new Date().getTime();
-      }
-      data.date = new Date().getTime();
+      // TODO: validation
 
-      var obj = {};
-      angular.copy(data, obj);
+      var obj = getInitData();
+      deepCopy(data, obj);
 
-      var idx = findIndex(savedCanvas, function (canvas) {
-        return canvas.id == obj.id;
+      obj.breaks.forEach(function (bp) {
+        delete bp.marker;
       });
 
-      if (idx < 0) {
-        savedCanvas.push(obj);
+      if (!obj.id) {
+        obj.id = new Date().getTime();
+        obj.date = new Date().getTime();
+        while (!savedCanvas.add(obj)) {
+          obj.id--;
+        }
+        data.id = obj.id;
+        data.date = obj.date;
+        return true;
       }
       else {
-        savedCanvas[idx] = obj;
+        data.date = obj.date = new Date().getTime();
+        return savedCanvas.update(obj);
       }
-
-      $cookies.putObject('thisplay.savedCanvas', savedCanvas);
-    }
-
-    function removeSavedCanvas(id) {
-      savedCanvas.splice(findIndex(savedCanvas, function (canvas) {
-        return canvas.id == id;
-      }), 1);
-      $cookies.putObject('thisplay.savedCanvas', savedCanvas);
     }
 
     return {
       data: data,
-      getData: getData,
+      setInitData: setInitData,
       setData: setData,
-      savedCanvas: savedCanvas,
       save: save,
-      removeSavedCanvas: removeSavedCanvas
+      selected: {}
     };
   });
-
-  function findIndex(arr, callback) {
-    for (var i = 0; i < arr.length; i++) {
-      if (callback(arr[i])) return i;
-    }
-    return -1;
-  }
 
 })(angular);
