@@ -3,20 +3,20 @@
   
   var app = angular.module('thisplayApp');
 
-  app.controller('canvasManagerCtrl', function ($scope, $http, $uibModal, workSpace) {
-    $scope.lastSavedData = {};
+  app.controller('canvasManagerCtrl', function ($scope, $http, $uibModal, workSpace, savedCanvas) {
+    $scope.lastSavedData = workSpace.getInitData();
     
     $scope.newCanvas = function () {
-      workSpace.setData({});
-      $scope.lastSavedData = {};
+      workSpace.setInitData();
+      $scope.lastSavedData = workSpace.getInitData();
     };
 
     $scope.getTitle = function () {
-      return workSpace.getData().title;
+      return workSpace.data.title;
     };
 
     $scope.getSavedCanvas = function () {
-      return workSpace.savedCanvas;
+      return savedCanvas.data;
     };
 
     $scope.setSavedCanvas = function (item) {
@@ -26,7 +26,7 @@
 
     $scope.saveCanvas = function () {
       workSpace.save();
-      $scope.lastSavedData = workSpace.getData();
+      angular.copy(workSpace.data, $scope.lastSavedData);
     };
 
     $scope.isChanged = function () {
@@ -34,7 +34,7 @@
     };
 
     $scope.removeSavedCanvas = function (item) {
-      workSpace.removeSavedCanvas(item.id);
+      savedCanvas.remove(item.id);
     };
 
     $scope.loadExamples = function () {
@@ -51,7 +51,7 @@
         function success(res) {
           delete res.data.id;
           workSpace.setData(res.data);
-          $scope.lastSavedData = {};
+          $scope.lastSavedData = workSpace.getInitData();
         }, function err() {
 
         });
@@ -89,31 +89,5 @@
       $uibModalInstance.dismiss('cancel');
     };
   });
-
-  // TODO: delete
-  var examples = [{
-    id: 1,
-    title: "Bubble Sort",
-    code: "#include <stdio.h>\n\nint main() {\n\tprintf(\"Bubble Sort\");\n\treturn 0;\n}",
-    date: new Date().getTime(),
-    input: "",
-    designer: {}
-  },
-  {
-    id: 2,
-    title: "DFS Searching",
-    code: "#include <stdio.h>\n\nint main() {\n\tprintf(\"DFS Searching\");\n\treturn 0;\n}",
-    date: new Date().getTime(),
-    input: "",
-    designer: {}
-  },
-  {
-    id: 3,
-    title: "BFS Searching",
-    code: "#include <stdio.h>\n\nint main() {\n\tprintf(\"BFS Searching\");\n\treturn 0;\n}",
-    date: new Date().getTime(),
-    input: "",
-    designer: {}
-  }];
 
 })(angular);

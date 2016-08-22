@@ -3,19 +3,25 @@
   "title": "Bubble Sort",
   "code": "#include <stdio.h>\n\nint main() {\n\tprintf(\"Bubble Sort\");\n\treturn 0;\n}",
   "input": "",
-  "designer": {}
+  "date": "",
+  "structures": {},
+  "draws": {}
 },
 {
   "id": 2,
   "title": "DFS Searching",
   "code": "#include <stdio.h>\n\nint main() {\n\tprintf(\"DFS Searching\");\n\treturn 0;\n}",
   "input": "",
-  "designer": {}
+  "date": "",
+  "structures": {},
+  "draws": {}
 },
 {
   "id": 3,
   "title": "BFS Searching",
   "code": "#include <stdio.h>\n\nint main() {\n\tprintf(\"BFS Searching\");\n\treturn 0;\n}",
   "input": "",
-  "designer": {}
+  "date": "",
+  "structures": {},
+  "draws": {}
 }]
