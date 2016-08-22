@@ -7,6 +7,7 @@
     $scope.isCollapsed = false;
     
     $scope.data = workSpace.data;
+    $scope.selected = workSpace.selected;
 
     var editor;
 
@@ -25,8 +26,6 @@
     $scope.themes = ['default', 'bespin', 'blackboard', 'cobalt',
     'dracula', 'eclipse', 'erlang-dark', 'the-matrix', 'zenburn'];
 
-    $scope.breakpoints = [];
-
     $scope.selectTheme = function (theme) {
       $scope.theme = theme;
       editor.setOption("theme", theme);
@@ -36,52 +35,82 @@
       editor = cm;
 
       editor.on("gutterClick", function(cm, n) {
-        $scope.makeBreakPoint(n);
-        $scope.selectedLine = n;
+        var bp = $scope.getBreakpoint(n);
+        if (!bp) {
+          bp = $scope.makeBreakpoint(n);
+        }
+
+        workSpace.selected.line = n;
+        workSpace.selected.breakpoint = bp;
+
+        $scope.getEachBreakpoints(function (bp) {
+          bp.setAttribute("class", "breakpoint");
+        });
+        bp.setAttribute("class", "breakpoint active");
+
         $scope.designerOpen = true;
         $scope.$apply();
-        editor.eachLine(function (a, b) {
-          console.log(b);
-        });
+      });
+
+      editor.on('change', function () {
+        console.log('changed');
       });
     };
 
-    $scope.getText = function (line) {
-      var info = editor.lineInfo(line);
-      if (!info) {
-        return null;
-      }
-      return info.text;
-    };
+    $scope.makeBreakpoint = function (line) {
+      var marker = document.createElement("div");
+      marker.setAttribute("class", "breakpoint active");
+      marker.innerHTML = "●";
+      editor.setGutterMarker(line, "breakpoints", marker); 
 
-    $scope.makeBreakPoint = function (line) {
-      var info = editor.lineInfo(line);
-      if (!info) {
-        return;
-      }
-      if (!info.gutterMarkers) {
-        var marker = document.createElement("div");
-        marker.style.color = "#933";
-        marker.innerHTML = "●";
-        editor.setGutterMarker(line, "breakpoints", marker);  
-      }      
-    }
+      var bp = $scope.getBreakpoint(line);
+      bp.draws = {};
+      workSpace.data.breaks.push(bp);
+      return bp;
+    };
 
     $scope.getBreakpoint = function (line) {
       var info = editor.lineInfo(line);
       if (!info) {
-        return null;
+        return;
       }
-      return info.gutterMarkers;
+
+      if (!info.gutterMarkers) {
+        return;
+      }
+
+      return info.gutterMarkers.breakpoints;
     };
 
-    $scope.removeBreakpoint = function (line) {
-      editor.setGutterMarker(line, "breakpoints", null);
+    $scope.getBreakpointLine = function (bp) {
+      if (!bp) {
+        return -1;
+      }
+
+      for (var i = editor.firstLine(); i <= editor.lastLine(); i++) {
+        if ($scope.getBreakpoint(i) === bp) {
+          return i;
+        }
+      }
+      return -1;
     };
 
     $scope.getEachBreakpoints = function (callback) {
-      
+      editor.eachLine(function (lineinfo) {
+        if (!lineinfo.gutterMarkers) {
+          return;
+        }
+        callback(lineinfo.gutterMarkers.breakpoints);
+      });
     };
+
+    $scope.removeBreakpoint = function (bp) {
+      workSpace.data.breaks.splice(
+        workSpace.data.breaks.indexOf(bp), 1);
+      editor.setGutterMarker($scope.getBreakpointLine(bp),
+        "breakpoints", null);
+    };
+
   });
 
 })(angular);

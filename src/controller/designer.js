@@ -4,6 +4,10 @@
   var app = angular.module('thisplayApp');
 
   app.controller('designerCtrl', function ($scope, $http, $uibModal, workSpace) {
+
+    $scope.structures = workSpace.data.structures; 
+    $scope.selected = workSpace.selected;
+    
     $scope.loadDrawApiList = function () {
       $http.get('/api/drawapis').then(
         function success(res) {
@@ -13,75 +17,52 @@
         });
     };
 
-    if (!workSpace.data.drawapis) {
-      workSpace.data.drawapis = [];
-    }
-
-    $scope.myDrawItems = workSpace.data.drawapis;
-
-    $scope.addDrawItem = function (type) {
-      var myDrawItems = $scope.myDrawItems;
-
-      var newitem = {
-        id: type,
-        type: type,
-        apis: {}
-      };
-
+    $scope.addItem = function (type) {
+      var id = type;
       var surfix = 1;
-      while (myDrawItems.some(function (item) {
-        return item.id === newitem.id;
-      })) {
-        newitem.id = type + surfix++;
+      while ($scope.structures[id]) {
+        id = type + surfix++;
       }
-
-      myDrawItems.push(newitem);
-      $scope.selectItem(newitem);
+      
+      $scope.structures[id] = type;
+      $scope.selectItem(id);
     };
 
-    $scope.selectItem = function (item) {
-      $scope.selectedItem = item;
+    $scope.selectItem = function (id) {
+      $scope.selectedItemId = id;
     };
 
-    $scope.removeItem = function (item, idx) {
-      if ($scope.selectedItem === item) {
-        delete $scope.selectedItem;
+    $scope.removeItem = function (id) {
+      if ($scope.selectedItemId === id) {
+        delete $scope.selectedItemId;
       }
-
-      $scope.myDrawItems.splice(idx, 1);
+      delete $scope.structures[id];
     };
 
-    $scope.openAddDrawApiModal = function (api, draw) {
+    
+    $scope.openAddDrawApiModal = function (api) {
+      var struct_id = $scope.selectedItemId;
+      var breakpoint = workSpace.selected.breakpoint;
+
       var modalInstance = $uibModal.open({
         templateUrl: 'add-drawapi-modal.html',
         controller: 'drawApiModalCtrl',
         resolve: {
           api: function () {
             return api;
-          },
-          input: function () {
-            if (draw) {
-              return draw.params;
-            }
           }
         }
       });
 
       modalInstance.result.then(
         function success(output) {
-          if (draw) {
-            draw.params = output;
+          if (!breakpoint.draws[struct_id]) {
+            breakpoint.draws[struct_id] = [];
           }
-          else {
-            if (!$scope.selectedItem.apis[$scope.selectedLine]) {
-              $scope.selectedItem.apis[$scope.selectedLine] = [];
-            }
-            
-            $scope.selectedItem.apis[$scope.selectedLine].push({
-              api: api,
-              params: output
-            });
-          }
+          breakpoint.draws[struct_id].push({
+            api: api,
+            data: output
+          })
         }, function dismissed() {
 
         });
@@ -90,8 +71,8 @@
     $scope.drawApiToString = function (draw) {
       var str = draw.api.name;
       str += "(";
-      for (var key in draw.params) {
-        str += draw.params[key];
+      for (var key in draw.data) {
+        str += draw.data[key];
         str += ", ";
       }
       str = str.substring(0, str.length - 2);
@@ -100,20 +81,18 @@
     };
 
     $scope.removeDrawApi = function (draw) {
-      $scope.selectedItem.apis[$scope.selectedLine].splice($scope.selectedItem.apis[$scope.selectedLine].indexOf(draw), 1);
+      var draws = workSpace.selected.breakpoint.draws[$scope.selectedItemId];
+      draws.splice(draws.indexOf(draw), 1);  
     };
-
+    
   });
 
-
-  app.controller('drawApiModalCtrl', function ($scope, $uibModalInstance, api, input) {
+  
+  app.controller('drawApiModalCtrl', function ($scope, $uibModalInstance, api) {
     $scope.api = api;
     $scope.output = {};
-    if (input) {
-      angular.copy(input, $scope.output);
-      $scope.modify = true;
-    }
-    
+
+    $scope.modify = false;
 
     $scope.add = function () {
       var requires = [];
@@ -142,7 +121,9 @@
     $scope.cancel = function () {
       $uibModalInstance.dismiss('cancel');
     };
+
   });
 
+  
 })(angular);
 

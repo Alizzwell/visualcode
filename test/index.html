@@ -168,8 +168,8 @@
             </button>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btnAddStructure">
               <li role="menuitem" ng-repeat="(type, api) in drawApiList">
-                <div class="item" ng-click="addDrawItem(type)">
-                  <img class="picture" alt="type" ng-src="../../public/images/{{type}}.png" />
+                <div class="item" ng-click="addItem(type)">
+                  <img class="picture" alt="{{type}}" ng-src="../../public/images/{{type}}.png" />
                   <span>{{api.lavel}}</span>
                 </div>
               </li>
@@ -178,28 +178,28 @@
 
           <hr />
           <div class="structure-list">
-            <div class="item" ng-repeat="item in myDrawItems">
-              <img class="picture" alt="{{item.type}}" ng-src="../../public/images/{{item.type}}.png" ng-class="{active: selectedItem === item}" ng-click="selectItem(item)" />
-              <span class="glyphicon glyphicon-remove-sign" aria-hidden="true" ng-click="removeItem(item, $index)"></span>
-              <lavel>{{item.id}}</lavel>
+            <div class="item" ng-repeat="(id, type) in structures">
+              <img class="picture" alt="{{type}}" ng-src="../../public/images/{{type}}.png" ng-class="{active: selectedItemId === id}" ng-click="selectItem(id)" />
+              <span class="glyphicon glyphicon-remove-sign" aria-hidden="true" ng-click="removeItem(id)"></span>
+              <lavel>{{id}}</lavel>
             </div>
           </div>
           <hr />
 
-          <div ng-show="selectedItem">
+          <div ng-show="selectedItemId">
             <div class="btn-group" uib-dropdown>
               <button id="btnAddDraw" type="button" class="btn btn-default" uib-dropdown-toggle>
                 Add Draw <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btnAddDraw">
-                <li role="menuitem" ng-repeat="api in drawApiList[selectedItem.type].apis">
-                  <a href="#" ng-click="openAddDrawApiModal(api)" uib-popover="{{api.description}}" popover-trigger="'mouseenter'" popover-placement="left">{{api.name}}</a>
+                <li role="menuitem" ng-repeat="api in drawApiList[structures[selectedItemId]].apis">
+                  <a href="#" ng-click="openAddDrawApiModal(api)" popover-trigger="'mouseenter'" popover-placement="left" uib-popover="{{api.description}}">{{api.name}}</a>
                 </li>
               </ul>
             </div>
 
             <div class="list-group drawapi-list">
-              <div ng-repeat="draw in selectedItem.apis[selectedLine]">
+              <div ng-repeat="draw in selected.breakpoint.draws[selectedItemId]">
                 <a href="#" ng-click="openAddDrawApiModal(draw.api, draw)" class="list-group-item">
                   {{drawApiToString(draw)}}
                   <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="removeDrawApi(draw)"></span>

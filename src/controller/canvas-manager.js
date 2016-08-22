@@ -21,6 +21,7 @@
 
     $scope.setSavedCanvas = function (item) {
       workSpace.setData(item);
+      angular.copy({}, workSpace.selected);
       $scope.lastSavedData = item;
     };
 
@@ -51,6 +52,7 @@
         function success(res) {
           delete res.data.id;
           workSpace.setData(res.data);
+          angular.copy({}, workSpace.selected);
           $scope.lastSavedData = workSpace.getInitData();
         }, function err() {
 

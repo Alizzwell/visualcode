@@ -13,7 +13,7 @@
         input: "",
         date: "",
         structures: {},
-        draws: {}
+        breaks: []
       }
     }
 
@@ -24,7 +24,7 @@
       data.input = "";
       data.date = "";
       angular.copy({}, data.structures);
-      angular.copy({}, data.draws);
+      data.breaks = [];
     }
 
     function setData(_data) {
@@ -35,7 +35,7 @@
       data.input = _data.input;
       data.date = _data.date;
       angular.copy(_data.structures, data.structures);
-      angular.copy(_data.draws, data.draws); 
+      data.breaks = _data.breaks; 
     }
 
     function save() {
@@ -60,7 +60,8 @@
       getInitData: getInitData,
       setInitData: setInitData,
       setData: setData,
-      save: save
+      save: save,
+      selected: {}
     };
   });
 
