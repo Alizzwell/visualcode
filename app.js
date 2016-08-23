@@ -5,9 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-
 var app = express();
+
+
+var mongoose = require('./dbcon');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -26,7 +27,9 @@ if (app.get('env') === 'development') {
   app.use(express.static(path.join(__dirname, '.')));
 }
 
-app.use('/', routes);
+app.use('/', require('./routes/index'));
+app.use('/api/user', require('./routes/user'));
+app.use('/api/canvas', require('./routes/canvas'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

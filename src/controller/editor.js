@@ -3,7 +3,7 @@
   
   var app = angular.module('thisplayApp');
 
-  app.controller('editorCtrl', function ($scope, $cookies, workSpace) {
+  app.controller('editorCtrl', function ($scope, $http, $cookies, workSpace) {
     $scope.isCollapsed = false;
     
     $scope.data = workSpace.data;
@@ -12,8 +12,9 @@
     var editor;
 
     $scope.cmOptions = {
-      indentWithTabs: true,
       mode: "text/x-c++src",
+      tabSize: 2,
+      indentWithTabs: true,
       styleActiveLine: true,
       autoCloseBrackets: true,
       lineNumbers: true,
@@ -129,7 +130,15 @@
 
 
     $scope.upload = function () {
-      console.log('upload');
+      $scope.syncMarkersAndBreaks();
+      var obj = workSpace.getInitData();
+      workSpace.deepCopy(workSpace.data, obj);
+
+      obj.breaks.forEach(function (bp) {
+        delete bp.marker;
+      });
+
+      editor.setValue(JSON.stringify(obj, null, 2));
     };
 
     $scope.removeBreakpoint = function (bp) {
@@ -137,6 +146,7 @@
         workSpace.data.breaks.indexOf(bp), 1);
       editor.setGutterMarker($scope.getMarkerLine(bp.marker),
         "breakpoints", null);
+      workSpace.isChanged = true;
     };
 
     

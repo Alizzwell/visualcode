@@ -1,27 +1,159 @@
 [{
   "id": 1,
-  "title": "Bubble Sort",
-  "code": "#include <stdio.h>\n\nint main() {\n\tprintf(\"Bubble Sort\");\n\treturn 0;\n}",
-  "input": "",
+  "title": "Stack",
+  "code": "#include <stdio.h>\n\n#define MAX_N 100\n\nint top;\nint stack[MAX_N];\n\nvoid stackInit(void)\n{\n\ttop = 0;\n}\n\nint stackIsEmpty(void)\n{\n\treturn (top == 0);\n}\n\nint stackIsFull(void)\n{\n\treturn (top == MAX_N);\n}\n\nint stackPush(int value)\n{\n\tif (stackIsFull())\n\t{\n\t\tprintf(\"stack overflow!\");\n\t\treturn 0;\n\t}\n\tstack[top] = value;\n\ttop++;\n\n\treturn 1;\n}\n\nint stackPop(int *value)\n{\n\tif (top == 0) \n\t{\n\t\tprintf(\"stack is empty!\");\n\t\treturn 0;\n\t}\n\ttop--;\n\t*value = stack[top];\n\n\treturn 1;\n}\n\nint main(int argc, char* argv[])\n{\n\tint T, N;\n\n\tscanf(\"%d\", &T);\n\n\tfor (int test_case = 1; test_case <= T; test_case++)\n\t{\n\t\tscanf(\"%d\", &N);\n\t\tstackInit();\n\t\tfor (int i = 0; i < N; i++) \n\t\t{\n\t\t\tint value;\n\t\t\tscanf(\"%d\", &value);\n\t\t\tstackPush(value);\n\t\t}\n\n\t\tprintf(\"#%d \", test_case);\n\n\t\twhile (!stackIsEmpty())\n\t\t{\n\t\t\tint value;\n\t\t\tif (stackPop(&value) == 1)\n\t\t\t{\n\t\t\t\tprintf(\"%d \", value);\n\t\t\t}\n\t\t}\n\t\tprintf(\"\\n\");\n\t}\n\treturn 0;\n}",
+  "input": "2\n5\n1 2 3 4 5\n5\n5 4 3 2 1",
   "date": "",
   "structures": {},
-  "breaks": []
+  "breaks": [
+    {
+      "line": 70,
+      "draws": {}
+    },
+    {
+      "line": 62,
+      "draws": {}
+    },
+    {
+      "line": 56,
+      "draws": {}
+    }
+  ]
 },
 {
   "id": 2,
-  "title": "DFS Searching",
-  "code": "#include <stdio.h>\n\nint main() {\n\tprintf(\"DFS Searching\");\n\treturn 0;\n}",
-  "input": "",
+  "title": "Queue",
+  "code": "#include <stdio.h>\n\n#define MAX_N 100\n\nint front;\nint rear;\nint queue[MAX_N];\n\nvoid queueInit(void)\n{\n\tfront = 0;\n\trear = 0;\n}\n\nint queueIsEmpty(void)\n{\n\treturn (front == rear);\n}\n\nint queueIsFull(void)\n{\n\tif ((front + 1) % MAX_N == rear)\n\t{\n\t\treturn 1;\n\t}\n\telse\n\t{\n\t\treturn 0;\n\t}\n}\n\nint queueEnqueue(int value)\n{\n\tif (queueIsFull())\n\t{\n\t\tprintf(\"queue is full!\");\n\t\treturn 0;\n\t}\n\tqueue[front] = value;\n\tfront++;\n\tif (front == MAX_N)\n\t{\n\t\tfront = 0;\n\t}\n\n\treturn 1;\n}\n\nint queueDequeue(int *value)\n{\n\tif (queueIsEmpty()) \n\t{\n\t\tprintf(\"queue is empty!\");\n\t\treturn 0;\n\t}\n\t*value = queue[rear];\n\trear++;\n\tif (rear == MAX_N)\n\t{\n\t\trear = 0;\n\t}\n\treturn 1;\n}\n\nint main(int argc, char* argv[])\n{\n\tint T;\n\tint N;\n\n\tscanf(\"%d\", &T);\n\n\tfor (int test_case = 1; test_case <= T; test_case++)\n\t{\n\t\tscanf(\"%d\", &N);\n\n\t\tqueueInit();\n\t\tfor (int i = 0; i < N; i++)\n\t\t{\n\t\t\tint value;\n\t\t\tscanf(\"%d\", &value);\n\t\t\tqueueEnqueue(value);\n\t\t}\n\n\t\tprintf(\"#%d \", test_case);\n\n\t\twhile (!queueIsEmpty())\n\t\t{\n\t\t\tint value;\n\t\t\tif (queueDequeue(&value) == 1)\n\t\t\t{\n\t\t\t\tprintf(\"%d \", value);\n\t\t\t}\n\t\t}\n\t\tprintf(\"\\n\");\n\t}\n\treturn 0;\n}",
+  "input": "2\n5\n1 2 3 4 5\n5\n5 4 3 2 1",
   "date": "",
   "structures": {},
-  "breaks": []
+  "breaks": [
+    {
+      "line": 88,
+      "draws": {}
+    },
+    {
+      "line": 80,
+      "draws": {}
+    },
+    {
+      "line": 73,
+      "draws": {}
+    }
+  ]
 },
 {
   "id": 3,
-  "title": "BFS Searching",
-  "code": "#include <stdio.h>\n\nint main() {\n\tprintf(\"BFS Searching\");\n\treturn 0;\n}",
-  "input": "",
+  "title": "Tree",
+  "code": "#include <stdio.h>\n\n#define MAX_NODE_NUM 10000\n#define MAX_CHILD_NUM 2\n\ntypedef struct \n{\n\tint parent;\n\tint child[MAX_CHILD_NUM];\n} TreeNode;\nTreeNode tree[MAX_NODE_NUM];\nint nodeNum;\nint edgeNum;\nint root;\n\nvoid initTree(void) \n{\n\tint i;\n\tint j;\n\tfor (i = 0; i <= nodeNum; i++)\n\t{\n\t\ttree[i].parent = -1;\n\t\tfor (j = 0; j < MAX_CHILD_NUM; j++)\n\t\t{\n\t\t\ttree[i].child[j] = -1;\n\t\t}\n\t}\n}\n\nvoid addChild(int parent, int child) \n{\n\tint i;\n\tfor (i = 0; i < MAX_CHILD_NUM; i++)\n\t{\n\t\tif (tree[parent].child[i] == -1)\n\t\t{\n\t\t\tbreak;\n\t\t}\n\t}\n\ttree[parent].child[i] = child;\n\ttree[child].parent = parent;\n}\n\nint getRoot(void) \n{\n\tint i;\n\tint j;\n\tfor (i = 1; i <= nodeNum; i++) \n\t{\n\t\tif (tree[i].parent == -1) \n\t\t{\n\t\t\treturn i;\n\t\t}\n\t}\n\treturn -1;\n}\n\nvoid preOrder(int root) \n{\n\tint i;\n\tint child;\n\tprintf(\"%d \", root);\n\n\tfor (i = 0; i < MAX_CHILD_NUM; i++) \n\t{\n\t\tchild = tree[root].child[i];\n\t\tif (child != -1)\n\t\t{\n\t\t\tpreOrder(child);\n\t\t}\n\t}\n}\n\nint main(void)\n{\n\tint test_case;\n\tint T;\n\tint i;\n\tint parent;\n\tint child;\n\n\tscanf(\"%d\", &T);\n\n\tfor (test_case = 1; test_case <= T; ++test_case) \n\t{\n\t\tscanf(\"%d %d\", &nodeNum, &edgeNum);\n\n\t\tinitTree();\n\n\t\tfor (i = 0; i < edgeNum; i++)\n\t\t{\n\t\t\tscanf(\"%d %d\", &parent, &child);\n\t\t\taddChild(parent, child);\n\t\t}\n\n\t\troot = getRoot();\n\n\t\tprintf(\"#%d \", test_case);\n\t\tpreOrder(root);\n\t\tprintf(\"\\n\");\n\t}\n\n\treturn 0;\n}",
+  "input": "3\n13 12\n1 2 1 3 2 4 3 5 3 6 4 7 7 12 5 9 5 8 6 11 6 10 11 13\n10 9\n1 2 1 3 3 4 4 5 5 6 6 7 7 8 8 9 9 10\n50 49\n31 7 2 17 27 32 14 30 1 21 45 26 44 27 39 11 26 3 48 6 3 44 2 49 42 13 48 8 23 33 11 10 8 42 41 31 17 4 8 22 25 23 21 41 28 25 13 16 46 2 31 35 42 19 32 18 27 50 45 15 28 20 46 28 44 40 40 5 15 48 9 34 1 46 17 29 35 36 21 45 14 37 23 14 6 39 11 9 19 24 26 47 16 38 40 12 47 43",
   "date": "",
   "structures": {},
-  "breaks": []
+  "breaks": [
+    {
+      "line": 91,
+      "draws": {}
+    },
+    {
+      "line": 92,
+      "draws": {}
+    },
+    {
+      "line": 68,
+      "draws": {}
+    }
+  ]
+},
+{
+  "id": 4,
+  "title": "Graph",
+  "code": "#include <stdio.h>\n#include <malloc.h>\n\ntypedef struct adjlistNode\n{\n\tint vertex;\n\tadjlistNode *next;\n} AdjlistNode;\n\ntypedef struct\n{\n\tint num_members;\n\tAdjlistNode *head;\n\tAdjlistNode *tail;\n} AdjList;\n\ntypedef struct\n{\n\tint num_vertices;\n\tAdjList * adjListArr;\n} Graph;\n\nAdjlistNode * createNode(int v)\n{\n\tAdjlistNode * newNode = (AdjlistNode *)malloc(sizeof(AdjlistNode));\n\n\tnewNode->vertex = v;\n\tnewNode->next = NULL;\n\n\treturn newNode;\n}\n\nGraph * createGraph(int n)\n{\n\n\tGraph * graph = (Graph *)malloc(sizeof(Graph));\n\tgraph->num_vertices = n;\n\n\tgraph->adjListArr = (AdjList *)malloc(n * sizeof(AdjList));\n\n\tfor (int i = 0; i < n; i++)\n\t{\n\t\tgraph->adjListArr[i].head = graph->adjListArr[i].tail = NULL;\n\t\tgraph->adjListArr[i].num_members = 0;\n\t}\n\n\treturn graph;\n}\n\nvoid destroyGraph(Graph * graph)\n{\n\tif (graph)\n\t{\n\t\tif (graph->adjListArr)\n\t\t{\n\t\t\tfor (int v = 0; v < graph->num_vertices; v++)\n\t\t\t{\n\t\t\t\tAdjlistNode * adjListPtr = graph->adjListArr[v].head;\n\t\t\t\twhile (adjListPtr)\n\t\t\t\t{\n\t\t\t\t\tAdjlistNode * tmp = adjListPtr;\n\t\t\t\t\tadjListPtr = adjListPtr->next;\n\t\t\t\t\tfree(tmp);\n\t\t\t\t}\n\t\t\t}\n\t\t\tfree(graph->adjListArr);\n\t\t}\n\t\tfree(graph);\n\t}\n}\n\nvoid addEdge(Graph *graph, int src, int dest)\n{\n\tAdjlistNode * newNode = createNode(dest);\n\tif (graph->adjListArr[src].tail != NULL) \n\t{\n\t\tgraph->adjListArr[src].tail->next = newNode;\n\t\tgraph->adjListArr[src].tail = newNode;\n\t}\n\telse\n\t{\n\t\tgraph->adjListArr[src].head = graph->adjListArr[src].tail = newNode;\n\t}\n\tgraph->adjListArr[src].num_members++;\n\n\tnewNode = createNode(src);\n\tif (graph->adjListArr[dest].tail != NULL) \n\t{\n\t\tgraph->adjListArr[dest].tail->next = newNode;\n\t\tgraph->adjListArr[dest].tail = newNode;\n\t}\n\telse\n\t{\n\t\tgraph->adjListArr[dest].head = graph->adjListArr[dest].tail = newNode;\n\t}\n\tgraph->adjListArr[dest].num_members++;\n}\n\nvoid displayGraph(Graph * graph, int i)\n{\n\n\tAdjlistNode * adjListPtr = graph->adjListArr[i].head;\n\twhile (adjListPtr)\n\t{\n\t\tprintf(\"%d \", adjListPtr->vertex);\n\t\tadjListPtr = adjListPtr->next;\n\t}\n\tprintf(\"\\n\");\n}\n\nint main(int argc, char* argv[])\n{\n\tint T, V, E, Q, sv, ev;\n\n\tscanf(\"%d\", &T);\n\t\n\tfor (int test_case = 1; test_case <= T; test_case++)\n\t{\n\t\tscanf(\"%d %d %d\", &V, &E, &Q);\n\n\t\tGraph * graph = createGraph(V);\n\n\t\tfor (int i = 0; i < E; i++)\n\t\t{\n\t\t\tscanf(\"%d %d\", &sv, &ev);\n\t\t\taddEdge(graph, sv, ev);\n\t\t}\n\t\tprintf(\"#%d\\n\", test_case);\n\n\t\tfor (int i = 0; i < Q; i++)\n\t\t{\n\t\t\tscanf(\"%d\", &sv);\n\t\t\tdisplayGraph(graph, sv);\n\t\t}\n\t}\n\n\treturn 0;\n}\n",
+  "input": "2\n6 7 3\n0 1\n0 2\n0 3\n1 2\n1 4\n3 4\n4 5\n0\n2\n4\n9 10 3\n0 1\n0 2\n0 6\n1 3\n1 4\n1 7\n2 4\n4 5\n6 7\n7 8\n0\n1\n7",
+  "date": "",
+  "structures": {
+    "graph": "graph"
+  },
+  "breaks": [
+    {
+      "line": 124,
+      "draws": {
+        "graph": [
+          {
+            "api": {
+              "name": "makeNode",
+              "description": "그래프에 새로운 노드를 생성한다.",
+              "params": [
+                {
+                  "name": "id",
+                  "description": "노드의 id"
+                },
+                {
+                  "name": "lavel",
+                  "description": "노드에 입력할 라벨",
+                  "optional": true
+                }
+              ]
+            },
+            "data": {
+              "id": "sv",
+              "lavel": "sv"
+            }
+          },
+          {
+            "api": {
+              "name": "makeNode",
+              "description": "그래프에 새로운 노드를 생성한다.",
+              "params": [
+                {
+                  "name": "id",
+                  "description": "노드의 id"
+                },
+                {
+                  "name": "lavel",
+                  "description": "노드에 입력할 라벨",
+                  "optional": true
+                }
+              ]
+            },
+            "data": {
+              "id": "ev",
+              "lavel": "ev"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "line": 125,
+      "draws": {
+        "graph": [
+          {
+            "api": {
+              "name": "makeEdge",
+              "description": "두 노드를 연결하는 간선을 그린다.",
+              "params": [
+                {
+                  "name": "src",
+                  "description": "첫번째 노드의 id"
+                },
+                {
+                  "name": "dest",
+                  "description": "두번째 노드의 id"
+                },
+                {
+                  "name": "directed",
+                  "description": "true일 경우 src에서 dest로 화살표 연결",
+                  "optional": true
+                }
+              ]
+            },
+            "data": {
+              "src": "sv",
+              "dest": "ev"
+            }
+          }
+        ]
+      }
+    }
+  ]
 }]

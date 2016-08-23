@@ -65,8 +65,10 @@
 
     return {
       data: data,
+      getInitData: getInitData,
       setInitData: setInitData,
       setData: setData,
+      deepCopy: deepCopy,
       save: save,
       selected: {}
     };
