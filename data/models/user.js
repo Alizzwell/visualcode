@@ -3,9 +3,9 @@ var Schema = mongoose.Schema;
 
 
 var userSchema = new Schema({
-  date: {type: Date, default: Date.now},
-  userCanvas: [{type: Schema.Types.ObjectId, ref: 'canvas'}]
+  regDate: {type: Date, default: Date.now},
+  userCanvas: [{type: Schema.Types.ObjectId, ref: 'Canvas'}]
 });
 
 
-module.exports = mongoose.model('users', userSchema);
+module.exports = mongoose.model('User', userSchema);

@@ -28,7 +28,7 @@ router.post('/', function (req, res, next) {
 router.get('/', function (req, res, next) {
   model.User
   .findOne({_id: req.cookies.id})
-  .populate('userCanvas')
+  // .populate('userCanvas')
   .exec(function (err, data) {
     if (err) {
       return next(err);

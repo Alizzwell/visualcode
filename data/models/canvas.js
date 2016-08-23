@@ -36,14 +36,15 @@ var breakSchema = new Schema({
 
 
 var canvasSchema = new Schema({
-  _owner: {type: Schema.Types.ObjectId, ref: 'users'},
+  _owner: {type: Schema.Types.ObjectId, ref: 'User'},
   title: String,
   code: String,
   input: String,
-  date: {type: Date, default: Date.now},
+  regDate: {type: Date, default: Date.now},
+  updateDate: {type: Date, default: Date.now},
   structures: [structureSchema],
   breaks: [breakSchema]
 });
 
 
-module.exports = mongoose.model('canvas', canvasSchema);
+module.exports = mongoose.model('Canvas', canvasSchema);

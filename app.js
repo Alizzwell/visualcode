@@ -28,7 +28,7 @@ if (app.get('env') === 'development') {
 }
 
 app.use('/', require('./routes/index'));
-app.use('/api/user', require('./routes/user'));
+app.use('/api/users', require('./routes/users'));
 app.use('/api/canvas', require('./routes/canvas'));
 
 // catch 404 and forward to error handler

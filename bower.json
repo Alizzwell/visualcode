@@ -18,12 +18,9 @@
   "dependencies": {
     "angular": "^1.5.8",
     "bootstrap": "^3.3.7",
-    "jquery": "^3.1.0",
-    "slidereveal": "^1.1.2",
+    "angular-bootstrap": "^2.0.2",
     "codemirror": "^5.17.0",
     "angular-ui-codemirror": "^0.3.0",
-    "angular-cookies": "^1.5.8",
-    "angular-bootstrap": "^2.0.2",
     "angular-pageslide-directive": "^2.1.0"
   }
 }
