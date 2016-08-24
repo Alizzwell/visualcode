@@ -49,7 +49,19 @@ html, body {
   height: 100px;
 }
 
-.thisplay-designer {
+.thisplay-designer-view {
   position: fixed;
+  width: 400px;
+  height: 100%;
   padding-top: 50px;
+}
+
+.thisplay-designer {
+  width: 100%;
+  height: 100%;
+  border-top-left-radius: 30px;
+}
+
+.thisplay-modal {
+  z-index: 9999;
 }

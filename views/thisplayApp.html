@@ -1,0 +1,25 @@
+<body ng-app="thisplayApp" ng-cloak>
+  <div ng-controller="canvasManagerCtrl">
+    <% include navbar.html %>
+
+    <pageslide ps-open="canvasListOpen" ps-side="left" ps-push="true" ps-size="290px" ps-click-outside="false" ps-key-listener="true">
+      <% include canvas-list-panel.html %>
+    </pageslide>
+  </div>
+
+  <div class="thisplay-container" ng-controller="editorCtrl">
+    <div class="scrollable">
+      <% include edit-panel.html %>
+    </div>
+
+    <pageslide ps-open="designerOpen" ps-size="400px" ps-zindex="100" ps-key-listener="true" ps-click-outside="false" ps-auto-close="true">
+      <% include design-panel.html %>
+    </pageslide>
+  </div>  
+
+  <!-- Save Modal template -->
+  <% include templates/save-modal.html %>
+
+  <!-- DrawApi Modal template -->
+  <% include templates/drawapi-modal.html %>
+</body>

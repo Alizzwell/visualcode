@@ -3,7 +3,7 @@
   
   var app = angular.module('thisplayApp');
 
-  app.controller('canvasManagerCtrl', function ($scope, $rootScope, $http, $uibModal, workSpace, userService) {
+  app.controller('examplesManagerCtrl', function ($scope, $rootScope, $http, $uibModal, workSpace, userService) {
     
     var lastSavedData = workSpace.dumpData();
 
@@ -36,19 +36,19 @@
       workSpace.save(function () {
         $rootScope.$broadcast('editorCtrl.redrawBreakpoints');
         lastSavedData = workSpace.dumpData();
-        loadSavedCanvas();
+        loadExamples();
       });
     }
 
 
-    function loadSavedCanvas() {
+    function loadExamples() {
       userService.getUserCanvas(function (data) {
-        $scope.savedCanvas = data;
+        $scope.examples = data;
       });
     }
     
 
-    function setSavedCanvas(item) {
+    function setExample(item) {
       if (item.removing) {
         return;
       }
@@ -61,37 +61,14 @@
     }
 
 
-    function removeSavedCanvas(item) {
+    function removeExample(item) {
       item.removing = true;
       userService.removeCanvas(item, function () {
         if (item._id == workSpace.data._id) {
           newCanvas();
         }
-        loadSavedCanvas();
+        loadExamples();
       });
-    }
-
-
-    function loadExamples() {
-      $http.get('/api/examples').then(
-        function success(res) {
-          $scope.examples = res.data;
-        }, function error() {
-
-        });
-    }
-    
-
-    function setExample(item) {
-      $http.get('/api/examples/' + item._id).then(
-        function success(res) {
-          $rootScope.$broadcast('initScope');
-          workSpace.data = res.data;
-          $rootScope.$broadcast('editorCtrl.redrawBreakpoints');
-          lastSavedData = workSpace.getInitData();
-        }, function err() {
-          loadExamples();
-        });
     }
 
 
@@ -121,11 +98,9 @@
     $scope.isActiveItem = isActiveItem;
     $scope.newCanvas = newCanvas;
     $scope.saveCanvas = saveCanvas;
-    $scope.loadSavedCanvas = loadSavedCanvas;
-    $scope.setSavedCanvas = setSavedCanvas;
-    $scope.removeSavedCanvas = removeSavedCanvas;
     $scope.loadExamples = loadExamples;
     $scope.setExample = setExample;
+    $scope.removeExample = removeExample;
     $scope.openSaveModal = openSaveModal;
 
   });

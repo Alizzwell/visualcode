@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>(ADMIN) This-Play</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=11" />
+  <meta charset="UTF-8" />
+
+  <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap-theme.css" />
+
+  <link rel="stylesheet" href="/codemirror/lib/codemirror.css" />
+  <link rel="stylesheet" href="/codemirror/theme/bespin.css" />
+  <link rel="stylesheet" href="/codemirror/theme/blackboard.css" />
+  <link rel="stylesheet" href="/codemirror/theme/cobalt.css" />
+  <link rel="stylesheet" href="/codemirror/theme/dracula.css" />
+  <link rel="stylesheet" href="/codemirror/theme/eclipse.css" />
+  <link rel="stylesheet" href="/codemirror/theme/erlang-dark.css" />
+  <link rel="stylesheet" href="/codemirror/theme/the-matrix.css" />
+  <link rel="stylesheet" href="/codemirror/theme/zenburn.css" />
+  
+  <link rel="stylesheet" href="/css/components.css" />
+  <link rel="stylesheet" href="/css/navbar.css" />
+  <link rel="stylesheet" href="/css/save-modal.css" />
+  <link rel="stylesheet" href="/css/canvas-list.css" />
+  <link rel="stylesheet" href="/css/editor.css" />
+  <link rel="stylesheet" href="/css/designer.css" />
+
+  <link rel="stylesheet" href="/css/layout.css" />
+
+  <script src="/angular/angular.js"></script>
+  <script src="/angular-bootstrap/ui-bootstrap.js"></script>
+  <script src="/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <script src="/angular-pageslide-directive/dist/angular-pageslide-directive.js"></script>
+  <script src="/codemirror/lib/codemirror.js"></script>
+  <script src="/codemirror/mode/clike/clike.js"></script>
+  <script src="/codemirror/addon/edit/closebrackets.js"></script>
+  <script src="/codemirror/addon/selection/active-line.js"></script>
+  <script src="/angular-ui-codemirror/ui-codemirror.js"></script>
+  
+  <script src="/core.js"></script>
+  <script src="/filter/thisplay-date.js"></script>
+  <script src="/admin/service/admin-service.js"></script>
+  <script src="/service/workspace.js"></script>
+  <script src="/admin/controller/examples-manager.js"></script>
+  <script src="/controller/editor.js"></script>
+  <script src="/controller/designer.js"></script>  
+</head>
+<body ng-app="thisplayApp" ng-cloak>
+  <div ng-controller="examplesManagerCtrl">
+    <% include navbar.html %>
+
+    <pageslide ps-open="canvasListOpen" ps-side="left" ps-push="true" ps-size="290px" ps-click-outside="false" ps-key-listener="true">
+      <div class="thisplay-canvas-list" id="slider-canvas-list">
+        <div class="thisplay-canvas-list-header">
+          <span>검색기능넣기</span>
+        </div>
+        <div class="thisplay-canvas-list-container">
+          <div class="scrollable">
+            <div style="padding: 20px;">
+              <a class="btn icon-btn btn-default btn-lg btn-block" ng-click="newCanvas()">
+                <span class="glyphicon btn-glyphicon glyphicon-plus img-circle text-success"></span>
+                새 캔버스
+              </a>
+            </div>
+
+            <div class="section-bar">Current Canvas</div>
+            <div class="thisplay-list">
+              <div class="thisplay-list-container">
+                <div class="thisplay-list-item">
+                  <span class="thumb"></span>
+                  <span class="title" style="padding-right: 60px;">{{getTitle() || "제목 없는 캔버스"}}</span>
+                  <span class="date">no unsaved changes</span>
+                  <span class="thisplay-btn-save" ng-class="{enable: isChanged()}" ng-click="saveCanvas()">Save</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-bar" ng-init="loadExamples()" ng-show="examples.length">Examples</div>
+            <div class="thisplay-list" ng-repeat="item in examples">
+              <div class="thisplay-list-container">
+                <div class="thisplay-list-item" ng-class="{active: isActiveItem(item)}" ng-click="setExample(item)">
+                  <span class="thumb"></span>
+                  <span class="title">{{item.title || "제목 없는 캔버스"}}</span>
+                  <span class="date">예시</span>
+                  <span class="remove glyphicon glyphicon-remove" ng-click="removeExample(item)"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </pageslide>
+  </div>
+
+  <div class="thisplay-container" ng-controller="editorCtrl">
+    <div class="scrollable">
+      <% include edit-panel.html %>
+    </div>
+
+    <pageslide ps-open="designerOpen" ps-size="400px" ps-zindex="100" ps-key-listener="true" ps-click-outside="false" ps-auto-close="true">
+      <% include design-panel.html %>
+    </pageslide>
+  </div>  
+
+  <!-- Save Modal template -->
+  <% include templates/save-modal.html %>
+
+  <!-- DrawApi Modal template -->
+  <% include templates/drawapi-modal.html %>
+</body>
+</html>

@@ -7,46 +7,43 @@ router.get('/', function (req, res, next) {
 });
 
 
-router.get('/test', function (req, res, nexT) {
-  res.render('test');
+var Example = require('../data/models/example');
+
+router.get('/api/examples', function (req, res, next) {
+  Example.find().select('_id title').sort({regDate: 1})
+  .exec(function (err, data) {
+    if (err) return next(err);
+    res.status(200).json(data);
+  });
 });
 
 
-var examples = [{
-  id: 1,
-  title: "Bubble Sort",
-  code: "#include <stdio.h>\n\nint main() {\n\tprintf(\"Bubble Sort\");\n\treturn 0;\n}",
-  input: "",
-  designer: {}
-},
-{
-  id: 2,
-  title: "DFS Searching",
-  code: "#include <stdio.h>\n\nint main() {\n\tprintf(\"DFS Searching\");\n\treturn 0;\n}",
-  input: "",
-  designer: {}
-},
-{
-  id: 3,
-  title: "BFS Searching",
-  code: "#include <stdio.h>\n\nint main() {\n\tprintf(\"BFS Searching\");\n\treturn 0;\n}",
-  input: "",
-  designer: {}
-}];
+router.get('/api/examples/:id', function (req, res, next) {
+  Example
+  .findOne({_id: req.params.id}, {'_id': 0})
+  .select('title code input structures breaks')
+  .exec(function (err, data) {
+    if (err) {
+      return next(err);
+    }
 
-router.get('/api/examples', function (req, res) {
-  res.json(examples.map(function (item) {
-    return {
-      id: item.id,
-      title: item.title
-    };
-  }));
+    if (!data) {
+      return res.status(404).end();
+    }
+    
+    res.status(200).json(data);
+  });
 });
 
-router.get('/api/examples/:id', function (req, res) {
-  res.json(examples.find(function (item) {
-    return item.id == req.params.id;
-  }));
+
+var fs = require('fs');
+
+router.get('/api/drawapis', function (req, res, next) {
+  fs.readFile('data/draw-apis.json', 'utf8', function (err, data) {
+    if (err) return next(err);
+    res.json(JSON.parse(data));  
+  });
 });
+
 
 module.exports = router;

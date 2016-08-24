@@ -5,9 +5,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-
 var app = express();
+
+
+var mongoose = require('./dbcon')(
+  app.get('env') === 'development' ? 'test' : 'thisplay');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -19,9 +21,21 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'bower_components')));
+app.use(express.static(path.join(__dirname, 'src')));
+
+
+if (app.get('env') === 'development') {
+  app.get('/', function (req, res, next) {
+    res.render('test');
+  });
+}
+app.use('/', require('./routes/index'));
+app.use('/api/users', require('./routes/users'));
+app.use('/api/canvas', require('./routes/canvas'));
+app.use('/admin', require('./routes/admin'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
