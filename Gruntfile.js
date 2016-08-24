@@ -21,7 +21,6 @@ module.exports = function (grunt) {
     'bower_components/angular-bootstrap/ui-bootstrap.js',
     'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
     'bower_components/angular-pageslide-directive/dist/angular-pageslide-directive.js',
-    'bower_components/angular-cookies/angular-cookies.js',
     'bower_components/codemirror/lib/codemirror.js',
     'bower_components/codemirror/mode/clike/clike.js',
     'bower_components/codemirror/addon/edit/closebrackets.js',
