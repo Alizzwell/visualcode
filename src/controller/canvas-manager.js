@@ -8,35 +8,40 @@
     var lastSavedData = workSpace.dumpData();
 
 
-    $scope.getTitle = function () {
+    function getTitle() {
       return workSpace.data.title;
     };
     
-    $scope.isChanged = function () {
-      return JSON.stringify(angular.copy(lastSavedData))
-        !== JSON.stringify(angular.copy(workSpace.data));
+    
+    function isChanged() {
+      return JSON.stringify(angular.copy(lastSavedData)) !==
+       JSON.stringify(angular.copy(workSpace.data));
     };
 
-    $scope.newCanvas = function () {
+
+    function newCanvas() {
       workSpace.setInitData();
       lastSavedData = workSpace.dumpData();
     };
+    
 
-    $scope.saveCanvas = function () {
+    function saveCanvas() {
       $rootScope.$broadcast('editorCtrl.syncBreaksLine');
       workSpace.save(function () {
         lastSavedData = workSpace.dumpData();
-        $scope.loadSavedCanvas();
+        loadSavedCanvas();
       });
     };
 
-    $scope.loadSavedCanvas = function () {
+
+    function loadSavedCanvas() {
       userService.getUserCanvas(function (data) {
         $scope.savedCanvas = data;
       });
     };
+    
 
-    $scope.setSavedCanvas = function (item) {
+    function setSavedCanvas(item) {
       if (item.removing) {
         return;
       }
@@ -48,14 +53,16 @@
       });
     };
 
-    $scope.removeSavedCanvas = function (item) {
+
+    function removeSavedCanvas(item) {
       item.removing = true;
       userService.removeCanvas(item, function () {
-        $scope.loadSavedCanvas();
+        loadSavedCanvas();
       });
     };
 
-    $scope.loadExamples = function () {
+
+    function loadExamples() {
       $http.get('/api/examples').then(
         function success(res) {
           $scope.examples = res.data;
@@ -63,8 +70,9 @@
 
         });
     };
+    
 
-    $scope.setExample = function (item) {
+    function setExample(item) {
       $http.get('/api/examples/' + item._id).then(
         function success(res) {
           $rootScope.$broadcast('initScope');
@@ -76,7 +84,8 @@
         });
     };
 
-    $scope.openSaveModal = function () {
+
+    function openSaveModal() {
       var modalInstance = $uibModal.open({
         templateUrl: 'save-modal.html',
         controller: 'saveModalCtrl',
@@ -89,11 +98,24 @@
 
       modalInstance.result.then(function (title) {
         workSpace.data.title = title;
-        $scope.saveCanvas();
+        saveCanvas();
       }, function () {
 
       });
     };
+
+
+
+    $scope.getTitle = getTitle;
+    $scope.isChanged = isChanged;
+    $scope.newCanvas = newCanvas;
+    $scope.saveCanvas = saveCanvas;
+    $scope.loadSavedCanvas = loadSavedCanvas;
+    $scope.setSavedCanvas = setSavedCanvas;
+    $scope.removeSavedCanvas = removeSavedCanvas;
+    $scope.loadExamples = loadExamples;
+    $scope.setExample = setExample;
+    $scope.openSaveModal = openSaveModal;
 
   });
 

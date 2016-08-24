@@ -1,0 +1,13 @@
+<nav class="navbar navbar-inverse thisplay-navbar">
+  <div class="section thisplay-navbar-header">
+    <a class="navbar-brand" ng-click="canvasListOpen = !canvasListOpen">
+      <span class="glyphicon glyphicon-menu-hamburger"></span>
+    </a>
+    <a class="navbar-text title" ng-click="openSaveModal()">
+      {{getTitle() || "제목 없는 캔버스"}}
+    </a>
+  </div>
+  <div class="section thisplay-navbar-container">
+    <span class="navbar-btn thisplay-btn-save" ng-class="{enable: isChanged()}" ng-click="saveCanvas()">Save</span>
+  </div>
+</nav>

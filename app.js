@@ -8,7 +8,8 @@ var bodyParser = require('body-parser');
 var app = express();
 
 
-var mongoose = require('./dbcon');
+var mongoose = require('./dbcon')(
+  app.get('env') === 'development' ? 'test' : 'thisplay');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -24,9 +25,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 if (app.get('env') === 'development') {
-  app.use(express.static(path.join(__dirname, '.')));
+  app.use(express.static(path.join(__dirname, 'bower_components')));
+  app.use(express.static(path.join(__dirname, 'src')));
 }
 
+
+if (app.get('env') === 'development') {
+  app.get('/', function (req, res, next) {
+    res.render('test');
+  });
+}
 app.use('/', require('./routes/index'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/canvas', require('./routes/canvas'));

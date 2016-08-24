@@ -5,11 +5,6 @@
 
   app.controller('editorCtrl', function ($scope, $http, workSpace) {
 
-    $scope.$on('initScope', function () {
-      delete $scope.selectedBreakpoint;
-    });
-
-
     var editor;
 
     $scope.workspace = workSpace;
@@ -29,13 +24,36 @@
     };
 
 
-    $scope.selectTheme = function (theme) {
+    $scope.$on('initScope', function () {
+      delete $scope.selectedBreakpoint;
+    });
+    
+
+    $scope.$on('editorCtrl.syncBreaksLine', function () {
+      getEachBreakpointOnEditor(function (bp, line) {
+        bp.line = line;
+      });
+    });
+
+
+    $scope.$on('editorCtrl.redrawBreakpoints', function () {
+      editor.clearGutter('breakpoints');
+      editor.setValue(workSpace.data.code);
+      workSpace.data.breaks.forEach(function (bp, i) {
+        var _bp = makeBreakpoint(bp.line);
+        _bp.draws = bp.draws;
+        workSpace.data.breaks[i] = _bp;
+      });
+    });
+
+
+    function selectTheme(theme) {
       $scope.theme = theme;
       editor.setOption("theme", theme);
     };
+    
 
-
-    $scope.cmLoadded = function (cm) {
+    function cmLoadded(cm) {
       editor = cm;
 
       editor.on("gutterClick", function(cm, n) {
@@ -121,7 +139,7 @@
     }
 
 
-    $scope.removeBreakpoint = function (bp) {
+    function removeBreakpoint(bp) {
       workSpace.data.breaks.splice(
         workSpace.data.breaks.indexOf(bp), 1);
       editor.setGutterMarker(getLineOnEditor(bp),
@@ -130,7 +148,7 @@
         delete $scope.selectedBreakpoint;
       }
     };
-
+    
 
     function getLineOnEditor(bp) {
       for (var i = editor.firstLine(); i <= editor.lastLine(); i++) {
@@ -142,22 +160,10 @@
     }
 
 
-    $scope.$on('editorCtrl.syncBreaksLine', function () {
-      getEachBreakpointOnEditor(function (bp, line) {
-        bp.line = line;
-      });
-    });
 
-
-    $scope.$on('editorCtrl.redrawBreakpoints', function () {
-      editor.clearGutter('breakpoints');
-      editor.setValue(workSpace.data.code);
-      workSpace.data.breaks.forEach(function (bp, i) {
-        var _bp = makeBreakpoint(bp.line);
-        _bp.draws = bp.draws;
-        workSpace.data.breaks[i] = _bp;
-      });
-    });
+    $scope.selectTheme = selectTheme;
+    $scope.cmLoadded = cmLoadded;
+    $scope.removeBreakpoint = removeBreakpoint;
 
   });
 

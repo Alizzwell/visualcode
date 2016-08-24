@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
-var dbURI = 'mongodb://localhost/test';
+var dbURI = 'mongodb://localhost';
+var dbname;
 var db = mongoose.connection;
 var retry;
 
@@ -33,15 +34,19 @@ db.on('disconnected', function() {
     retry = setInterval(connect, 5000);
 });
 
-connect();
-
 mongoose.reconnect = reconnect;
 
-module.exports = mongoose;
+module.exports = function (_dbname) {
+    dbname = _dbname;
+    connect();
+    return mongoose;
+};
+
+// module.exports = mongoose;
 
 
 function connect() {
-    mongoose.connect(dbURI, {server:{auto_reconnect:true}});
+    mongoose.connect(dbURI + '/' + dbname, {server: {auto_reconnect: true}});
 }
 
 function reconnect() {

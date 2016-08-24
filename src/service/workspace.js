@@ -16,13 +16,16 @@
       };
     }
 
+
     function setInitData() {
       workspace.data = getInitData();
     }
 
+
     function dumpData() {
       return JSON.parse(JSON.stringify(workspace.data));
     }
+
 
     function save(callback) {
       userService.saveCanvas(workspace.data, function (data) {

@@ -9,7 +9,8 @@
       delete $scope.selectedStructure;
     });
 
-    $scope.loadDrawApiList = function () {
+
+    function loadDrawApiList() {
       $http.get('/api/drawapis').then(
         function success(res) {
           $scope.drawApiList = res.data;
@@ -17,38 +18,39 @@
 
         });
     };
+    
 
-
-    $scope.getStructures = function () {
+    function getStructures() {
       return workSpace.data.structures;
     };
 
 
-    $scope.addStructure = function (type) {
+    function addStructure(type) {
       var structures = workSpace.data.structures;
       var item = {
         id: type,
         type: type
       };
 
-      var surfix = 1;
-      while (structures.some(function (s) {
+      function test() {
         return s.id == item.id;
-      })) {
+      }
+      var surfix = 1;
+      while (structures.some(test)) {
         item.id = type + surfix++;
       }
 
       structures.push(item);
-      $scope.selectStructure(item);
+      selectStructure(item);
     };
+    
 
-
-    $scope.selectStructure = function (item) {
+    function selectStructure(item) {
       $scope.selectedStructure = item;
     };
+    
 
-
-    $scope.removeStructure = function (item) {
+    function removeStructure(item) {
       var structures = workSpace.data.structures;
       structures.splice(structures.indexOf(item), 1);
       
@@ -69,14 +71,15 @@
     };
 
 
-    $scope.drawListFilter = function (item) {
+    function drawListFilter(item) {
       if (!$scope.selectedStructure || !item) {
         return false;
       }
       return $scope.selectedStructure.id === item.structure.id;
     };
+
     
-    $scope.openAddDrawApiModal = function (api) {
+    function openAddDrawApiModal(api) {
       var structure = $scope.selectedStructure;
       var breakpoint = $scope.selectedBreakpoint;
 
@@ -98,15 +101,15 @@
             structure: structure,
             api: api,
             data: output
-          }
+          };
           breakpoint.draws.push(draw);
         }, function dismissed() {
 
         });
     };
+    
 
-
-    $scope.openModifyDrawApiModal = function (draw) {
+    function openModifyDrawApiModal(draw) {
       var structure = $scope.selectedStructure;
       var breakpoint = $scope.selectedBreakpoint;
 
@@ -132,7 +135,7 @@
     };
 
 
-    $scope.drawApiToString = function (draw) {
+    function drawApiToString(draw) {
       var str = draw.api.name;
       str += "(";
       for (var key in draw.data) {
@@ -145,15 +148,29 @@
     };
 
 
-    $scope.removeDrawApi = function (draw) {
+    function removeDrawApi(draw) {
       var draws = $scope.selectedBreakpoint.draws;
       draws.splice(draws.indexOf(draw), 1);  
     };
 
 
-    $scope.removeBreakpoint = function () {
+    function removeBreakpoint() {
       $scope.$parent.removeBreakpoint($scope.selectedBreakpoint);
     };
+
+
+
+    $scope.loadDrawApiList = loadDrawApiList;
+    $scope.getStructures = getStructures;
+    $scope.addStructure = addStructure;
+    $scope.selectStructure = selectStructure;
+    $scope.removeStructure = removeStructure;
+    $scope.drawListFilter = drawListFilter;
+    $scope.openAddDrawApiModal = openAddDrawApiModal;
+    $scope.openModifyDrawApiModal = openModifyDrawApiModal;
+    $scope.drawApiToString = drawApiToString;
+    $scope.removeDrawApi = removeDrawApi;
+    $scope.removeBreakpoint = removeBreakpoint;
 
   });
 
@@ -184,7 +201,7 @@
             requires.push(param.name);
           }
         }
-      })
+      });
 
       if (error) {
         $scope.requires = requires;
