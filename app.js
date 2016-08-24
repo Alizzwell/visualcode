@@ -23,11 +23,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
-
-if (app.get('env') === 'development') {
-  app.use(express.static(path.join(__dirname, 'bower_components')));
-  app.use(express.static(path.join(__dirname, 'src')));
-}
+app.use(express.static(path.join(__dirname, 'bower_components')));
+app.use(express.static(path.join(__dirname, 'src')));
 
 
 if (app.get('env') === 'development') {

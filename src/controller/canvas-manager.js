@@ -45,7 +45,7 @@
       userService.getUserCanvas(function (data) {
         $scope.savedCanvas = data;
       });
-    };
+    }
     
 
     function setSavedCanvas(item) {
@@ -58,7 +58,7 @@
         $rootScope.$broadcast('editorCtrl.redrawBreakpoints');
         lastSavedData = workSpace.dumpData();
       });
-    };
+    }
 
 
     function removeSavedCanvas(item) {
@@ -69,7 +69,7 @@
         }
         loadSavedCanvas();
       });
-    };
+    }
 
 
     function loadExamples() {
@@ -79,7 +79,7 @@
         }, function error() {
 
         });
-    };
+    }
     
 
     function setExample(item) {
@@ -92,7 +92,7 @@
         }, function err() {
 
         });
-    };
+    }
 
 
     function openSaveModal() {
@@ -112,7 +112,7 @@
       }, function () {
 
       });
-    };
+    }
 
 
 

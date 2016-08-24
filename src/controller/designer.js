@@ -132,7 +132,7 @@
     function drawApiToString(draw) {
       var str = draw.api.name;
       
-      if (draw.api.params.length == 0) {
+      if (draw.api.params.length === 0) {
         return str + "()";
       }
 

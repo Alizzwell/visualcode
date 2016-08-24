@@ -56989,6 +56989,46 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
   
   var app = angular.module('thisplayApp');
 
+  app.filter('thisplayDate', function ($filter) {
+    return function (date) {
+      var diff = new Date().getTime() - new Date(date).getTime();
+      diff /= (60 * 1000);
+
+      if (diff < 1) {
+        return '1분 미만';
+      }
+
+      if (diff < 60) {
+        return parseInt(diff) + '분 전';
+      }
+
+      diff /= 60;
+
+      if (diff < 24) {
+        return parseInt(diff) + '시간 전';
+      }
+
+      diff /= 24;
+      if (diff < 2) {
+        return '어제';
+      }
+
+      if (diff < 31) {
+        if ($filter('date')(date, 'M') == $filter('date')(new Date(), 'M')) {
+          return parseInt(diff) + '일 전';
+        }
+      }
+      
+      return $filter('date')(date, 'y년 M월 d일');
+    };
+  });
+
+})(angular);
+;(function (angular) {
+  'use strict';
+  
+  var app = angular.module('thisplayApp');
+
   app.factory('userService', function ($http) {
     
     $http.post('/api/users', {})
@@ -57069,13 +57109,16 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
       };
     }
 
+
     function setInitData() {
       workspace.data = getInitData();
     }
 
+
     function dumpData() {
       return JSON.parse(JSON.stringify(workspace.data));
     }
+
 
     function save(callback) {
       userService.saveCanvas(workspace.data, function (data) {
@@ -57108,35 +57151,47 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
     var lastSavedData = workSpace.dumpData();
 
 
-    $scope.getTitle = function () {
+    function getTitle() {
       return workSpace.data.title;
-    };
+    }
     
-    $scope.isChanged = function () {
+    
+    function isChanged() {
       return JSON.stringify(angular.copy(lastSavedData)) !==
        JSON.stringify(angular.copy(workSpace.data));
-    };
+    }
 
-    $scope.newCanvas = function () {
+
+    function isActiveItem(item) {
+      return item._id === workSpace.data._id;
+    }
+
+
+    function newCanvas() {
+      $rootScope.$broadcast('initScope');
       workSpace.setInitData();
       lastSavedData = workSpace.dumpData();
-    };
+    }
+    
 
-    $scope.saveCanvas = function () {
+    function saveCanvas() {
       $rootScope.$broadcast('editorCtrl.syncBreaksLine');
       workSpace.save(function () {
+        $rootScope.$broadcast('editorCtrl.redrawBreakpoints');
         lastSavedData = workSpace.dumpData();
-        $scope.loadSavedCanvas();
+        loadSavedCanvas();
       });
-    };
+    }
 
-    $scope.loadSavedCanvas = function () {
+
+    function loadSavedCanvas() {
       userService.getUserCanvas(function (data) {
         $scope.savedCanvas = data;
       });
-    };
+    }
+    
 
-    $scope.setSavedCanvas = function (item) {
+    function setSavedCanvas(item) {
       if (item.removing) {
         return;
       }
@@ -57146,25 +57201,31 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
         $rootScope.$broadcast('editorCtrl.redrawBreakpoints');
         lastSavedData = workSpace.dumpData();
       });
-    };
+    }
 
-    $scope.removeSavedCanvas = function (item) {
+
+    function removeSavedCanvas(item) {
       item.removing = true;
       userService.removeCanvas(item, function () {
-        $scope.loadSavedCanvas();
+        if (item._id == workSpace.data._id) {
+          newCanvas();
+        }
+        loadSavedCanvas();
       });
-    };
+    }
 
-    $scope.loadExamples = function () {
+
+    function loadExamples() {
       $http.get('/api/examples').then(
         function success(res) {
           $scope.examples = res.data;
         }, function error() {
 
         });
-    };
+    }
+    
 
-    $scope.setExample = function (item) {
+    function setExample(item) {
       $http.get('/api/examples/' + item._id).then(
         function success(res) {
           $rootScope.$broadcast('initScope');
@@ -57174,9 +57235,10 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
         }, function err() {
 
         });
-    };
+    }
 
-    $scope.openSaveModal = function () {
+
+    function openSaveModal() {
       var modalInstance = $uibModal.open({
         templateUrl: 'save-modal.html',
         controller: 'saveModalCtrl',
@@ -57189,11 +57251,25 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
 
       modalInstance.result.then(function (title) {
         workSpace.data.title = title;
-        $scope.saveCanvas();
+        saveCanvas();
       }, function () {
 
       });
-    };
+    }
+
+
+
+    $scope.getTitle = getTitle;
+    $scope.isChanged = isChanged;
+    $scope.isActiveItem = isActiveItem;
+    $scope.newCanvas = newCanvas;
+    $scope.saveCanvas = saveCanvas;
+    $scope.loadSavedCanvas = loadSavedCanvas;
+    $scope.setSavedCanvas = setSavedCanvas;
+    $scope.removeSavedCanvas = removeSavedCanvas;
+    $scope.loadExamples = loadExamples;
+    $scope.setExample = setExample;
+    $scope.openSaveModal = openSaveModal;
 
   });
 
@@ -57221,22 +57297,23 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
       delete $scope.selectedStructure;
     });
 
-    $scope.loadDrawApiList = function () {
+
+    function loadDrawApiList() {
       $http.get('/api/drawapis').then(
         function success(res) {
           $scope.drawApiList = res.data;
         }, function err() {
 
         });
-    };
+    }
+    
 
-
-    $scope.getStructures = function () {
+    function getStructures() {
       return workSpace.data.structures;
-    };
+    }
 
 
-    $scope.addStructure = function (type) {
+    function addStructure(type) {
       var structures = workSpace.data.structures;
       var item = {
         id: type,
@@ -57252,16 +57329,16 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
       }
 
       structures.push(item);
-      $scope.selectStructure(item);
-    };
+      selectStructure(item);
+    }
+    
 
-
-    $scope.selectStructure = function (item) {
+    function selectStructure(item) {
       $scope.selectedStructure = item;
-    };
+    }
+    
 
-
-    $scope.removeStructure = function (item) {
+    function removeStructure(item) {
       var structures = workSpace.data.structures;
       structures.splice(structures.indexOf(item), 1);
       
@@ -57279,17 +57356,18 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
       if ($scope.selectedStructure == item) {
         delete $scope.selectedStructure;
       }
-    };
+    }
 
 
-    $scope.drawListFilter = function (item) {
+    function drawListFilter(item) {
       if (!$scope.selectedStructure || !item) {
         return false;
       }
       return $scope.selectedStructure.id === item.structure.id;
-    };
+    }
+
     
-    $scope.openAddDrawApiModal = function (api) {
+    function openAddDrawApiModal(api) {
       var structure = $scope.selectedStructure;
       var breakpoint = $scope.selectedBreakpoint;
 
@@ -57297,10 +57375,8 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
         templateUrl: 'drawapi-modal.html',
         controller: 'drawApiModalCtrl',
         resolve: {
-          resolve: function () {
-            return {
-              api: api
-            };
+          api: function () {
+            return api;
           }
         }
       });
@@ -57309,17 +57385,16 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
         function success(output) {
           var draw = {
             structure: structure,
-            api: api,
-            data: output
+            api: output
           };
           breakpoint.draws.push(draw);
         }, function dismissed() {
 
         });
-    };
+    }
+    
 
-
-    $scope.openModifyDrawApiModal = function (draw) {
+    function openModifyDrawApiModal(draw) {
       var structure = $scope.selectedStructure;
       var breakpoint = $scope.selectedBreakpoint;
 
@@ -57327,84 +57402,85 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
         templateUrl: 'drawapi-modal.html',
         controller: 'drawApiModalCtrl',
         resolve: {
-          resolve: function () {
-            return {
-              api: draw.api,
-              data: draw.data
-            };
+          api: function () {
+            return draw.api;
           }
         }
       });
 
       modalInstance.result.then(
         function success(output) {
-          draw.data = output;
+          draw.api = output;
         }, function dismissed() {
 
         });
-    };
+    }
 
 
-    $scope.drawApiToString = function (draw) {
+    function drawApiToString(draw) {
       var str = draw.api.name;
-      str += "(";
-      for (var key in draw.data) {
-        str += draw.data[key];
-        str += ", ";
+      
+      if (draw.api.params.length === 0) {
+        return str + "()";
       }
+
+      str += "(";
+      draw.api.params.forEach(function (param) {
+        if (param.value) {
+          str += param.value;
+          str += ", ";
+        }
+      });
       str = str.substring(0, str.length - 2);
       str += ")";
       return str;
-    };
+    }
 
 
-    $scope.removeDrawApi = function (draw) {
+    function removeDrawApi(draw) {
       var draws = $scope.selectedBreakpoint.draws;
       draws.splice(draws.indexOf(draw), 1);  
-    };
+    }
 
 
-    $scope.removeBreakpoint = function () {
+    function removeBreakpoint() {
       $scope.$parent.removeBreakpoint($scope.selectedBreakpoint);
-    };
+    }
+
+
+
+    $scope.loadDrawApiList = loadDrawApiList;
+    $scope.getStructures = getStructures;
+    $scope.addStructure = addStructure;
+    $scope.selectStructure = selectStructure;
+    $scope.removeStructure = removeStructure;
+    $scope.drawListFilter = drawListFilter;
+    $scope.openAddDrawApiModal = openAddDrawApiModal;
+    $scope.openModifyDrawApiModal = openModifyDrawApiModal;
+    $scope.drawApiToString = drawApiToString;
+    $scope.removeDrawApi = removeDrawApi;
+    $scope.removeBreakpoint = removeBreakpoint;
 
   });
 
   
   
-  app.controller('drawApiModalCtrl', function ($scope, $uibModalInstance, resolve) {
-    $scope.api = resolve.api;
-
-    if (resolve.data) {
-      $scope.modify = true;
-    }
-
-    $scope.output = {};
-    angular.copy(resolve.data, $scope.output);
-
+  app.controller('drawApiModalCtrl', function ($scope, $uibModalInstance, api) {
+    $scope.api = angular.copy(api);
 
     $scope.save = function () {
-      var requires = [];
-      var error = false;
-      
+      $scope.error = false;
       $scope.api.params.forEach(function (param) {
-        if (!$scope.output[param.name]) {
-          if (param.optional) {
-            delete $scope.output[param.name];
-          }
-          else {
-            error = true;
-            requires.push(param.name);
-          }
+        if (!param.optional && !param.value) {
+          $scope.error = true;
         }
       });
 
-      if (error) {
-        $scope.requires = requires;
+      if ($scope.error) {
         return;
       }
 
-      $uibModalInstance.close($scope.output);
+      $uibModalInstance.close($scope.api);
     };
 
     $scope.cancel = function () {
@@ -57421,11 +57497,6 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
   var app = angular.module('thisplayApp');
 
   app.controller('editorCtrl', function ($scope, $http, workSpace) {
-
-    $scope.$on('initScope', function () {
-      delete $scope.selectedBreakpoint;
-    });
-
 
     var editor;
 
@@ -57446,13 +57517,40 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
     };
 
 
-    $scope.selectTheme = function (theme) {
+    $scope.$on('initScope', function () {
+      delete $scope.selectedBreakpoint;
+    });
+    
+
+    $scope.$on('editorCtrl.syncBreaksLine', function () {
+      getEachBreakpointOnEditor(function (bp, line) {
+        bp.line = line;
+      });
+    });
+
+
+    $scope.$on('editorCtrl.redrawBreakpoints', function () {
+      editor.clearGutter('breakpoints');
+      editor.setValue(workSpace.data.code);
+      workSpace.data.breaks.forEach(function (bp, i) {
+        var _bp = makeBreakpoint(bp.line);
+        _bp.draws = bp.draws;
+        workSpace.data.breaks[i] = _bp;
+      });
+
+      if ($scope.selectedBreakpoint) {
+        selectBreakpoint(getBreakpoint($scope.selectedBreakpoint.line));
+      }
+    });
+
+
+    function selectTheme(theme) {
       $scope.theme = theme;
       editor.setOption("theme", theme);
-    };
+    }
+    
 
-
-    $scope.cmLoadded = function (cm) {
+    function cmLoadded(cm) {
       editor = cm;
 
       editor.on("gutterClick", function(cm, n) {
@@ -57488,7 +57586,7 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
           }
         }
       });
-    };
+    }
    
 
     function getBreakpoint(line) {
@@ -57538,7 +57636,7 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
     }
 
 
-    $scope.removeBreakpoint = function (bp) {
+    function removeBreakpoint(bp) {
       workSpace.data.breaks.splice(
         workSpace.data.breaks.indexOf(bp), 1);
       editor.setGutterMarker(getLineOnEditor(bp),
@@ -57546,8 +57644,8 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
       if ($scope.selectedBreakpoint === bp) {
         delete $scope.selectedBreakpoint;
       }
-    };
-
+    }
+    
 
     function getLineOnEditor(bp) {
       for (var i = editor.firstLine(); i <= editor.lastLine(); i++) {
@@ -57559,22 +57657,10 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
     }
 
 
-    $scope.$on('editorCtrl.syncBreaksLine', function () {
-      getEachBreakpointOnEditor(function (bp, line) {
-        bp.line = line;
-      });
-    });
 
-
-    $scope.$on('editorCtrl.redrawBreakpoints', function () {
-      editor.clearGutter('breakpoints');
-      editor.setValue(workSpace.data.code);
-      workSpace.data.breaks.forEach(function (bp, i) {
-        var _bp = makeBreakpoint(bp.line);
-        _bp.draws = bp.draws;
-        workSpace.data.breaks[i] = _bp;
-      });
-    });
+    $scope.selectTheme = selectTheme;
+    $scope.cmLoadded = cmLoadded;
+    $scope.removeBreakpoint = removeBreakpoint;
 
   });
 
