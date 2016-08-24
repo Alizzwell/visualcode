@@ -25,6 +25,7 @@
 
 
     function newCanvas() {
+      $rootScope.$broadcast('initScope');
       workSpace.setInitData();
       lastSavedData = workSpace.dumpData();
     }
@@ -33,6 +34,7 @@
     function saveCanvas() {
       $rootScope.$broadcast('editorCtrl.syncBreaksLine');
       workSpace.save(function () {
+        $rootScope.$broadcast('editorCtrl.redrawBreakpoints');
         lastSavedData = workSpace.dumpData();
         loadExamples();
       });

@@ -29,7 +29,7 @@
           <div class="thisplay-list-item" ng-class="{active: isActiveItem(item)}" ng-click="setSavedCanvas(item)">
             <span class="thumb"></span>
             <span class="title">{{item.title || "제목 없는 캔버스"}}</span>
-            <span class="date">{{item.updateDate | date: "y년 M월 d일"}}</span>
+            <span class="date">{{item.updateDate | thisplayDate}}</span>
             <span class="remove glyphicon glyphicon-remove" ng-click="removeSavedCanvas(item)"></span>
           </div>
         </div>
