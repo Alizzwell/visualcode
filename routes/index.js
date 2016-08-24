@@ -18,7 +18,7 @@ router.get('/api/examples', function (req, res) {
     var examples = JSON.parse(data);
     res.json(examples.map(function (item) {
       return {
-        id: item.id,
+        _id: item._id,
         title: item.title
       };
     }));  
@@ -30,9 +30,14 @@ router.get('/api/examples/:id', function (req, res) {
     if (err) throw err;
 
     var examples = JSON.parse(data);
-    res.json(examples.find(function (item) {
-      return item.id == req.params.id;
-    }));
+    var data = examples.find(function (item) {
+      return item._id == req.params.id;
+    });
+    if (!data) {
+      return res.status(404).end();
+    }
+    delete data._id;
+    res.json(data);
   });
 });
 

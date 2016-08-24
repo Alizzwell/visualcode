@@ -6,101 +6,62 @@
   app.factory('userService', function ($http) {
     
     $http.post('/api/users', {})
-    .then(function success(res, status) {
-      console.log(status);
-    }, function error(err) {
-      console.log(err);
+    .then(function success(res) {
+    }, function error(res) {
     });
 
 
     function getUserCanvas(callback) {
       $http.get('/api/canvas')
-      .then(function success(res, status) {
-        console.log(status);
-      }, function error(err) {
-        console.log(err);
+      .then(function success(res) {
+        callback(res.data);
+      }, function error(res) {
       });
     }
 
-    function save(canvas, callback) {
+
+    function getCanvasData(canvas, callback) {
+      $http.get('/api/canvas/' + canvas._id)
+      .then(function success(res) {
+        callback(res.data);
+      }, function error(res) {
+      });
+    }
+
+
+    function saveCanvas(canvas, callback) {
       if (canvas._id) {
-        $http.put('/api/canvas/' + canvas_id, canvas)
-        .then(function success(res, status) {
-          console.log(status);
-        }, function error(err) {
-          console.log(err);
+        $http.put('/api/canvas/' + canvas._id, canvas)
+        .then(function success(res) {
+          callback(res.data);
+        }, function error(res) {
         });
       }
       else {
-        $http.post('/api/canvas')
-        .then(function success(res, status) {
-          console.log(status);
-        }, function error(err) {
-          console.log(err);
+        $http.post('/api/canvas', canvas)
+        .then(function success(res) {
+          callback(res.data);
+        }, function error(res) {
         });
       }
     }
 
-    var savedCanvas = [];
 
-    function add(canvas) {
-      if (!canvas.id) {
-        return false;
-      }
-      
-      if (savedCanvas.some(function (c) {
-        return c.id === canvas.id
-      })) {
-        return false;
-      }
-
-      var obj = {};
-      angular.copy(canvas, obj);
-      savedCanvas.push(obj);
-      $cookies.putObject('thisplay.savedCanvas', savedCanvas);
-      return true;      
-    }
-
-    function update(canvas) {
-      if (!canvas.id) {
-        return false;
-      }
-
-      var idx = findIndex(savedCanvas, function (c) {
-        return c.id == canvas.id;
+    function removeCanvas(canvas, callback) {
+      $http.delete('/api/canvas/' + canvas._id)
+      .then(function success(res) {
+        callback();
+      }, function error(res) {
+        callback();
       });
-
-      if (idx < 0) {
-        return false;
-      }
-
-      var obj = {};
-      angular.copy(canvas, obj);
-      savedCanvas[idx] = obj;
-      $cookies.putObject('thisplay.savedCanvas', savedCanvas);
-      return true;
-    }
-
-    function remove(id) {
-      savedCanvas.splice(findIndex(savedCanvas, function (c) {
-        return c.id == id;
-      }), 1);
-      $cookies.putObject('thisplay.savedCanvas', savedCanvas);
     }
 
     return {
-      data: savedCanvas,
-      add: add,
-      update: update,
-      remove: remove
+      getUserCanvas: getUserCanvas,
+      getCanvasData: getCanvasData,
+      saveCanvas: saveCanvas,
+      removeCanvas: removeCanvas
     };
   });
-
-  function findIndex(arr, callback) {
-    for (var i = 0; i < arr.length; i++) {
-      if (callback(arr[i])) return i;
-    }
-    return -1;
-  }
 
 })(angular);

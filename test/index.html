@@ -36,8 +36,6 @@
 
   <script src="../bower_components/angular-pageslide-directive/dist/angular-pageslide-directive.js"></script>
 
-  <script src="../bower_components/angular-cookies/angular-cookies.js"></script>
-  
   <script src="../bower_components/codemirror/lib/codemirror.js"></script>
   <script src="../bower_components/codemirror/mode/clike/clike.js"></script>
   <script src="../bower_components/codemirror/addon/edit/closebrackets.js"></script>
@@ -45,7 +43,7 @@
   <script src="../bower_components/angular-ui-codemirror/ui-codemirror.js"></script>
   
   <script src="../src/core.js"></script>
-  <script src="../src/service/saved-canvas.js"></script>
+  <script src="../src/service/user-service.js"></script>
   <script src="../src/service/workspace.js"></script>
   <script src="../src/controller/canvas-manager.js"></script>
   <script src="../src/controller/editor.js"></script>
@@ -95,13 +93,13 @@
               </div>
             </div>
 
-            <div class="section-bar" ng-show="getSavedCanvas().length">Saved Canvas</div>
-            <div class="thisplay-list" ng-repeat="item in getSavedCanvas()">
+            <div class="section-bar" ng-init="loadSavedCanvas()" ng-show="savedCanvas.length">Saved Canvas</div>
+            <div class="thisplay-list" ng-repeat="item in savedCanvas">
               <div class="thisplay-list-container">
                 <div class="thisplay-list-item" ng-click="setSavedCanvas(item)">
                   <span class="thumb"></span>
                   <span class="title">{{item.title || "제목 없는 캔버스"}}</span>
-                  <span class="date">{{item.date | date: "y년 M월 d일"}}</span>
+                  <span class="date">{{item.updateDate | date: "y년 M월 d일"}}</span>
                   <span class="remove glyphicon glyphicon-remove" ng-click="removeSavedCanvas(item)"></span>
                 </div>
               </div>
@@ -142,7 +140,7 @@
             </div>
           </div>
           <div class="body">
-            <div class="thisplay-codemirror" ui-codemirror="{onLoad : cmLoadded}" ui-codemirror-opts="cmOptions" ng-model="data.code"></div>
+            <div class="thisplay-codemirror" ui-codemirror="{onLoad : cmLoadded}" ui-codemirror-opts="cmOptions" ng-model="workspace.data.code"></div>
           </div>      
         </div>
 
@@ -150,7 +148,7 @@
           <label>Input Data:</label>
         </div>
         <div class="thisplay-input-area">
-          <textarea class="thisplay-textarea" ng-model="data.input" ng-keydown="onInputChanged()"></textarea>
+          <textarea class="thisplay-textarea" ng-model="workspace.data.input" ng-keydown="onInputChanged()"></textarea>
         </div>
 
         <div style="width: 80%; margin: auto; margin-top: 25px; margin-bottom: 25px;">
@@ -168,7 +166,7 @@
             </button>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btnAddStructure">
               <li role="menuitem" ng-repeat="(type, api) in drawApiList">
-                <div class="item" ng-click="addItem(type)">
+                <div class="item" ng-click="addStructure(type)">
                   <img class="picture" alt="{{type}}" ng-src="../../public/images/{{type}}.png" />
                   <span>{{api.lavel}}</span>
                 </div>
@@ -178,29 +176,29 @@
 
           <hr />
           <div class="structure-list">
-            <div class="item" ng-repeat="(id, type) in structures">
-              <img class="picture" alt="{{type}}" ng-src="../../public/images/{{type}}.png" ng-class="{active: selected.ItemId === id}" ng-click="selectItem(id)" />
-              <span class="glyphicon glyphicon-remove-sign" aria-hidden="true" ng-click="removeItem(id)"></span>
-              <lavel>{{id}}</lavel>
+            <div class="item" ng-repeat="item in getStructures()">
+              <img class="picture" alt="{{item.type}}" ng-src="../../public/images/{{item.type}}.png" ng-class="{active: selectedStructure === item}" ng-click="selectStructure(item)" />
+              <span class="glyphicon glyphicon-remove-sign" aria-hidden="true" ng-click="removeStructure(item)"></span>
+              <lavel>{{item.id}}</lavel>
             </div>
           </div>
           <hr />
 
-          <div ng-show="selected.ItemId && selected.breakpoint">
+          <div ng-show="selectedStructure && selectedBreakpoint">
             <div class="btn-group" uib-dropdown>
               <button id="btnAddDraw" type="button" class="btn btn-default" uib-dropdown-toggle>
                 Add Draw <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="btnAddDraw">
-                <li role="menuitem" ng-repeat="api in drawApiList[structures[selected.ItemId]].apis">
+                <li role="menuitem" ng-repeat="api in drawApiList[selectedStructure.id].apis">
                   <a href="#" ng-click="openAddDrawApiModal(api)" popover-trigger="'mouseenter'" popover-placement="left" uib-popover="{{api.description}}">{{api.name}}</a>
                 </li>
               </ul>
             </div>
 
             <div class="list-group drawapi-list">
-              <div ng-repeat="draw in selected.breakpoint.draws[selected.ItemId]">
-                <a href="#" class="list-group-item">
+              <div ng-repeat="draw in selectedBreakpoint.draws | filter: drawListFilter">
+                <a href="#" ng-click="openModifyDrawApiModal(draw)" class="list-group-item">
                   {{drawApiToString(draw)}}
                   <span class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="removeDrawApi(draw)"></span>
                 </a>
@@ -208,7 +206,7 @@
             </div>
           </div>
           
-          <button type="button" class="btn btn-danger" style="position: absolute; bottom: 20px; right: 20px;" ng-click="removeBp()" ng-show="selected.breakpoint">Remove</button>
+          <button type="button" class="btn btn-danger" style="position: absolute; bottom: 20px; right: 20px;" ng-click="removeBreakpoint()" ng-show="selectedBreakpoint">Remove</button>
         </div>
       </div>
     </pageslide>
@@ -234,8 +232,8 @@
     </div>
   </script>
 
-  <!-- Add DrawApi Modal template -->
-  <script type="text/ng-template" id="add-drawapi-modal.html">
+  <!-- DrawApi Modal template -->
+  <script type="text/ng-template" id="drawapi-modal.html">
     <div class="thisplay-modal">
       <div class="modal-header">
         <h3 class="modal-title">{{api.name}}</h3>
@@ -248,7 +246,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" ng-click="add()">{{modify ? "Modify" : "Add"}}</button>
+        <button type="button" class="btn btn-success" ng-click="save()">{{modify ? "Modify" : "Add"}}</button>
         <button type="button" class="btn btn-default" ng-click="cancel()">Close</button>
       </div>
     </div>

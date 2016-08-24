@@ -10,7 +10,7 @@ var model = {
 router.post('/', function (req, res, next) {
   model.User.findOne({_id: req.cookies.id}, function (err, data) {
     if (data) {
-      return res.status(304).end();
+      return res.status(204).end();
     }
     
     var user = new model.User();
