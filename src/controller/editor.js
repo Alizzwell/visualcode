@@ -44,13 +44,17 @@
         _bp.draws = bp.draws;
         workSpace.data.breaks[i] = _bp;
       });
+
+      if ($scope.selectedBreakpoint) {
+        selectBreakpoint(getBreakpoint($scope.selectedBreakpoint.line));
+      }
     });
 
 
     function selectTheme(theme) {
       $scope.theme = theme;
       editor.setOption("theme", theme);
-    };
+    }
     
 
     function cmLoadded(cm) {
@@ -89,7 +93,7 @@
           }
         }
       });
-    };
+    }
    
 
     function getBreakpoint(line) {
@@ -147,7 +151,7 @@
       if ($scope.selectedBreakpoint === bp) {
         delete $scope.selectedBreakpoint;
       }
-    };
+    }
     
 
     function getLineOnEditor(bp) {

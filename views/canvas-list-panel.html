@@ -26,7 +26,7 @@
       <div class="section-bar" ng-init="loadSavedCanvas()" ng-show="savedCanvas.length">Saved Canvas</div>
       <div class="thisplay-list" ng-repeat="item in savedCanvas">
         <div class="thisplay-list-container">
-          <div class="thisplay-list-item" ng-click="setSavedCanvas(item)">
+          <div class="thisplay-list-item" ng-class="{active: isActiveItem(item)}" ng-click="setSavedCanvas(item)">
             <span class="thumb"></span>
             <span class="title">{{item.title || "제목 없는 캔버스"}}</span>
             <span class="date">{{item.updateDate | date: "y년 M월 d일"}}</span>

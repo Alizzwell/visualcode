@@ -17,12 +17,12 @@
         }, function err() {
 
         });
-    };
+    }
     
 
     function getStructures() {
       return workSpace.data.structures;
-    };
+    }
 
 
     function addStructure(type) {
@@ -42,12 +42,12 @@
 
       structures.push(item);
       selectStructure(item);
-    };
+    }
     
 
     function selectStructure(item) {
       $scope.selectedStructure = item;
-    };
+    }
     
 
     function removeStructure(item) {
@@ -68,7 +68,7 @@
       if ($scope.selectedStructure == item) {
         delete $scope.selectedStructure;
       }
-    };
+    }
 
 
     function drawListFilter(item) {
@@ -76,7 +76,7 @@
         return false;
       }
       return $scope.selectedStructure.id === item.structure.id;
-    };
+    }
 
     
     function openAddDrawApiModal(api) {
@@ -87,10 +87,8 @@
         templateUrl: 'drawapi-modal.html',
         controller: 'drawApiModalCtrl',
         resolve: {
-          resolve: function () {
-            return {
-              api: api
-            };
+          api: function () {
+            return api;
           }
         }
       });
@@ -99,14 +97,13 @@
         function success(output) {
           var draw = {
             structure: structure,
-            api: api,
-            data: output
+            api: output
           };
           breakpoint.draws.push(draw);
         }, function dismissed() {
 
         });
-    };
+    }
     
 
     function openModifyDrawApiModal(draw) {
@@ -117,46 +114,50 @@
         templateUrl: 'drawapi-modal.html',
         controller: 'drawApiModalCtrl',
         resolve: {
-          resolve: function () {
-            return {
-              api: draw.api,
-              data: draw.data
-            };
+          api: function () {
+            return draw.api;
           }
         }
       });
 
       modalInstance.result.then(
         function success(output) {
-          draw.data = output;
+          draw.api = output;
         }, function dismissed() {
 
         });
-    };
+    }
 
 
     function drawApiToString(draw) {
       var str = draw.api.name;
-      str += "(";
-      for (var key in draw.data) {
-        str += draw.data[key];
-        str += ", ";
+      
+      if (draw.api.params.length == 0) {
+        return str + "()";
       }
+
+      str += "(";
+      draw.api.params.forEach(function (param) {
+        if (param.value) {
+          str += param.value;
+          str += ", ";
+        }
+      });
       str = str.substring(0, str.length - 2);
       str += ")";
       return str;
-    };
+    }
 
 
     function removeDrawApi(draw) {
       var draws = $scope.selectedBreakpoint.draws;
       draws.splice(draws.indexOf(draw), 1);  
-    };
+    }
 
 
     function removeBreakpoint() {
       $scope.$parent.removeBreakpoint($scope.selectedBreakpoint);
-    };
+    }
 
 
 
@@ -176,39 +177,22 @@
 
   
   
-  app.controller('drawApiModalCtrl', function ($scope, $uibModalInstance, resolve) {
-    $scope.api = resolve.api;
-
-    if (resolve.data) {
-      $scope.modify = true;
-    }
-
-    $scope.output = {};
-    angular.copy(resolve.data, $scope.output);
-
+  app.controller('drawApiModalCtrl', function ($scope, $uibModalInstance, api) {
+    $scope.api = angular.copy(api);
 
     $scope.save = function () {
-      var requires = [];
-      var error = false;
-      
+      $scope.error = false;
       $scope.api.params.forEach(function (param) {
-        if (!$scope.output[param.name]) {
-          if (param.optional) {
-            delete $scope.output[param.name];
-          }
-          else {
-            error = true;
-            requires.push(param.name);
-          }
+        if (!param.optional && !param.value) {
+          $scope.error = true;
         }
       });
 
-      if (error) {
-        $scope.requires = requires;
+      if ($scope.error) {
         return;
       }
 
-      $uibModalInstance.close($scope.output);
+      $uibModalInstance.close($scope.api);
     };
 
     $scope.cancel = function () {

@@ -11,7 +11,8 @@ var structureSchema = new Schema({
 var apiParamSchema = new Schema({
   name: String,
   description: String,
-  optional: {type: Boolean, default: false}
+  optional: {type: Boolean, default: false},
+  value: String
 }, {_id: false});
 
 
@@ -24,8 +25,7 @@ var apiSchema = new Schema({
 
 var darwSchema = new Schema({
   structure: structureSchema,
-  api: apiSchema,
-  data: Schema.Types.Mixed
+  api: apiSchema
 }, {_id: false});
 
 

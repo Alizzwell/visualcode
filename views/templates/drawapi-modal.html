@@ -5,9 +5,9 @@
       {{api.description}}
     </div>
     <div class="modal-body">
-      <div class="form-group" ng-class="{'has-error': requires && requires.indexOf(param.name) != -1}" ng-repeat="param in api.params">
+      <div class="form-group" ng-class="{'has-error': error && !param.optional && !param.value}" ng-repeat="param in api.params">
         <label for="title" class="control-label">{{param.name}}{{param.optional ? "(optional)" : ""}}:</label>
-        <input type="text" class="form-control" ng-model="output[param.name]" placeholder="{{param.description}}" />
+        <input type="text" class="form-control" ng-model="param.value" placeholder="{{param.description}}" />
       </div>
     </div>
     <div class="modal-footer">

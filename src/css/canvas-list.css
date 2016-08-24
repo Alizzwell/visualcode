@@ -104,6 +104,15 @@
   color: #b3b3b3;
 }
 
+.thisplay-list-item.active {
+  background: rgba(155, 255, 196, 0.35);
+}
+
+.thisplay-list-item.active:hover {
+  background: rgba(55, 169, 96, 0.48);
+}
+
+
 .thisplay-list-item .thisplay-btn-save {
   position: absolute;
   top: 10px;

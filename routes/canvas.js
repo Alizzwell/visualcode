@@ -20,6 +20,10 @@ router.get('/', function (req, res, next) {
 
 
 router.post('/', function (req, res, next) {
+  if (req.body._id || req.body.id) {
+    return res.status(400).end();
+  }
+
   var canvas = new model.Canvas(req.body);
   canvas._owner = req.cookies.id;
 
@@ -39,7 +43,7 @@ router.post('/', function (req, res, next) {
         return res.status(401).end();
       }
 
-      res.status(201).send(canvas);
+      res.status(201).json(canvas);
     });    
   });
 });
@@ -99,7 +103,7 @@ router.delete('/:id', function (req, res, next) {
   .exec(function (err, result) {
     if (err) return next(err);
 
-    if (result.n == 0) {
+    if (result.result.n == 0) {
       return res.status(401).end();
     }
 
