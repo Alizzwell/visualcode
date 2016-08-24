@@ -3,7 +3,7 @@
   
   var app = angular.module('thisplayApp');
 
-  app.controller('editorCtrl', function ($scope, $http, $cookies, workSpace) {
+  app.controller('editorCtrl', function ($scope, $http, workSpace) {
 
     $scope.$on('initScope', function () {
       delete $scope.selectedBreakpoint;
