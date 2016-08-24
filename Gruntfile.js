@@ -30,6 +30,7 @@ module.exports = function (grunt) {
 
   var jsFiles = [
     'src/*.js',
+    'src/filter/*.js',
     'src/service/*.js',
     'src/controller/*.js'
   ];
