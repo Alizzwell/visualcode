@@ -90,7 +90,7 @@
           $rootScope.$broadcast('editorCtrl.redrawBreakpoints');
           lastSavedData = workSpace.getInitData();
         }, function err() {
-
+          loadExamples();
         });
     }
 
