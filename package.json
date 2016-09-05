@@ -1,6 +1,6 @@
 {
   "name": "thisplay",
-  "version": "0.0.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "start": "set NODE_ENV=production&&node ./bin/www"

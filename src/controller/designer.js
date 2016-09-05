@@ -32,7 +32,7 @@
         type: type
       };
 
-      function test() {
+      function test(s) {
         return s.id == item.id;
       }
       var surfix = 1;

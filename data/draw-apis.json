@@ -27,6 +27,44 @@
     "apis": []
   },
 
+  "stack": {
+    "lavel": "Stack",
+    "apis": [{
+      "name": "push",
+      "description": "Stack에 데이터를 삽입한다..",
+      "params": [
+        {"name": "value", "description": "삽입할 데이터 값"}
+      ]
+    }, {
+      "name": "pop",
+      "description": "Stack에서 데이터를 제거한다.",
+      "params": []
+    }, {
+      "name": "clear",
+      "description": "Stack을 비운다.",
+      "params": []
+    }]
+  },
+
+  "queue": {
+    "lavel": "Queue",
+    "apis": [{
+      "name": "inqueue",
+      "description": "Queue에 데이터를 삽입한다.",
+      "params": [
+        {"name": "value", "description": "삽입할 데이터 값"}
+      ]
+    }, {
+      "name": "dequeue",
+      "description": "Queue에서 데이터를 제거한다.",
+      "params": []
+    }, {
+      "name": "clear",
+      "description": "Queue를 비운다.",
+      "params": []
+    }]
+  },
+
   "graph": {
     "lavel": "Graph",
     "apis": [{
@@ -35,6 +73,13 @@
       "params": [
         {"name": "id", "description": "노드의 id"}, 
         {"name": "lavel", "description": "노드에 입력할 라벨", "optional": true}
+      ]
+    }, {
+      "name": "makeNodes",
+      "description": "그래프에 일련번호를 id로 하는 노드를 생성한다.",
+      "params": [
+        {"name": "number", "description": "생성할 노드 갯수"},
+        {"name": "id", "description": "일련번호 시작 id"}
       ]
     }, {
       "name": "makeEdge",
@@ -62,6 +107,14 @@
         {"name": "src", "description": "하이라이트할 간선의 시작노드 id"}, 
         {"name": "dest", "description": "하이라이트할 간선의 끝노드 id"}
       ]
+    }, {
+      "name": "clearHighlight",
+      "description": "모든 하이라이트를 지운다.",
+      "params": []
+    }, {
+      "name": "clear",
+      "description": "그래프를 지운다.",
+      "params": []
     }]
   },
 
@@ -72,6 +125,23 @@
 
   "tree": {  
     "lavel": "Tree",
-    "apis": []
+    "apis": [{
+      "name": "addChild",
+      "description": "부모노드와 자식노드를 생성하고 연결한다.",
+      "params": [
+        {"name": "parent", "description": "부모 노드의 id"},
+        {"name": "child", "description": "자식 노드의 id"}
+      ]
+    }, {
+      "name": "highlight",
+      "description": "특정 노드를 하이라이트한다.",
+      "params": [
+        {"name": "id", "description": "하이라이트할 노드의 id"}
+      ]
+    }, {
+      "name": "clear",
+      "description": "Tree를 비운다.",
+      "params": []
+    }]
   }
 }
