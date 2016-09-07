@@ -1,7 +1,7 @@
 ;(function (angular, JSON) {
   'use strict';
   
-  var app = angular.module('thisplayApp');
+  var app = angular.module('visualcodeApp');
 
   app.factory('workSpace', function (userService) {
     

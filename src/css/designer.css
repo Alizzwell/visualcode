@@ -1,39 +1,39 @@
-/* thisplay-designer css */
+/* vico-designer css */
 
-.thisplay-designer {
+.vico-designer {
   border: 1px solid #888;
   padding: 30px;
   background: #ccc;
 }
 
-.thisplay-designer .dropdown-menu {
+.vico-designer .dropdown-menu {
   border-radius: 5px;
 }
 
-.thisplay-designer .dropdown-menu .item {
+.vico-designer .dropdown-menu .item {
   border: 1px solid #dddddd;
   height: 70px;
   width: 200px;
 }
 
-.thisplay-designer .dropdown-menu .item:before {
+.vico-designer .dropdown-menu .item:before {
   content: "";
   display: inline-block;
   vertical-align: middle;
   height: 100%;
 }
 
-.thisplay-designer .dropdown-menu .item * {
+.vico-designer .dropdown-menu .item * {
   display: inline-block;
   vertical-align: middle;
 }
 
-.thisplay-designer .dropdown-menu .item:hover {
+.vico-designer .dropdown-menu .item:hover {
   background-color: #eee;
   cursor: pointer;
 }
 
-.thisplay-designer .dropdown-menu .item .picture {
+.vico-designer .dropdown-menu .item .picture {
   width: 50px;
   height: 50px;
   background-color: #fff;
@@ -42,7 +42,7 @@
   margin-right: 10px;
 }
 
-.thisplay-designer .dropdown-menu .item span {
+.vico-designer .dropdown-menu .item span {
   font-size: 20px;
 }
 
@@ -92,22 +92,22 @@
   margin-left: 5px;
 }
 
-.thisplay-designer .drawapi-list {
+.vico-designer .drawapi-list {
   margin-top: 10px;
 }
 
-.thisplay-designer .drawapi-list .list-group-item {
+.vico-designer .drawapi-list .list-group-item {
   font-size: 20px;
   height: 48px;
 }
 
-.thisplay-designer .drawapi-list .glyphicon {
+.vico-designer .drawapi-list .glyphicon {
   position: absolute;
   right: 10px;
   top: 13px;
   color: #555;
 }
 
-.thisplay-designer .drawapi-list .glyphicon:hover {
+.vico-designer .drawapi-list .glyphicon:hover {
   color: #922; 
 }

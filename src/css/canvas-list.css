@@ -1,10 +1,10 @@
-/* thisplay-canvas-list css */
+/* vico-canvas-list css */
 
-.thisplay-canvas-list {
+.vico-canvas-list {
   height: 100%;
 }
 
-.thisplay-canvas-list-header {
+.vico-canvas-list-header {
   width: 100%; 
   height: 50px;
   position: absolute;
@@ -12,25 +12,25 @@
   color:#ddd;
 }
 
-.thisplay-canvas-list-container {
+.vico-canvas-list-container {
   width: 100%;
   height: 100%;
   padding-top: 50px;
   background-color: #354;
 }
 
-.thisplay-canvas-list .btn-glyphicon {
+.vico-canvas-list .btn-glyphicon {
   padding:8px;
   background:#ffffff;
   margin-right:4px;
 }
 
-.thisplay-canvas-list .icon-btn {
+.vico-canvas-list .icon-btn {
   padding: 1px 15px 3px 2px;
   border-radius:50px;
 }
 
-.thisplay-canvas-list .section-bar {
+.vico-canvas-list .section-bar {
   height: 32px;
   line-height: 32px;
   text-transform: uppercase;
@@ -41,23 +41,23 @@
   text-shadow: 0 1px 0 #000;
 }
 
-.thisplay-list-container {
+.vico-list-container {
   border-bottom: 1px solid #222;
   margin: 0;
 }
 
-.thisplay-list-item {
+.vico-list-item {
   position: relative;
   cursor: pointer;
   height: 50px;
   padding: 5px;
 }
 
-.thisplay-list-item:hover {
+.vico-list-item:hover {
   background: rgba(255, 255, 255, 0.15);
 }
 
-.thisplay-list-item .thumb{
+.vico-list-item .thumb{
   display: inline-block;
   width: 40px;
   height: 40px;
@@ -67,7 +67,7 @@
   background-size: 40px 40px;
 }
 
-.thisplay-list-item .title{
+.vico-list-item .title{
   position: absolute;
   left: 50px;
   color: #ddd;
@@ -81,7 +81,7 @@
   line-height: 40px;
 }
 
-.thisplay-list-item .date{
+.vico-list-item .date{
   position: absolute;
   left: 50px;
   color: #909090;
@@ -92,7 +92,7 @@
   top: 14px;
 }
 
-.thisplay-list-item .remove {
+.vico-list-item .remove {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -100,20 +100,20 @@
   color: #7a7a7a;
 }
 
-.thisplay-list-item .remove:hover {
+.vico-list-item .remove:hover {
   color: #b3b3b3;
 }
 
-.thisplay-list-item.active {
+.vico-list-item.active {
   background: rgba(155, 255, 196, 0.35);
 }
 
-.thisplay-list-item.active:hover {
+.vico-list-item.active:hover {
   background: rgba(55, 169, 96, 0.48);
 }
 
 
-.thisplay-list-item .thisplay-btn-save {
+.vico-list-item .vico-btn-save {
   position: absolute;
   top: 10px;
   right: 10px;

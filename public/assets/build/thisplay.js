@@ -55925,7 +55925,7 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
   'use strict';
   
   /* define module */
-  angular.module('thisplayApp', [
+  angular.module('visualcodeApp', [
     'ui.bootstrap', 
     'pageslide-directive',
     'ui.codemirror'
@@ -55936,9 +55936,9 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
 ;(function (angular) {
   'use strict';
   
-  var app = angular.module('thisplayApp');
+  var app = angular.module('visualcodeApp');
 
-  app.filter('thisplayDate', function ($filter) {
+  app.filter('vicoDate', function ($filter) {
     return function (date) {
       var diff = new Date().getTime() - new Date(date).getTime();
       diff /= (60 * 1000);
@@ -55976,7 +55976,7 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
 ;(function (angular) {
   'use strict';
   
-  var app = angular.module('thisplayApp');
+  var app = angular.module('visualcodeApp');
 
   app.factory('userService', function ($http) {
     
@@ -56043,7 +56043,7 @@ uiCodemirrorDirective.$inject = ["$timeout", "uiCodemirrorConfig"];
 ;(function (angular, JSON) {
   'use strict';
   
-  var app = angular.module('thisplayApp');
+  var app = angular.module('visualcodeApp');
 
   app.factory('workSpace', function (userService) {
     

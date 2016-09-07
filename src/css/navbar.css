@@ -1,23 +1,23 @@
-/* thisplay-navbar css */
+/* vico-navbar css */
 
-.thisplay-navbar {
+.vico-navbar {
   min-width: 500px !important;
 }
 
-.thisplay-navbar .section {
+.vico-navbar .section {
   height: 48px;
   float: left;
 }
 
-.thisplay-navbar a {
+.vico-navbar a {
   cursor: pointer;
 }
 
-.thisplay-navbar a:hover {
+.vico-navbar a:hover {
   color: #eee;
 }
 
-.thisplay-navbar .title {
+.vico-navbar .title {
   font-size: 18px;
   line-height: 50px;
   max-width: 400px;
@@ -29,7 +29,7 @@
   display: inline-block;
 }
 
-.thisplay-navbar .thisplay-btn-save {
+.vico-navbar .thisplay-btn-save {
   padding: 6px 12px;
   margin-top: 7px;
   margin-bottom: 5px;

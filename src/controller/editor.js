@@ -1,7 +1,7 @@
 ;(function (angular) {
   'use strict';
   
-  var app = angular.module('thisplayApp');
+  var app = angular.module('visualcodeApp');
 
   app.controller('editorCtrl', function ($scope, $http, workSpace) {
 

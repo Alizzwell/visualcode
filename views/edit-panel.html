@@ -1,5 +1,5 @@
-<div class="thisplay-edit-panel">
-  <div class="thisplay-editor">
+<div class="vico-edit-panel">
+  <div class="vico-editor">
     <div class="header">
       <label>Source Code:</label>
       <span>Select a theme: </span>
@@ -13,15 +13,15 @@
       </div>
     </div>
     <div class="body">
-      <div class="thisplay-codemirror" ui-codemirror="{onLoad : cmLoadded}" ui-codemirror-opts="cmOptions" ng-model="workspace.data.code"></div>
+      <div class="vico-codemirror" ui-codemirror="{onLoad : cmLoadded}" ui-codemirror-opts="cmOptions" ng-model="workspace.data.code"></div>
     </div>      
   </div>
 
   <div style="width: 100%; position: relative; height: 50px; line-height: 50px;">
     <label>Input Data:</label>
   </div>
-  <div class="thisplay-input-area">
-    <textarea class="thisplay-textarea" ng-model="workspace.data.input" ng-keydown="onInputChanged()"></textarea>
+  <div class="vico-input-area">
+    <textarea class="vico-textarea" ng-model="workspace.data.input" ng-keydown="onInputChanged()"></textarea>
   </div>
 
   <div style="width: 80%; margin: auto; margin-top: 25px; margin-bottom: 25px;">

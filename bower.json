@@ -1,12 +1,12 @@
 {
-  "name": "thisplay",
+  "name": "visualcode",
   "description": "",
   "main": "",
   "authors": [
     "baleian <baleian90@gmail.com>"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/baleian/thisplay",
+  "homepage": "https://github.com/Alizzwell/visualcode",
   "private": true,
   "ignore": [
     "**/.*",

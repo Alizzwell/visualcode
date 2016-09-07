@@ -9,7 +9,7 @@ var app = express();
 
 
 var mongoose = require('./dbcon')(
-  app.get('env') === 'development' ? 'test' : 'thisplay');
+  app.get('env') === 'development' ? 'test' : 'visualcode');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>(ADMIN) This-Play</title>
+  <title>(ADMIN) Visual Code</title>
   <meta http-equiv="X-UA-Compatible" content="IE=11" />
   <meta charset="UTF-8" />
 
@@ -38,23 +38,23 @@
   <script src="/angular-ui-codemirror/ui-codemirror.js"></script>
   
   <script src="/core.js"></script>
-  <script src="/filter/thisplay-date.js"></script>
+  <script src="/filter/visualcode-date.js"></script>
   <script src="/admin/service/admin-service.js"></script>
   <script src="/service/workspace.js"></script>
   <script src="/admin/controller/examples-manager.js"></script>
   <script src="/controller/editor.js"></script>
   <script src="/controller/designer.js"></script>  
 </head>
-<body ng-app="thisplayApp" ng-cloak>
+<body ng-app="visualcodeApp" ng-cloak>
   <div ng-controller="examplesManagerCtrl">
     <% include navbar.html %>
 
     <pageslide ps-open="canvasListOpen" ps-side="left" ps-push="true" ps-size="290px" ps-click-outside="false" ps-key-listener="true">
-      <div class="thisplay-canvas-list" id="slider-canvas-list">
-        <div class="thisplay-canvas-list-header">
+      <div class="vico-canvas-list" id="slider-canvas-list">
+        <div class="vico-canvas-list-header">
           <span>검색기능넣기</span>
         </div>
-        <div class="thisplay-canvas-list-container">
+        <div class="vico-canvas-list-container">
           <div class="scrollable">
             <div style="padding: 20px;">
               <a class="btn icon-btn btn-default btn-lg btn-block" ng-click="newCanvas()">
@@ -64,21 +64,21 @@
             </div>
 
             <div class="section-bar">Current Canvas</div>
-            <div class="thisplay-list">
-              <div class="thisplay-list-container">
-                <div class="thisplay-list-item">
+            <div class="vico-list">
+              <div class="vico-list-container">
+                <div class="vico-list-item">
                   <span class="thumb"></span>
                   <span class="title" style="padding-right: 60px;">{{getTitle() || "제목 없는 캔버스"}}</span>
                   <span class="date">no unsaved changes</span>
-                  <span class="thisplay-btn-save" ng-class="{enable: isChanged()}" ng-click="saveCanvas()">Save</span>
+                  <span class="vico-btn-save" ng-class="{enable: isChanged()}" ng-click="saveCanvas()">Save</span>
                 </div>
               </div>
             </div>
 
             <div class="section-bar" ng-init="loadExamples()" ng-show="examples.length">Examples</div>
-            <div class="thisplay-list" ng-repeat="item in examples">
-              <div class="thisplay-list-container">
-                <div class="thisplay-list-item" ng-class="{active: isActiveItem(item)}" ng-click="setExample(item)">
+            <div class="vico-list" ng-repeat="item in examples">
+              <div class="vico-list-container">
+                <div class="vico-list-item" ng-class="{active: isActiveItem(item)}" ng-click="setExample(item)">
                   <span class="thumb"></span>
                   <span class="title">{{item.title || "제목 없는 캔버스"}}</span>
                   <span class="date">예시</span>
@@ -92,7 +92,7 @@
     </pageslide>
   </div>
 
-  <div class="thisplay-container" ng-controller="editorCtrl">
+  <div class="vico-container" ng-controller="editorCtrl">
     <div class="scrollable">
       <% include edit-panel.html %>
     </div>

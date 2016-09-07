@@ -44,7 +44,7 @@ module.exports = function (grunt) {
     concat: {
       basic: {
         src: jsDependenciesFiles.concat(jsFiles),
-        dest: 'public/assets/build/thisplay.js'
+        dest: 'public/assets/build/visualcode.js'
       }
     },
     uglify: {
@@ -54,14 +54,14 @@ module.exports = function (grunt) {
         preserveComments: false
       },
       build: {
-        src: 'public/assets/build/thisplay.js',
-        dest: 'public/assets/build/thisplay.min.js'
+        src: 'public/assets/build/visualcode.js',
+        dest: 'public/assets/build/visualcode.min.js'
       }
     },
     cssmin: {
       target: {
         files: {
-          'public/assets/build/thisplay.min.css':
+          'public/assets/build/visualcode.min.css':
           cssFiles
         }
       }

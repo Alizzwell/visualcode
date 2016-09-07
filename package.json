@@ -1,9 +1,9 @@
 {
-  "name": "thisplay",
+  "name": "visualcode",
   "version": "0.2.0",
   "private": true,
   "scripts": {
-    "start": "set NODE_ENV=production&&node ./bin/www"
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "body-parser": "^1.15.2",

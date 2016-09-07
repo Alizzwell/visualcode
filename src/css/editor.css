@@ -1,6 +1,6 @@
-/* thisplay-editor css */
+/* vico-editor css */
 
-.thisplay-editor .header {
+.vico-editor .header {
   position: relative;
   width: 100%;
   height: 50px;
@@ -8,35 +8,35 @@
   line-height: 50px;
 }
 
-.thisplay-editor .body {
+.vico-editor .body {
   width: 100%;
   height: 100%;
   margin-top: -50px;
   padding-top: 50px;
 }
 
-.thisplay-codemirror {
+.vico-codemirror {
   height: 100%;
 }
 
-.thisplay-editor .CodeMirror {
+.vico-editor .CodeMirror {
   border: 1px solid #aaa;
   height: 100%;
 }
 
-.thisplay-editor .CodeMirror .breakpoints { 
+.vico-editor .CodeMirror .breakpoints { 
   width: 1.0em; 
 }
 
-.thisplay-editor .CodeMirror-gutter-elt .breakpoint { 
+.vico-editor .CodeMirror-gutter-elt .breakpoint { 
   color: #933;
 }
 
-.thisplay-editor .CodeMirror-gutter-elt .breakpoint:hover { 
+.vico-editor .CodeMirror-gutter-elt .breakpoint:hover { 
   cursor: pointer;
 }
 
-.thisplay-editor .CodeMirror-gutter-elt .breakpoint.active {
+.vico-editor .CodeMirror-gutter-elt .breakpoint.active {
   color: rgba(241, 20, 241, 1);
 }
 

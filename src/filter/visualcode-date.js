@@ -1,9 +1,9 @@
 ;(function (angular) {
   'use strict';
   
-  var app = angular.module('thisplayApp');
+  var app = angular.module('visualcodeApp');
 
-  app.filter('thisplayDate', function ($filter) {
+  app.filter('vicoDate', function ($filter) {
     return function (date) {
       var diff = new Date().getTime() - new Date(date).getTime();
       diff /= (60 * 1000);

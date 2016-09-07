@@ -17,20 +17,20 @@
       background-color: #eee;
     }
 
-    .thisplay-designer {
+    .vico-designer {
       width: 100%;
       height: 100%;
       border-top-left-radius: 30px;
     }
 
-    .thisplay-modal {
+    .vico-modal {
       z-index: 9999;
     }
   </style>
 </head>
 <body ng-app="myApp">
   <div ng-controller="myCtrl" style="width: 400px; height: 100%; padding-top: 50px; position: absolute; right: 0;">
-    <div class="thisplay-designer" ng-init="loadDrawApiList()">
+    <div class="vico-designer" ng-init="loadDrawApiList()">
       <div class="btn-group" uib-dropdown>
         <button id="btnAddStructure" type="button" class="btn btn-primary" uib-dropdown-toggle>
           Add Structure <span class="caret"></span>
@@ -81,7 +81,7 @@
 
   <!-- Add DrawApi Modal template -->
   <script type="text/ng-template" id="add-drawapi-modal.html">
-    <div class="thisplay-modal">
+    <div class="vico-modal">
       <div class="modal-header">
         <h3 class="modal-title">{{api.name}}</h3>
         {{api.description}}
