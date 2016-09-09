@@ -2,6 +2,12 @@
   "chart": {
     "lavel": "Chart",
     "apis": [{
+      "name": "init",
+      "description": "Chart를 특정 size로 초기화시킨다.",
+      "params": [
+        {"name": "size", "description": "차트의 전체 사이즈"}
+      ]
+    },{
       "name": "setData",
       "description": "Chart에 데이터를 입력한다.",
       "params": [
@@ -19,7 +25,12 @@
         {"name": "index1", "description": "swap할 위치 1"},
         {"name": "index2", "description": "swap할 위치 2"}
       ]
-    }]
+    }, {
+      "name": "clear",
+      "description": "Chart 데이터를 제거한다.",
+      "params": []
+    }
+	]
   },
 
   "array": {

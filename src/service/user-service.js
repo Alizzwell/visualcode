@@ -56,11 +56,23 @@
       });
     }
 
+
+    function upload(data, callback) {
+      $http.post('/api/canvas/upload', data)
+      .then(function success(res) {
+        callback(null, res.data);
+      }, function error(res) {
+        callback(res);
+      });
+    }
+
+
     return {
       getUserCanvas: getUserCanvas,
       getCanvasData: getCanvasData,
       saveCanvas: saveCanvas,
-      removeCanvas: removeCanvas
+      removeCanvas: removeCanvas,
+      upload: upload
     };
   });
 
