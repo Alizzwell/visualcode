@@ -49,6 +49,11 @@ router.post('/', function (req, res, next) {
 });
 
 
+router.post('/upload', function (req, res, next) {
+    res.status(201).json(req.body);
+});
+
+
 router.get('/:id', function (req, res, next) {
   model.Canvas
   .findOne({_id: req.params.id})

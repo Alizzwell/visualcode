@@ -1,6 +1,6 @@
 ;(function (angular) {
   'use strict';
-  
+
   var app = angular.module('visualcodeApp');
 
   app.controller('editorCtrl', function ($scope, $http, workSpace) {
@@ -27,7 +27,7 @@
     $scope.$on('initScope', function () {
       delete $scope.selectedBreakpoint;
     });
-    
+
 
     $scope.$on('editorCtrl.syncBreaksLine', function () {
       getEachBreakpointOnEditor(function (bp, line) {
@@ -55,7 +55,7 @@
       $scope.theme = theme;
       editor.setOption("theme", theme);
     }
-    
+
 
     function cmLoadded(cm) {
       editor = cm;
@@ -94,7 +94,7 @@
         }
       });
     }
-   
+
 
     function getBreakpoint(line) {
       var info = editor.lineInfo(line);
@@ -131,7 +131,7 @@
       });
       bp.breakpoints.setAttribute("class", "breakpoint active");
     }
-    
+
 
     function getEachBreakpointOnEditor(callback) {
       for (var i = editor.firstLine(); i <= editor.lastLine(); i++) {
@@ -152,7 +152,7 @@
         delete $scope.selectedBreakpoint;
       }
     }
-    
+
 
     function getLineOnEditor(bp) {
       for (var i = editor.firstLine(); i <= editor.lastLine(); i++) {
@@ -164,12 +164,27 @@
     }
 
 
+    function upload() {
+        getEachBreakpointOnEditor(function (bp, line) {
+          bp.line = line;
+        });
+
+        workSpace.upload(function (err, data) {
+          if (err) {
+            // error handle
+            console.log(err);
+            return;
+          }
+          console.log(JSON.stringify(data));
+        });
+    }
+
 
     $scope.selectTheme = selectTheme;
     $scope.cmLoadded = cmLoadded;
     $scope.removeBreakpoint = removeBreakpoint;
+    $scope.upload = upload;
 
   });
 
 })(angular);
-
