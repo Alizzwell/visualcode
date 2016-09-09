@@ -154,8 +154,8 @@ function gdbProcessing(gdb, design, done) {
 
 /* useful Functions */
 function getCompleteStreamData(str) {
-  if (str.match(/\n\(gdb\) $/g)) {
-    return str.replace(/\n\(gdb\) $/g, '');
+  if (str.match(/\(gdb\) $/g)) {
+    return str.replace(/\(gdb\) $/g, '');
   }
   return false;
 }

@@ -1,4 +1,7 @@
 var express = require('express');
+var async = require('async');
+var fs = require('fs');
+var exec = require('child_process').exec;
 var router = express.Router();
 
 var model = {
@@ -44,13 +47,8 @@ router.post('/', function (req, res, next) {
       }
 
       res.status(201).json(canvas);
-    });    
+    });
   });
-});
-
-
-router.post('/upload', function (req, res, next) {
-    res.status(201).json(req.body);
 });
 
 
@@ -69,7 +67,7 @@ router.get('/:id', function (req, res, next) {
     if (data._owner != req.cookies.id) {
       return res.status(401).end();
     }
-    
+
     res.status(200).json(data);
   });
 });
@@ -126,7 +124,46 @@ router.delete('/:id', function (req, res, next) {
       }
       res.status(204).end();
     });
-    
+
+  });
+});
+
+
+router.post('/upload', function (req, res, next) {
+  if (!req.cookies.id) {
+    return res.status(401).end();
+  }
+
+  var resData = req.body;
+  var sourceFile = `tmp/${req.cookies.id}.cpp`;
+  var binaryFile = `tmp/${req.cookies.id}.out`;
+  var designFile = `tmp/${req.cookies.id}.json`;
+  var inputFile = `tmp/${req.cookies.id}.txt`;
+
+  async.waterfall([
+    function (callback) {
+      fs.writeFile(sourceFile, req.body.code, callback);
+    },
+    function (callback) {
+      exec(`g++ -g ${sourceFile} -o ${binaryFile}`, callback);
+    },
+    function (stdout, stderr, callback) {
+      fs.writeFile(designFile, JSON.stringify(req.body.design), callback);
+    },
+    function (callback) {
+      if (!req.body.input) {
+        return callback();
+      }
+      fs.writeFile(inputFile, req.body.input, callback);
+    },
+    function (callback) {
+      exec(`node gdb-script.js ${sourceFile} ${binaryFile} ${designFile} ${inputFile}`, callback);
+    },
+    function (stdout, stderr, callback) {
+      res.status(201).json(JSON.parse(stdout));
+    }
+  ], function (err) {
+    throw err;
   });
 });
 
