@@ -1,18 +1,20 @@
 ;(function (angular) {
   'use strict';
-  
+
   var app = angular.module('visualcodeApp');
 
-  app.controller('canvasManagerCtrl', function ($scope, $rootScope, $http, $uibModal, workSpace, userService) {
-    
+  app.controller('canvasManagerCtrl', function ($scope, $http,
+    $uibModal, workSpace, userService) {
+
     var lastSavedData = workSpace.dumpData();
+    $scope.containerMode = 'editor';
 
 
     function getTitle() {
       return workSpace.data.title;
     }
-    
-    
+
+
     function isChanged() {
       return JSON.stringify(angular.copy(lastSavedData)) !==
        JSON.stringify(angular.copy(workSpace.data));
@@ -25,16 +27,17 @@
 
 
     function newCanvas() {
-      $rootScope.$broadcast('initScope');
+      openEditor();
+      $scope.$broadcast('initScope');
       workSpace.setInitData();
       lastSavedData = workSpace.dumpData();
     }
-    
+
 
     function saveCanvas() {
-      $rootScope.$broadcast('editorCtrl.syncBreaksLine');
+      $scope.$broadcast('editorCtrl.syncBreaksLine');
       workSpace.save(function () {
-        $rootScope.$broadcast('editorCtrl.redrawBreakpoints');
+        $scope.$broadcast('editorCtrl.redrawBreakpoints');
         lastSavedData = workSpace.dumpData();
         loadSavedCanvas();
       });
@@ -46,16 +49,17 @@
         $scope.savedCanvas = data;
       });
     }
-    
+
 
     function setSavedCanvas(item) {
       if (item.removing) {
         return;
       }
       userService.getCanvasData(item, function (canvas) {
-        $rootScope.$broadcast('initScope');
+        openEditor();
+        $scope.$broadcast('initScope');
         workSpace.data = canvas;
-        $rootScope.$broadcast('editorCtrl.redrawBreakpoints');
+        $scope.$broadcast('editorCtrl.redrawBreakpoints');
         lastSavedData = workSpace.dumpData();
       });
     }
@@ -80,14 +84,15 @@
 
         });
     }
-    
+
 
     function setExample(item) {
       $http.get('/api/examples/' + item._id).then(
         function success(res) {
-          $rootScope.$broadcast('initScope');
+          openEditor();
+          $scope.$broadcast('initScope');
           workSpace.data = res.data;
-          $rootScope.$broadcast('editorCtrl.redrawBreakpoints');
+          $scope.$broadcast('editorCtrl.redrawBreakpoints');
           lastSavedData = workSpace.getInitData();
         }, function err() {
           loadExamples();
@@ -115,6 +120,36 @@
     }
 
 
+    function isEditor() {
+      return $scope.containerMode == 'editor';
+    }
+
+    function openEditor() {
+      $scope.containerMode = 'editor'
+    }
+
+    function isView() {
+      return $scope.containerMode == 'view';
+    }
+
+    function openView() {
+      $scope.containerMode = 'view';
+    }
+
+
+    function upload() {
+      $scope.$broadcast('editorCtrl.syncBreaksLine');
+      workSpace.upload(function (err, data) {
+        if (err) {
+          // error handle
+          console.log(err);
+          return;
+        }
+        $scope.$broadcast('canvasViewCtrl.load', data);
+        openView();
+      });
+    }
+
 
     $scope.getTitle = getTitle;
     $scope.isChanged = isChanged;
@@ -127,6 +162,11 @@
     $scope.loadExamples = loadExamples;
     $scope.setExample = setExample;
     $scope.openSaveModal = openSaveModal;
+    $scope.isEditor = isEditor;
+    $scope.openEditor = openEditor;
+    $scope.isView = isView;
+    $scope.openView = openView;
+    $scope.upload = upload;
 
   });
 

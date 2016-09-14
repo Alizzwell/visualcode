@@ -164,26 +164,9 @@
     }
 
 
-    function upload() {
-        getEachBreakpointOnEditor(function (bp, line) {
-          bp.line = line;
-        });
-
-        workSpace.upload(function (err, data) {
-          if (err) {
-            // error handle
-            console.log(err);
-            return;
-          }
-          console.log(JSON.stringify(data));
-        });
-    }
-
-
     $scope.selectTheme = selectTheme;
     $scope.cmLoadded = cmLoadded;
     $scope.removeBreakpoint = removeBreakpoint;
-    $scope.upload = upload;
 
   });
 

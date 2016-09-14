@@ -5,7 +5,8 @@
   angular.module('visualcodeApp', [
     'ui.bootstrap', 
     'pageslide-directive',
-    'ui.codemirror'
+    'ui.codemirror',
+    'mc.resizer'
     ]);
 
   
