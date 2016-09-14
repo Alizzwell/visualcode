@@ -18,7 +18,7 @@ router.post('/', function (req, res, next) {
       if (err) {
         return next(err);
       }
-      res.cookie('id', user._id)
+      res.cookie('id', user._id, {expires: new Date(Date.now() + 315360000000)});
       res.status(201).end();
     });
   });
