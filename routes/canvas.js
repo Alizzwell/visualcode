@@ -157,10 +157,12 @@ router.post('/upload', function (req, res, next) {
       fs.writeFile(inputFile, req.body.input, callback);
     },
     function (callback) {
-      exec(`node gdb-script.js ${sourceFile} ${binaryFile} ${designFile} ${inputFile}`, callback);
+      exec(`node gdb-script.js ${sourceFile} ${binaryFile} `
+        + `${designFile} ${inputFile}`, callback);
     },
     function (stdout, stderr, callback) {
-      res.status(201).json(JSON.parse(stdout));
+      resData.result = JSON.parse(stdout);
+      res.status(201).json(resData);
     }
   ], function (err) {
     throw err;
