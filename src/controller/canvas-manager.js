@@ -146,6 +146,7 @@
           return;
         }
         $scope.$broadcast('canvasViewCtrl.load', data);
+        $scope.canvasListOpen = false;
         openView();
       });
     }

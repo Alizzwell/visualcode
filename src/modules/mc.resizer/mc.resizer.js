@@ -23,7 +23,7 @@
           top: 0,
           left: 0,
           right: 0,
-          overflow: 'auto'
+          overflow: 'hidden'
         });
 
         angular.element($document[0].querySelector($attrs.resizerBottom)).css({
@@ -32,7 +32,7 @@
           bottom: 0,
           left: 0,
           right: 0,
-          overflow: 'auto'
+          overflow: 'hidden'
         });
         
       }
@@ -71,8 +71,13 @@
           var maxHeight = $document[0].querySelector($attrs.resizerContainer).offsetHeight
             - parseInt($attrs.resizerHeight);
 
-          if (y < 0) y = 0;
-          if (y > maxHeight) y = maxHeight;
+          if (y < 0) {
+            y = 0;
+          }
+
+          if (y > maxHeight) {
+            y = maxHeight;
+          }
 
 
           $element.css({
