@@ -10,6 +10,7 @@ gulp.task('eslint', function () {
     '!client/modules/html_templates/html_templates.module.js',
     'gulp-tasks/**/*.js',
     'server/**/*.js',
+    '!server/gdb-script.js',
     '!server/node_modules{,/**}',
     '*.js'
   ])
