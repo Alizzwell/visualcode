@@ -1,0 +1,24 @@
+<div class="vico-canvas-view" id="resizer-container" ng-click="keydown()">
+  <div id="resizer-top-content" ng-init="initCanvas()">
+  </div>
+
+  <div id="resizer-bottom-content">
+    <div class="scrollable">
+      <div class="vico-codemirror" ui-codemirror="{onLoad : cmLoadded}" ui-codemirror-opts="cmOptions" ng-model="code"></div>
+
+      <div class="footer">
+        <button style="margin-left: 10px;" type="button" class="btn btn-primary btn-lg" ng-click="btnStepClk()">Step</button>
+        <button style="margin-left: 10px;" type="button" class="btn btn-primary btn-lg" ng-click="btnNextClk()">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mc-resizer" id="content-resizer"
+    resizer="horizontal"
+    resizer-height="16"
+    resizer-container="#resizer-container"
+    resizer-top="#resizer-top-content"
+    resizer-bottom="#resizer-bottom-content"
+    resizer-bottom-height="250">
+  </div>
+</div>

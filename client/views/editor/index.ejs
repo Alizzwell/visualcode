@@ -1,0 +1,11 @@
+<div class="scrollable">
+  <div class="vico-edit-panel">
+    <% include edit-panel %>
+
+    <pageslide ps-open="designerOpen" ps-size="400px" ps-zindex="100" ps-key-listener="true" ps-click-outside="false" ps-auto-close="true">
+      <div class="vico-designer-view" ng-controller="DesignerCtrl">
+        <% include design-panel %>
+      </div>
+    </pageslide>
+  </div>
+</div>

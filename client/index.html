@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko" ng-controller="MainCtrl" id="vicoApp">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <title ng-bind="pageTitle"></title>
+
+</head>
+<body>
+
+  <div ui-view style="width:100%; height: 100%;" ng-cloak></div>
+
+  <!--DEV-->
+  <script src="/jspm_packages/system.js"></script>
+  <script src="/config.js"></script>
+  <script>
+    System.import('/modules/main/main.module.js');
+  </script>
+  <!--DEV-->
+
+  <!--PROD
+  <script src="app.min.js"></script>
+  PROD-->
+
+</body>
+</html>
