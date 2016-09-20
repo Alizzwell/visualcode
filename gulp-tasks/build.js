@@ -9,8 +9,8 @@ var  gulp = require('gulp'),
   rev = require('gulp-rev'),
   revReplace = require('gulp-rev-replace'),
   runSequence = require('run-sequence'),
-  uglify = require('gulp-uglify'),
-  imagemin = require('gulp-imagemin');
+  uglify = require('gulp-uglify');
+  
 
 gulp.task('build', function (done) {
   runSequence(
@@ -85,7 +85,6 @@ gulp.task('build:copyEjs', function() {
 
 gulp.task('build:copyImageResources', function () {
   return gulp.src('./client/images/**.*')
-    .pipe(imagemin())
     .pipe(gulp.dest('./dist/images'));
 });
 

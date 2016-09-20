@@ -33,7 +33,7 @@ export default class CanvasViewCtrl {
 
     $document.unbind('keydown', $document.kkeydown);
     $document.kkeydown = function (event) {
-      if (event.key === "Delete" && $scope.selectedGutter) {
+      if (event.key === 'Delete' && $scope.selectedGutter) {
         $scope.editor.removeGutterMarker($scope.selectedGutter);
         delete breakpoints[$scope.selectedGutterLine];
         delete $scope.selectedGutter;
@@ -61,7 +61,7 @@ export default class CanvasViewCtrl {
         selectGutterMarker(gutter, line);
       });
 
-      cm.on('mousedown', function (cm, event, tt) {
+      cm.on('mousedown', function (cm, event) {
         if (event.target.className.indexOf('gutter') > -1 ||
           event.target.className.indexOf('breakpoint') > -1) {
           return;
