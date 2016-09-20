@@ -1,0 +1,11 @@
+<div class="fill" ng-controller="CanvasManagerCtrl" ng-init="initCanvas()">
+  <% include navbar %>
+
+  <pageslide ps-open="canvasListOpen" ps-side="left" ps-push="true" ps-size="290px" ps-click-outside="false" ps-key-listener="true">
+    <% include canvas-list-panel %>
+  </pageslide>
+
+  <div class="vico-container">
+    <div ui-view="container" class="fill"></div>
+  </div>
+</div>

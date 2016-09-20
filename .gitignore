@@ -1,4 +1,13 @@
-data/db
-node_modules/
-bower_components/
-.bowerrc
+# Logs
+*.log
+npm-debug.log*
+
+# Dependency directory
+node_modules
+client/jspm_packages
+
+# Optional npm cache directory
+.npm
+
+# Published directory
+dist

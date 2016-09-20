@@ -1,9 +1,0 @@
-.mc-resizer {
-  position: absolute;
-  background-color: #666;
-  cursor: n-resize;
-}
-
-.mc-resizer:hover {
-  background-color: #AAA;
-}

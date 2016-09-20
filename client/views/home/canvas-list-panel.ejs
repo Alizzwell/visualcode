@@ -1,0 +1,50 @@
+<div class="vico-canvas-list" id="slider-canvas-list">
+  <div class="vico-canvas-list-header">
+    <span>검색기능넣기</span>
+  </div>
+  <div class="vico-canvas-list-container">
+    <div class="scrollable">
+      <div style="padding: 20px;">
+        <a class="btn icon-btn btn-default btn-lg btn-block" ng-click="newCanvas()">
+          <span class="glyphicon btn-glyphicon glyphicon-plus img-circle text-success"></span>
+          새 캔버스
+        </a>
+      </div>
+
+      <div class="section-bar">Current Canvas</div>
+      <div class="vico-list">
+        <div class="vico-list-container">
+          <div class="vico-list-item">
+            <span class="thumb"></span>
+            <span class="title" style="padding-right: 60px;">{{currentCanvas.title || "제목 없는 캔버스"}}</span>
+            <span class="date">no unsaved changes</span>
+            <span class="vico-btn-save" ng-class="{enable: isChanged()}" ng-click="saveCanvas()">Save</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-bar" ng-init="loadSavedCanvas()" ng-show="savedCanvas.length">Saved Canvas</div>
+      <div class="vico-list" ng-repeat="item in savedCanvas">
+        <div class="vico-list-container">
+          <div class="vico-list-item" ng-class="{active: isActiveItem(item)}" ng-click="setSavedCanvas(item)">
+            <span class="thumb"></span>
+            <span class="title">{{item.title || "제목 없는 캔버스"}}</span>
+            <span class="date">{{item.updateDate | vicoDate}}</span>
+            <span class="remove glyphicon glyphicon-remove" ng-click="removeSavedCanvas(item)"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-bar" ng-init="loadExamples()" ng-show="examples.length">Examples</div>
+      <div class="vico-list" ng-repeat="item in examples">
+        <div class="vico-list-container">
+          <div class="vico-list-item" ng-click="setExample(item)">
+            <span class="thumb"></span>
+            <span class="title">{{item.title || "제목 없는 캔버스"}}</span>
+            <span class="date">예시</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
