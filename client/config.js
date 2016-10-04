@@ -13,7 +13,7 @@ System.config({
   },
 
   map: {
-    "alizzwell/thisplay": "github:alizzwell/thisplay@1.2.0",
+    "alizzwell/thisplay": "github:alizzwell/thisplay@1.3.2",
     "angular": "github:angular/bower-angular@1.5.8",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@2.1.3",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
