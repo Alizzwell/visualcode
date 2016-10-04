@@ -201,7 +201,12 @@ function setValues(gdb, api, callback) {
     var output = getCompleteStreamData(buf);
     if (output) {
       buf = '';
-      api.values.push(Number(output.split('=')[1].trim()));
+      if (output.split('=')[1].trim().indexOf('\"') > -1) {
+        api.values.push(output.split('=')[1].trim().replace(/\"/g, ''));
+      }
+      else {
+        api.values.push(Number(output.split('=')[1].trim()));
+      }
 
       if (idx < api.params.length) {
         gdb.stdin.write(`print ${api.params[idx++]}\n`);
