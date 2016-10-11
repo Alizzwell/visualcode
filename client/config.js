@@ -14,7 +14,7 @@ System.config({
 
   map: {
     "alizzwell/flubber": "github:alizzwell/flubber@1.0.0",
-    "alizzwell/thisplay": "github:alizzwell/thisplay@2.0.0",
+    "alizzwell/thisplay": "github:alizzwell/thisplay@2.1.0",
     "angular": "github:angular/bower-angular@1.5.8",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@2.2.0",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
@@ -25,7 +25,7 @@ System.config({
     "core-js": "npm:core-js@1.2.7",
     "css": "github:systemjs/plugin-css@0.1.31",
     "dpiccone/ng-pageslide": "github:dpiccone/ng-pageslide@2.1.1",
-    "github:alizzwell/thisplay@2.0.0": {
+    "github:alizzwell/thisplay@2.1.0": {
       "d3": "npm:d3@4.2.6"
     },
     "github:angular-ui/ui-router@0.2.18": {
