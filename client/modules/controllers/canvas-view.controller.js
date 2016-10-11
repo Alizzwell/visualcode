@@ -1,7 +1,5 @@
 import angular from 'angular';
-import * as d3 from 'd3';
-window.d3 = d3;
-import thisplay from 'alizzwell/thisplay/dist/thisplay';
+import thisplay from 'alizzwell/thisplay';
 import 'alizzwell/thisplay/dist/thisplay.min.css!';
 
 export default class CanvasViewCtrl {
@@ -29,7 +27,7 @@ export default class CanvasViewCtrl {
       gutters: ['CodeMirror-linenumbers', 'breakpoints']
     };
 
-    
+
 
     $document.unbind('keydown', $document.kkeydown);
     $document.kkeydown = function (event) {
