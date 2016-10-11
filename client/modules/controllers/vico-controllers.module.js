@@ -10,4 +10,4 @@ export default angular
   .controller('CanvasManagerCtrl', CanvasManagerCtrl)
   .controller('EditorCtrl', EditorCtrl)
   .controller('DesignerCtrl', DesignerCtrl)
-  .controller('CanvasViewCtrl', CanvasViewCtrl); 
+  .controller('CanvasViewCtrl', CanvasViewCtrl);

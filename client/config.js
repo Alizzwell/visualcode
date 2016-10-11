@@ -13,6 +13,7 @@ System.config({
   },
 
   map: {
+    "alizzwell/flubber": "github:alizzwell/flubber@1.0.0",
     "alizzwell/thisplay": "github:alizzwell/thisplay@2.0.0",
     "angular": "github:angular/bower-angular@1.5.8",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@2.2.0",
