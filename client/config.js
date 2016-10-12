@@ -14,7 +14,7 @@ System.config({
 
   map: {
     "alizzwell/flubber": "github:alizzwell/flubber@1.0.0",
-    "alizzwell/thisplay": "github:alizzwell/thisplay@2.1.0",
+    "alizzwell/thisplay": "github:alizzwell/thisplay@2.1.4",
     "angular": "github:angular/bower-angular@1.5.8",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@2.2.0",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
@@ -25,8 +25,8 @@ System.config({
     "core-js": "npm:core-js@1.2.7",
     "css": "github:systemjs/plugin-css@0.1.31",
     "dpiccone/ng-pageslide": "github:dpiccone/ng-pageslide@2.1.1",
-    "github:alizzwell/thisplay@2.1.0": {
-      "d3": "npm:d3@4.2.6"
+    "github:alizzwell/thisplay@2.1.4": {
+      "d3": "npm:d3@4.2.7"
     },
     "github:angular-ui/ui-router@0.2.18": {
       "angular": "github:angular/bower-angular@1.5.8"
@@ -129,14 +129,14 @@ System.config({
       "iconv-lite": "npm:iconv-lite@0.4.13",
       "rw": "npm:rw@1.3.2"
     },
-    "npm:d3-force@1.0.2": {
+    "npm:d3-force@1.0.3": {
       "d3-collection": "npm:d3-collection@1.0.1",
       "d3-dispatch": "npm:d3-dispatch@1.0.1",
       "d3-quadtree": "npm:d3-quadtree@1.0.1",
       "d3-timer": "npm:d3-timer@1.0.3",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:d3-geo@1.2.5": {
+    "npm:d3-geo@1.2.6": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "d3-array": "npm:d3-array@1.0.1"
     },
@@ -179,7 +179,7 @@ System.config({
       "d3-selection": "npm:d3-selection@1.0.2",
       "d3-transition": "npm:d3-transition@1.0.2"
     },
-    "npm:d3@4.2.6": {
+    "npm:d3@4.2.7": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "d3-array": "npm:d3-array@1.0.1",
       "d3-axis": "npm:d3-axis@1.0.3",
@@ -191,9 +191,9 @@ System.config({
       "d3-drag": "npm:d3-drag@1.0.1",
       "d3-dsv": "npm:d3-dsv@1.0.3",
       "d3-ease": "npm:d3-ease@1.0.1",
-      "d3-force": "npm:d3-force@1.0.2",
+      "d3-force": "npm:d3-force@1.0.3",
       "d3-format": "npm:d3-format@1.0.2",
-      "d3-geo": "npm:d3-geo@1.2.5",
+      "d3-geo": "npm:d3-geo@1.2.6",
       "d3-hierarchy": "npm:d3-hierarchy@1.0.2",
       "d3-interpolate": "npm:d3-interpolate@1.1.1",
       "d3-path": "npm:d3-path@1.0.2",
