@@ -103,7 +103,7 @@ export default class CanvasViewCtrl {
         var canvas = angular.element(
           '<div class="flubber resizable" ' +
           'flubber-draggable flubber-resizable>' +
-            '<svg id="' + id + '" ' + '</svg>' +
+            '<svg id="' + id + '"> ' + '</svg>' +
           '</div>');
         topelement.append(canvas);
         $compile(canvas)($scope);

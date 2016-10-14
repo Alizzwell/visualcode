@@ -87,8 +87,14 @@
   "Stack": {
     "lavel": "Stack",
     "apis": [{
+      "name": "init",
+      "description": "Stack 사이즈를 설정한다.",
+      "params": [
+        {"name": "size", "description": "Stack의 사이즈"}
+      ]
+    }, {
       "name": "push",
-      "description": "Stack에 데이터를 삽입한다..",
+      "description": "Stack에 데이터를 삽입한다.",
       "params": [
         {"name": "value", "description": "삽입할 데이터 값"}
       ]
@@ -128,11 +134,27 @@
       "name": "makeNode",
       "description": "그래프에 새로운 노드를 생성한다.",
       "params": [
-        {"name": "id", "description": "노드의 id"}
+        {"name": "id", "description": "노드의 id"},
+        {"name": "value", "description": "노드의 데이터 값", "optional": true}
       ]
     }, {
       "name": "makeEdge",
       "description": "두 노드를 연결하는 간선을 그린다.",
+      "params": [
+        {"name": "src", "description": "첫번째 노드의 id"},
+        {"name": "dest", "description": "두번째 노드의 id"},
+        {"name": "value", "description": "간선 가중치", "optional": true},
+        {"name": "isDirected", "description": "true이면 directed edgh", "optional": true}
+      ]
+    }, {
+      "name": "deleteNode",
+      "description": "노드를 제거한다.",
+      "params": [
+        {"name": "id", "description": "노드의 id"}
+      ]
+    }, {
+      "name": "deleteEdge",
+      "description": "간선을 제거한다.",
       "params": [
         {"name": "src", "description": "첫번째 노드의 id"},
         {"name": "dest", "description": "두번째 노드의 id"}
@@ -170,7 +192,7 @@
     "lavel": "Linked List",
     "apis": [{
       "name": "curInit",
-      "description": "LinkedList 헤더를 생성한다.",
+      "description": "LinkedList 헤더를 초기화한다.",
       "params": []
     }, {
       "name": "next",
@@ -187,6 +209,12 @@
       "description": "포인트가 가리키는 노드를 제거한다.",
       "params": []
     }, {
+      "name": "setDataCur",
+      "description": "포인트가 가리키는 노드의 값을 설정한다.",
+      "params": [
+        {"name": "value", "description": "삽입할 데이터 값"}
+      ]
+    }, {
       "name": "clear",
       "description": "LinkedList를 비운다.",
       "params": []
@@ -196,17 +224,18 @@
   "Tree": {
     "lavel": "Tree",
     "apis": [{
-      "name": "addChild",
-      "description": "부모노드와 자식노드를 생성하고 연결한다.",
+      "name": "makeNode",
+      "description": "노드를 생성한다.",
       "params": [
-        {"name": "parent", "description": "부모 노드의 id"},
-        {"name": "child", "description": "자식 노드의 id"}
+        {"name": "id", "description": "노드의 id"},
+        {"name": "value", "description": "노드의 값"}
       ]
     }, {
-      "name": "highlight",
-      "description": "특정 노드를 하이라이트한다.",
+      "name": "connect",
+      "description": "노드를 tree형태로 연결한다.",
       "params": [
-        {"name": "id", "description": "하이라이트할 노드의 id"}
+        {"name": "parent", "description": "부모 노드의 id"},
+        {"name": "children", "description": "자식 노드의 id"}
       ]
     }, {
       "name": "clear",
