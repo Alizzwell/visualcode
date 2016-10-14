@@ -96,6 +96,9 @@ export default function VicoServicesConfig($provide) {
           };
 
           item.api.params.forEach(function (param) {
+            if (!param.value) {
+              return;
+            }
             api.params.push(param.value);
           });
 

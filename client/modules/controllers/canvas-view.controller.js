@@ -1,12 +1,12 @@
 import angular from 'angular';
-import * as d3 from 'd3';
-window.d3 = d3;
-import thisplay from 'alizzwell/thisplay/dist/thisplay';
+import thisplay from 'alizzwell/thisplay';
 import 'alizzwell/thisplay/dist/thisplay.min.css!';
+
 
 export default class CanvasViewCtrl {
 
-  constructor($scope, $stateParams, $element, $document, $compile, VicoCodeMirror) {
+  constructor($scope, $stateParams, $element, $document,
+    $compile, VicoCodeMirror) {
     'ngInject';
 
     var structures;
@@ -29,7 +29,7 @@ export default class CanvasViewCtrl {
       gutters: ['CodeMirror-linenumbers', 'breakpoints']
     };
 
-    
+
 
     $document.unbind('keydown', $document.kkeydown);
     $document.kkeydown = function (event) {
@@ -100,12 +100,15 @@ export default class CanvasViewCtrl {
       topelement.html('');
 
       for (var id in design.structures) {
-        var canvas = angular.element('<svg ' +
-          'id="' + id + '" ' +
-          'style="width: 100%; height: 100%;"></svg>');
+        var canvas = angular.element(
+          '<div class="flubber resizable" ' +
+          'flubber-draggable flubber-resizable>' +
+            '<svg id="' + id + '"> ' + '</svg>' +
+          '</div>');
         topelement.append(canvas);
         $compile(canvas)($scope);
       }
+
 
       for (var _id in design.structures) {
         structures[_id] = new thisplay[design.structures[_id]]('#' + _id);
@@ -116,7 +119,6 @@ export default class CanvasViewCtrl {
       }
 
       $scope.code = data.code;
-
     };
 
 

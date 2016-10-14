@@ -7,7 +7,7 @@
       "params": [
         {"name": "size", "description": "차트의 전체 사이즈"}
       ]
-    },{
+    }, {
       "name": "setData",
       "description": "Chart에 데이터를 입력한다.",
       "params": [
@@ -33,8 +33,7 @@
       "name": "clear",
       "description": "Chart 데이터를 제거한다.",
       "params": []
-    }
-  ]
+    }]
   },
 
   "Array": {
@@ -42,11 +41,60 @@
     "apis": []
   },
 
+  "Matrix": {
+    "lavel": "Matrix",
+    "apis": [{
+      "name": "init",
+      "description": "row X col Matrix를 생성한다",
+      "params": [
+        {"name": "row_size", "description": "row 크기"},
+        {"name": "col_size", "description": "col 크기"}
+      ]
+    }, {
+      "name": "setData",
+      "description": "Matrix에 데이터를 입력한다.",
+      "params": [
+        {"name": "row_idx", "description": "데이터를 입력할 행"},
+        {"name": "col_idx", "description": "데이터를 입력할 열"},
+        {"name": "value", "description": "입력할 데이터 값"}
+      ]
+    }, {
+      "name": "highlight",
+      "description": "특정 셀(Cell)을 하이라이트한다.",
+      "params": [
+        {"name": "row_idx", "description": "셀이 위치한 행"},
+        {"name": "col_idx", "description": "셀이 위치한 열"},
+        {"name": "color", "description": "적용할 색상"}
+      ]
+    }, {
+      "name": "unhighlight",
+      "description": "특정 셀(Cell)을 하이라이트를 제거한다.",
+      "params": [
+        {"name": "row_idx", "description": "셀이 위치한 행"},
+        {"name": "col_idx", "description": "셀이 위치한 열"}
+      ]
+    }, {
+      "name": "unhighlightColor",
+      "description": "특정 색의 하이라이트를 모두 제거한다.",
+      "params": [{"name": "color", "description": "제거할 색상"}]
+    }, {
+      "name": "clear",
+      "description": "Matrix 데이터를 제거한다.",
+      "params": []
+    }]
+  },
+
   "Stack": {
     "lavel": "Stack",
     "apis": [{
+      "name": "init",
+      "description": "Stack 사이즈를 설정한다.",
+      "params": [
+        {"name": "size", "description": "Stack의 사이즈"}
+      ]
+    }, {
       "name": "push",
-      "description": "Stack에 데이터를 삽입한다..",
+      "description": "Stack에 데이터를 삽입한다.",
       "params": [
         {"name": "value", "description": "삽입할 데이터 값"}
       ]
@@ -64,13 +112,13 @@
   "Queue": {
     "lavel": "Queue",
     "apis": [{
-      "name": "inqueue",
+      "name": "push",
       "description": "Queue에 데이터를 삽입한다.",
       "params": [
         {"name": "value", "description": "삽입할 데이터 값"}
       ]
     }, {
-      "name": "dequeue",
+      "name": "pop",
       "description": "Queue에서 데이터를 제거한다.",
       "params": []
     }, {
@@ -86,30 +134,30 @@
       "name": "makeNode",
       "description": "그래프에 새로운 노드를 생성한다.",
       "params": [
-        {"name": "id", "description": "노드의 id"}, 
-        {"name": "lavel", "description": "노드에 입력할 라벨", "optional": true}
-      ]
-    }, {
-      "name": "makeNodes",
-      "description": "그래프에 일련번호를 id로 하는 노드를 생성한다.",
-      "params": [
-        {"name": "number", "description": "생성할 노드 갯수"},
-        {"name": "id", "description": "일련번호 시작 id"}
+        {"name": "id", "description": "노드의 id"},
+        {"name": "value", "description": "노드의 데이터 값", "optional": true}
       ]
     }, {
       "name": "makeEdge",
       "description": "두 노드를 연결하는 간선을 그린다.",
       "params": [
-        {"name": "src", "description": "첫번째 노드의 id"}, 
-        {"name": "dest", "description": "두번째 노드의 id"}, 
-        {"name": "directed", "description": "true일 경우 src에서 dest로 화살표 연결", "optional": true}
+        {"name": "src", "description": "첫번째 노드의 id"},
+        {"name": "dest", "description": "두번째 노드의 id"},
+        {"name": "value", "description": "간선 가중치", "optional": true},
+        {"name": "isDirected", "description": "true이면 directed edgh", "optional": true}
       ]
     }, {
-      "name": "setLavel",
-      "description": "특정 노드에 라벨을 입력한다.",
+      "name": "deleteNode",
+      "description": "노드를 제거한다.",
       "params": [
-        {"name": "id", "description": "라벨을 입력할 노드의 id"},
-        {"name": "lavel", "description": "노드에 입력할 라벨"}
+        {"name": "id", "description": "노드의 id"}
+      ]
+    }, {
+      "name": "deleteEdge",
+      "description": "간선을 제거한다.",
+      "params": [
+        {"name": "src", "description": "첫번째 노드의 id"},
+        {"name": "dest", "description": "두번째 노드의 id"}
       ]
     }, {
       "name": "highlightNode",
@@ -119,13 +167,20 @@
       "name": "highlightEdge",
       "description": "특정 간선에 하이라이트한다.",
       "params": [
-        {"name": "src", "description": "하이라이트할 간선의 시작노드 id"}, 
+        {"name": "src", "description": "하이라이트할 간선의 시작노드 id"},
         {"name": "dest", "description": "하이라이트할 간선의 끝노드 id"}
       ]
     }, {
-      "name": "clearHighlight",
-      "description": "모든 하이라이트를 지운다.",
-      "params": []
+      "name": "unHighlightNode",
+      "description": "특정 노드의 하이라이트를 제거한다.",
+      "params": [{"name": "id", "description": "하이라이트 제거할 노드의 id"}]
+    }, {
+      "name": "unHighlightEdge",
+      "description": "특정 간선의 하이라이트를 제거한다.",
+      "params": [
+        {"name": "src", "description": "하이라이트 제거할 간선의 시작노드 id"},
+        {"name": "dest", "description": "하이라이트 제거할 간선의 끝노드 id"}
+      ]
     }, {
       "name": "clear",
       "description": "그래프를 지운다.",
@@ -135,23 +190,52 @@
 
   "LinkedList": {
     "lavel": "Linked List",
-    "apis": []  
-  },
-
-  "Tree": {  
-    "lavel": "Tree",
     "apis": [{
-      "name": "addChild",
-      "description": "부모노드와 자식노드를 생성하고 연결한다.",
+      "name": "curInit",
+      "description": "LinkedList 헤더를 초기화한다.",
+      "params": []
+    }, {
+      "name": "next",
+      "description": "포인트를 next로 옮긴다.",
+      "params": []
+    }, {
+      "name": "insertCur",
+      "description": "next에 노드를 삽입한다.",
       "params": [
-        {"name": "parent", "description": "부모 노드의 id"},
-        {"name": "child", "description": "자식 노드의 id"}
+        {"name": "value", "description": "삽입할 데이터 값"}
       ]
     }, {
-      "name": "highlight",
-      "description": "특정 노드를 하이라이트한다.",
+      "name": "deleteCur",
+      "description": "포인트가 가리키는 노드를 제거한다.",
+      "params": []
+    }, {
+      "name": "setDataCur",
+      "description": "포인트가 가리키는 노드의 값을 설정한다.",
       "params": [
-        {"name": "id", "description": "하이라이트할 노드의 id"}
+        {"name": "value", "description": "삽입할 데이터 값"}
+      ]
+    }, {
+      "name": "clear",
+      "description": "LinkedList를 비운다.",
+      "params": []
+    }]
+  },
+
+  "Tree": {
+    "lavel": "Tree",
+    "apis": [{
+      "name": "makeNode",
+      "description": "노드를 생성한다.",
+      "params": [
+        {"name": "id", "description": "노드의 id"},
+        {"name": "value", "description": "노드의 값"}
+      ]
+    }, {
+      "name": "connect",
+      "description": "노드를 tree형태로 연결한다.",
+      "params": [
+        {"name": "parent", "description": "부모 노드의 id"},
+        {"name": "children", "description": "자식 노드의 id"}
       ]
     }, {
       "name": "clear",

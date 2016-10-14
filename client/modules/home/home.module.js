@@ -3,6 +3,8 @@ import 'modules/html_templates/html_templates.module';
 import 'dpiccone/ng-pageslide';
 import 'modules/codemirror/ui.codemirror.module';
 import 'modules/mc.resizer/mc.resizer.module';
+import 'alizzwell/flubber';
+import 'alizzwell/flubber/src/stylesheets/flubber.css!';
 
 import VicoControllers from 'modules/controllers/vico-controllers.module';
 import VicoServices from 'modules/services/vico-services.module';
@@ -15,6 +17,7 @@ export default angular
     'HTMLTemplates',
     'pageslide-directive',
     'ui.codemirror',
+    'ui.flubber',
     'mc.resizer',
     VicoControllers.name,
     VicoServices.name,

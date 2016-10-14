@@ -43,14 +43,14 @@
       "baseURL": "client"
     },
     "dependencies": {
-      "alizzwell/thisplay": "github:alizzwell/thisplay@^1.2.0",
+      "alizzwell/flubber": "github:alizzwell/flubber@^1.0.4",
+      "alizzwell/thisplay": "github:alizzwell/thisplay@^2.2.1",
       "angular": "github:angular/bower-angular@^1.5.8",
       "angular-bootstrap": "github:angular-ui/bootstrap-bower@^2.1.3",
       "angular-ui-router": "github:angular-ui/ui-router@^0.2.17",
       "bootstrap": "github:twbs/bootstrap@^3.3.7",
       "codemirror/codemirror": "github:codemirror/codemirror@^5.18.2",
       "css": "github:systemjs/plugin-css@^0.1.27",
-      "d3": "npm:d3@4.2.2",
       "dpiccone/ng-pageslide": "github:dpiccone/ng-pageslide@^2.1.1"
     },
     "devDependencies": {

@@ -15,6 +15,7 @@ export default class CanvasManagerCtrl {
       $scope.$broadcast('changedCurrentCanvas');
     };
 
+
     $scope.newCanvas = function () {
       $scope.initCanvas();
       $state.go('home.editor');
@@ -101,9 +102,9 @@ export default class CanvasManagerCtrl {
       $http.get('/api/examples/' + item._id)
       .then(function (res) {
         $scope.canvasRepo = new CanvasRepository();
+        $scope.lastSavedDump = JSON.stringify($scope.canvasRepo.data);
         $scope.canvasRepo.data = res.data;
         $scope.currentCanvas = $scope.canvasRepo.data;
-        $scope.lastSavedDump = JSON.stringify($scope.currentCanvas);
         $scope.$broadcast('changedCurrentCanvas');
         $state.go('home.editor');
       })
@@ -116,6 +117,7 @@ export default class CanvasManagerCtrl {
     $scope.uploadCanvas = function () {
       $scope.canvasRepo.upload()
         .then(function (data) {
+          $scope.canvasListOpen = false;
           $state.go('home.viewer', {data: data});
         })
         .catch(function () {
