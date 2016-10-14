@@ -74,7 +74,7 @@ gulp.task('bundle:js', ['eslint', 'ngtemplate'], function (done) {
 
 gulp.task('build:copyJSPMResoruces', function() {
   return gulp.src('./client/jspm_packages/**/*')
-    .pipe(filter(['**/*.{ttf,woff,woff2,eof,svg}']))
+    .pipe(filter(['**/*.{ttf,woff,woff2,eof,svg,jpg,png}']))
     .pipe(gulp.dest('./dist/jspm_packages'));
 });
 
