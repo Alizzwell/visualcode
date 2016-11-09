@@ -215,6 +215,26 @@
         {"name": "value", "description": "삽입할 데이터 값"}
       ]
     }, {
+      "name": "pushFront",
+      "description": "맨 앞에 노드를 추가한다.",
+      "params": [
+        {"name": "value", "description": "삽입할 데이터 값"}
+      ]
+    }, {
+      "name": "pushBack",
+      "description": "맨 뒤에 노드를 추가한다.",
+      "params": [
+        {"name": "value", "description": "삽입할 데이터 값"}
+      ]
+    }, {
+      "name": "popFront",
+      "description": "맨 앞에 노드를 제거한다.",
+      "params": []
+    }, {
+      "name": "popBack",
+      "description": "맨 뒤에 노드를 제거한다.",
+      "params": []
+    }, {
       "name": "clear",
       "description": "LinkedList를 비운다.",
       "params": []

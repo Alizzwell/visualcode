@@ -2,11 +2,12 @@ import angular from 'angular';
 
 export default class CanvasManagerCtrl {
 
-  constructor($scope, $state, $uibModal, $templateCache, $http,
-    CanvasRepository, UserService) {
+  constructor($scope, $state, $uibModal, $templateCache, $http, $window, 
+    CanvasRepository, CanvasService, ExampleService, userType) {
     'ngInject';
 
-    UserService.regist();
+    $scope.userType =userType;
+
 
     $scope.initCanvas = function () {
       $scope.canvasRepo = new CanvasRepository();
@@ -47,7 +48,7 @@ export default class CanvasManagerCtrl {
 
 
     $scope.loadSavedCanvas = function () {
-      UserService.getCanvasList()
+      CanvasService.getCanvasList()
       .then(function (data) {
         $scope.savedCanvas = data;
       })
@@ -60,9 +61,10 @@ export default class CanvasManagerCtrl {
       if (item.removing) {
         return;
       }
-      var repo = new CanvasRepository(item);
-      repo.getData()
-      .then(function () {
+      
+      CanvasService.getCanvas(item._id)
+      .then(function (data) {
+        var repo = new CanvasRepository(data);
         $scope.canvasRepo = repo;
         $scope.currentCanvas = repo.data;
         $scope.lastSavedDump = JSON.stringify($scope.currentCanvas);
@@ -91,25 +93,26 @@ export default class CanvasManagerCtrl {
 
 
     $scope.loadExamples = function () {
-      $http.get('/api/examples')
-      .then(function (res) {
-        $scope.examples = res.data;
+      ExampleService.getExampleList()
+      .then(function (data) {
+        $scope.examples = data;
+      })
+      .catch(function () {
       });
     };
 
 
     $scope.setExample = function (item) {
-      $http.get('/api/examples/' + item._id)
-      .then(function (res) {
+      ExampleService.getExample(item._id)
+      .then(function (data) {
         $scope.canvasRepo = new CanvasRepository();
         $scope.lastSavedDump = JSON.stringify($scope.canvasRepo.data);
-        $scope.canvasRepo.data = res.data;
+        $scope.canvasRepo.data = data;
         $scope.currentCanvas = $scope.canvasRepo.data;
         $scope.$broadcast('changedCurrentCanvas');
         $state.go('home.editor');
       })
-      .catch (function () {
-        $scope.loadExamples();
+      .catch(function () {
       });
     };
 
@@ -119,6 +122,16 @@ export default class CanvasManagerCtrl {
         .then(function (data) {
           $scope.canvasListOpen = false;
           $state.go('home.viewer', {data: data});
+        })
+        .catch(function () {
+        });
+    };
+
+
+    $scope.logout = function () {
+      $http.post('/api/logout')
+        .then(function () {
+          $window.location.reload();
         })
         .catch(function () {
         });

@@ -1,45 +1,30 @@
 export default function VicoServicesConfig($provide) {
   'ngInject';
 
+  function Canvas(canvas) {
+    canvas = canvas || { };
 
-  $provide.factory('CanvasRepository', function ($http, $q) {
-    var apiUrl = '/api/canvas';
+    this._id = canvas._id || '';
+    this.title = canvas.title || '';
+    this.code = canvas.code || '';
+    this.input = canvas.input || '';
+    this.breaks = canvas.breaks || [];
+    this.structures = canvas.structures || [];
+  }
 
-    function Canvas(canvas) {
-      canvas = canvas || { };
-
-      this._id = canvas._id || '';
-      this.title = canvas.title || '';
-      this.code = canvas.code || '';
-      this.input = canvas.input || '';
-      this.breaks = canvas.breaks || [];
-      this.structures = canvas.structures || [];
-    }
+  $provide.factory('CanvasRepository', function ($http, $q, userType) {
 
     function CanvasRepository(canvas) {
+      this.apiUrl = 
+      (userType === 'user' ? '/api/canvas' : '/api/examples');
       this.data = new Canvas(canvas);
     }
-
-
-    CanvasRepository.prototype.getData = function () {
-      var deferred = $q.defer();
-      var self = this;
-      $http.get(apiUrl + '/' + this.data._id)
-      .then(function (res) {
-        self.data = new Canvas(res.data);
-        deferred.resolve(res.data);
-      })
-      .catch(function (err) {
-        deferred.reject(err);
-      });
-      return deferred.promise;
-    };
 
     CanvasRepository.prototype.save = function () {
       var deferred = $q.defer();
       var self = this;
       this.data._id = this.data._id || '';
-      $http.post(apiUrl + '/' + this.data._id, this.data)
+      $http.post(this.apiUrl + '/' + this.data._id, this.data)
       .then(function (res) {
         self.data = new Canvas(res.data);
         deferred.resolve(res.data);
@@ -53,7 +38,7 @@ export default function VicoServicesConfig($provide) {
     CanvasRepository.prototype.remove = function () {
       var deferred = $q.defer();
       var self = this;
-      $http.delete(apiUrl + '/' + this.data._id)
+      $http.delete(this.apiUrl + '/' + this.data._id)
       .then(function (res) {
         delete self.data;
         deferred.resolve(res.data);
@@ -107,7 +92,7 @@ export default function VicoServicesConfig($provide) {
       });
 
       var deferred = $q.defer();
-      $http.post(apiUrl + '/upload', reqData)
+      $http.post('/api/canvas/upload', reqData)
       .then(function (res) {
         deferred.resolve(res.data);
       })
@@ -121,18 +106,62 @@ export default function VicoServicesConfig($provide) {
   });
 
 
-  $provide.service('UserService', function ($http, $q) {
-    var apiUrl = '/api/users';
-
-    this.regist = function () {
-      $http.post(apiUrl, {}).catch(function () {
-        throw new Error('Cannot regist user info');
-      });
-    };
+  $provide.service('CanvasService', function ($http, $q, userType) {
+    var apiUrl = 
+      (userType === 'user' ? '/api/canvas' : '/api/examples');
 
     this.getCanvasList = function () {
       var deferred = $q.defer();
-      $http.get(apiUrl + '/canvas-list')
+      $http.get(apiUrl)
+      .then(function (res) {
+        deferred.resolve(res.data);
+      })
+      .catch(function (err) {
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    };
+
+    this.getCanvas = function (id) {
+      var deferred = $q.defer();
+      $http.get(apiUrl + '/' + id)
+      .then(function (res) {
+        deferred.resolve(new Canvas(res.data));
+      })
+      .catch(function (err) {
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    };
+  });
+
+
+  $provide.service('ExampleService', function ($http, $q, userType) {
+    var apiUrl = '/api/examples';
+
+    this.getExampleList = function () {
+      var deferred = $q.defer();
+      if (userType === 'admin') {
+        return deferred.promise;
+      }
+
+      $http.get(apiUrl)
+      .then(function (res) {
+        deferred.resolve(res.data);
+      })
+      .catch(function (err) {
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    };
+
+    this.getExample = function (id) {
+      var deferred = $q.defer();
+      if (userType === 'admin') {
+        return deferred.promise;
+      }
+      
+      $http.get(apiUrl + '/' + id)
       .then(function (res) {
         deferred.resolve(res.data);
       })

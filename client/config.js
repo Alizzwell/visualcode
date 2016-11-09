@@ -25,6 +25,7 @@ System.config({
     "core-js": "npm:core-js@1.2.7",
     "css": "github:systemjs/plugin-css@0.1.31",
     "dpiccone/ng-pageslide": "github:dpiccone/ng-pageslide@2.1.1",
+    "jquery": "npm:jquery@3.1.1",
     "github:alizzwell/thisplay@2.2.1": {
       "d3": "npm:d3@4.2.7"
     },

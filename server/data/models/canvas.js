@@ -41,11 +41,11 @@ var canvasSchema = new Schema({
   title: String,
   code: String,
   input: String,
-  regDate: {type: Date, default: Date.now},
+  regDate: {type: Date},
   updateDate: {type: Date, default: Date.now},
   structures: [structureSchema],
   breaks: [breakSchema]
-});
+}, {versionKey: false});
 
 
 module.exports = mongoose.model('Canvas', canvasSchema);
