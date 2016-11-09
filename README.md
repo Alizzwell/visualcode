@@ -50,3 +50,10 @@ $ gulp build
 $ cd server
 $ npm run serve
 ```
+
+
+
+### DB DATA RESTORE (EXAMPLES)
+```bash
+$ mongorestore server/dbdump
+```
