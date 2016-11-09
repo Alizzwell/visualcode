@@ -53,7 +53,7 @@ router.post('/login', function (req, res, next) {
 });
 
 
-router.post('/logout', function (req, res, next) {
+router.post('/logout', function (req, res) {
   req.session = null;
   return res.status(204).end();
 });

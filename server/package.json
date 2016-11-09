@@ -1,6 +1,6 @@
 {
   "name": "visualcode-server",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/Alizzwell/visualcode-server.git"
