@@ -54,10 +54,8 @@ router.post('/login', function (req, res, next) {
 
 
 router.post('/logout', function (req, res, next) {
-  req.session.destroy(function (err) {
-    if (err) { return next(err); }
-    return res.status(204).end();
-  });
+  req.session = null;
+  return res.status(204).end();
 });
 
 

@@ -3,10 +3,8 @@
 var express = require('express');
 var router = express.Router();
 
-var User = require('../../data/models/user');
 
-
-router.post('/login', function (req, res, next) {
+router.post('/login', function (req, res) {
   // var id = req.body.id;
   // var pw = req.body.pw;
 

@@ -3,25 +3,19 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var session = require('express-session');
+var cookieSession = require('cookie-session');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var debug = require('debug')('www:server');
 
 var app = express();
 var env = process.env.NODE_ENV;
-var sess = {
-  secret: 'visualcode#1213',
-  resave: false,
-  saveUninitialized: true,
-  cookie: {}
-};
-sess.cookie.secure = env === 'production';
 var directory = (env === 'production' ? 'dist' : 'client');
 var port = (env === 'production' ? 3000 : 20080);
 var dbname = (env === 'production' ? 'visualcode' : 'test');
-var mongoose = require('./dbcon')(dbname);
-mongoose.Promise = require('promise');
+require('./dbcon')(dbname);
+//var mongoose = require('./dbcon')(dbname);
+// mongoose.Promise = require('promise');
 
 global.appRoot = __dirname;
 // global.mainFile = path.join(__dirname + '/../', directory, 'index.html');
@@ -29,7 +23,10 @@ global.appRoot = __dirname;
 app.set('views', path.join(__dirname + '/../', directory));
 app.set('view engine', 'ejs');
 
-app.use(session(sess));
+app.use(cookieSession({
+  name: 'session',
+  keys: ['visualcode#1213']
+}));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -39,7 +36,7 @@ app.use(express.static(path.join(__dirname + '/../', directory)));
 
 app.use('/api', require('./routes/index'));
 
-app.get('/admin', function (req, res, next) {
+app.get('/admin', function (req, res) {
   res.render('admin');  
 });
 

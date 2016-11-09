@@ -20,20 +20,6 @@ export default function VicoServicesConfig($provide) {
       this.data = new Canvas(canvas);
     }
 
-    CanvasRepository.prototype.getData = function () {
-      var deferred = $q.defer();
-      var self = this;
-      $http.get(this.apiUrl + '/' + this.data._id)
-      .then(function (res) {
-        self.data = new Canvas(res.data);
-        deferred.resolve(res.data);
-      })
-      .catch(function (err) {
-        deferred.reject(err);
-      });
-      return deferred.promise;
-    };
-
     CanvasRepository.prototype.save = function () {
       var deferred = $q.defer();
       var self = this;
@@ -138,7 +124,7 @@ export default function VicoServicesConfig($provide) {
 
     this.getCanvas = function (id) {
       var deferred = $q.defer();
-      $http.get(apiUrl)
+      $http.get(apiUrl + '/' + id)
       .then(function (res) {
         deferred.resolve(new Canvas(res.data));
       })

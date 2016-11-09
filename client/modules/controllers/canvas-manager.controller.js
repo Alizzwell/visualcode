@@ -61,9 +61,10 @@ export default class CanvasManagerCtrl {
       if (item.removing) {
         return;
       }
-      var repo = new CanvasRepository(item);
-      repo.getData()
-      .then(function () {
+      
+      CanvasService.getCanvas(item._id)
+      .then(function (data) {
+        var repo = new CanvasRepository(data);
         $scope.canvasRepo = repo;
         $scope.currentCanvas = repo.data;
         $scope.lastSavedDump = JSON.stringify($scope.currentCanvas);

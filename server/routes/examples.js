@@ -24,7 +24,7 @@ router.get('/:id', function (req, res, next) {
   if (req.session.userType === 'user') {
     model = Example
     .findOne({_id: req.params.id}, {'_id': 0})
-    .select('title code input structures breaks')
+    .select('title code input structures breaks');
   }
   else if (req.session.userType === 'admin') {
     model = Example
@@ -91,7 +91,7 @@ router.delete('/:id', function (req, res, next) {
   }
 
   Example
-  .removeOneAndRemove({
+  .findOneAndRemove({
     _id: req.params.id
   })
   .exec(function (err, data) {
