@@ -9,5 +9,6 @@
   </div>
   <div class="section vico-navbar-container">
     <span class="navbar-btn vico-btn-save" ng-class="{enable: isChanged()}" ng-click="saveCanvas()">Save</span>
+    <button class="navbar-btn vico-btn-logout" ng-if="userType === 'admin'" ng-click="logout()">Logout</button>
   </div>
 </nav>
